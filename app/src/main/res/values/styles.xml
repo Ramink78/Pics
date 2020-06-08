@@ -1,0 +1,64 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimarySurface">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="materialCardViewStyle">@style/MycardStyle</item>
+        <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
+    </style>
+
+    <style name="MycardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearance">@style/CardsShape</item>
+        <item name="materialThemeOverlay">@style/CardsTheme</item>
+
+    </style>
+
+    <style name="CardsShape" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+    <style name="layoutshape" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="CardsTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/cardBackground</item>
+        <item name="colorOnSurface">@color/design_default_color_primary</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="FooterPrimaryTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/cardFooterPrimeryTextColor</item>
+    </style>
+    <style name="FooterSeconderyTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">8dp</item>
+        <item name="android:textColor">@color/cardFooterSeconderyTextColor</item>
+    </style>
+
+    <style name="MyBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/BottomNavTheme</item>
+        <item name="shapeAppearanceOverlay">@style/BottomNavShape</item>
+
+    </style>
+
+    <style name="BottomNavTheme" parent="">
+        <item name="colorPrimary">@color/BottomNavColor</item>
+
+    </style>
+
+    <style name="BottomNavShape" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item>
+
+    </style>
+
+
+</resources>
