@@ -1,6 +1,7 @@
 package com.unsplash.retrofit.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,7 @@ class HomeAdapters(): RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val view= mInflater!!.inflate(R.layout.explore_item,parent,false)
+        val view= mInflater!!.inflate(R.layout.explore_item2,parent,false)
 
         return ViewHolder(view)
 
@@ -44,22 +45,24 @@ class HomeAdapters(): RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
         return  data.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
-    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.primaryText.text=data[position].user.firstName
         holder.seconderyText.text="@${data[position].user.username}"
       Picasso.get().load(data[position].urls.small).placeholder(R.color.BottomNavColor).into(holder.image);
         Picasso.get().load(data[position].user.profileImage.medium).fit().into(holder.profile);
         var difference=data.size-position
-        if (difference<=5){
+    //    Log.i("difrence", position.toString())
+        if (position ==data.size-5){
                 endOfListListen.onEndList()
             //    this.notifyItemChanged(data.indexOf(data[position]))
 
         }
 
     }
+
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val primaryText=itemView.findViewById<TextView>(R.id.cetPrimary)
         val seconderyText=itemView.findViewById<TextView>(R.id.cetSecondery)

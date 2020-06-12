@@ -25,7 +25,7 @@ class HomeFragment : Fragment()  {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var layoutm: StaggeredGridLayoutManager
+    private lateinit var layoutm: GridLayoutManager
     private lateinit var arraylist: ArrayList<DataItem>
     private lateinit var homeadapter: HomeAdapters
     var endOfList=false
@@ -43,12 +43,11 @@ class HomeFragment : Fragment()  {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        layoutm = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        layoutm = GridLayoutManager(requireContext(),2)
 
         if (container != null) {
          recyclerView=   root.findViewById(R.id.home_recyceler)
              recyclerView.apply {
-                 itemAnimator=DefaultItemAnimator()
                  layoutManager = layoutm
 
                  }
@@ -67,7 +66,7 @@ class HomeFragment : Fragment()  {
 
     fun loadNames(){
         val request= ServiceBuilder.buildService(API::class.java)
-        val call=request.getRandom(API_KEY,1,20)
+        val call=request.getRandom(API_KEY,1,25)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful){
@@ -87,17 +86,17 @@ class HomeFragment : Fragment()  {
     fun loadMore(){
         page++
         val request= ServiceBuilder.buildService(API::class.java)
-        val call=request.getRandom(API_KEY,page,20)
+        val call=request.getRandom(API_KEY,page,25)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful){
                     // Log.i("Mytag","ok")
                     val result=response.body()
                     if (result != null) {
-                    //    arraylist.addAll(result)
-                       homeadapter.updateList(result)
-                    //   recyclerView.adapter!!.notifyItemRangeInserted(arraylist.size-20,20)
-                      // recyclerView.adapter!!.notifyDataSetChanged()
+                        arraylist.addAll(result)
+                       //homeadapter.updateList(result)
+                     recyclerView.adapter!!.notifyItemRangeInserted(arraylist.size-25,25)
+                       homeadapter.notifyDataSetChanged()
 
                     }
                 }
