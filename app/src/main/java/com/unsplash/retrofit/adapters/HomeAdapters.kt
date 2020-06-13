@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.DataItem
 import com.unsplash.retrofit.R
+import java.lang.Exception
 
 
 class HomeAdapters(): RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
@@ -33,9 +35,10 @@ class HomeAdapters(): RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val view= mInflater!!.inflate(R.layout.explore_item2,parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view=mInflater!!.inflate(R.layout.home_item, parent, false)
+       Log.i("onCreateViewHolder", "onCreateViewHolder")
 
         return ViewHolder(view)
 
@@ -47,17 +50,25 @@ class HomeAdapters(): RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.i("onCreateViewHolder", "onBindViewHolder")
         holder.primaryText.text=data[position].user.firstName
         holder.seconderyText.text="@${data[position].user.username}"
-      Picasso.get().load(data[position].urls.small).placeholder(R.color.BottomNavColor).into(holder.image);
+      Picasso.get().load(data[position].urls.small).placeholder(R.color.CardFooterColor).into(holder.image, object: Callback{
+          override fun onSuccess() {
+              if (position ==data.size-5){
+                  endOfListListen.onEndList()
+
+              }
+
+          }
+
+          override fun onError(e: Exception?) {
+          }
+
+      })
         Picasso.get().load(data[position].user.profileImage.medium).fit().into(holder.profile);
         var difference=data.size-position
-    //    Log.i("difrence", position.toString())
-        if (position ==data.size-5){
-                endOfListListen.onEndList()
-            //    this.notifyItemChanged(data.indexOf(data[position]))
 
-        }
 
     }
 

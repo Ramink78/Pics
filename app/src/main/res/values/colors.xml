@@ -9,5 +9,5 @@
     <color name="cardFooterBackground">#99000000</color>
     <color name="cardFooterPrimeryTextColor">#E6FFFFFF</color>
     <color name="cardFooterSeconderyTextColor">#99FFFFFF</color>
-    <color name="BottomNavColor">#0DFFFFFF</color>
+    <color name="CardFooterColor">#4DFFFFFF</color>
 </resources>
