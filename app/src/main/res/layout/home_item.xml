@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:minHeight="60dp"
+        android:minHeight="90dp"
         app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed"
          />
