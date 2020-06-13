@@ -97,6 +97,10 @@ class HomeFragment : Fragment()  {
                        //homeadapter.updateList(result)
                      recyclerView.adapter!!.notifyItemRangeInserted(arraylist.size-25,25)
                        homeadapter.notifyDataSetChanged()
+                    //    arraylist.addAll(result)
+                       homeadapter.updateList(result)
+                    //   recyclerView.adapter!!.notifyItemRangeInserted(arraylist.size-20,20)
+                       recyclerView.adapter!!.notifyDataSetChanged()
 
                     }
                 }
