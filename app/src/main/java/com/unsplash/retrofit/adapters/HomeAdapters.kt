@@ -1,5 +1,6 @@
 package com.unsplash.retrofit.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.explore_item2, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
 
         return ViewHolder(view)
 
@@ -34,7 +35,9 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.primaryText.text = data[position].user.firstName
         holder.seconderyText.text = "@${data[position].user.username}"
-        Picasso.get().load(data[position].urls.small).placeholder(R.color.BottomNavColor)
+        Log.i("Links", data[position].urls.small)
+        Log.i("Links", " position is: $position")
+        Picasso.get().load(data[position].urls.small).placeholder(R.color.CardFooterColor)
             .into(holder.image);
         Picasso.get().load(data[position].user.profileImage.medium).fit().into(holder.profile);
         var difference = data.size - position
@@ -67,13 +70,6 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
         onLoadMoreListener = listener
     }
 
-
-    /*   fun addToAdapter(data:ArrayList<Data>){
-           for (i in 0 until data.size)
-               this.data.addAll()
-
-
-       }*/
     fun updateList(newList: ArrayList<DataItem>) {
         val diffResult = DiffUtil.calculateDiff(MyCallback(this.data, newList))
         this.data.addAll(newList);

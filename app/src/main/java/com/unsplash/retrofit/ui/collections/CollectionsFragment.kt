@@ -27,10 +27,6 @@ class CollectionsFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: StaggeredGridLayoutManager
     private val homeAdapter = CollectionsAdapter()
-
-    var endOfList = false
-    var isScroling = false
-    var isloading = false
     var page = 1
     val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
     override fun onCreateView(
@@ -48,7 +44,7 @@ class CollectionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.collections_recyceler)
-        layoutm = StaggeredGridLayoutManager( 2, RecyclerView.VERTICAL)
+        layoutm = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = layoutm

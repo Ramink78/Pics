@@ -33,19 +33,16 @@ class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.primaryText.text = data[position].title
         holder.seconderyText.text = "${data[position].totalPhotos} Photos"
-        Picasso.get().load(data[position].coverPhotos.urls.small).into(holder.image);
-        //  Log.i("Mytag","first name is: ${data[position].id}")
+        Picasso.get().load(data[position].coverPhotos.urls.small).placeholder(R.color.CardFooterColor).into(holder.image);
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
-            //    this.notifyItemChanged(data.indexOf(data[position]))
-
         }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val primaryText = itemView.findViewById<TextView>(R.id.cctPrimary)
-        val seconderyText = itemView.findViewById<TextView>(R.id.cctSecondery)
-        val image = itemView.findViewById<ShapeableImageView>(R.id.ccPic)
+        val primaryText = itemView.findViewById<TextView>(R.id.cPrimaryText)
+        val seconderyText = itemView.findViewById<TextView>(R.id.cSeconderyText)
+        val image = itemView.findViewById<ShapeableImageView>(R.id.cPic)
 
     }
 
@@ -59,17 +56,12 @@ class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
     }
+
     fun clear() {
         val size = data.size
         data.clear()
         notifyItemRangeRemoved(0, size)
     }
 
-    /*   fun addToAdapter(data:ArrayList<Data>){
-           for (i in 0 until data.size)
-               this.data.addAll()
-
-
-       }*/
 
 }
