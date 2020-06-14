@@ -2,20 +2,28 @@ package com.unsplash.retrofit
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
+import kotlinx.android.synthetic.main.home.*
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
-        val navView: BottomNavigationView = findViewById(R.id.nav)
-        val navController = findNavController(R.id.host)
-        navView.setupWithNavController(navController)
+
+         navController = Navigation.findNavController(this,R.id.host)
+        NavigationUI.setupWithNavController(nav,navController)
+
+
+
+
 
 
 

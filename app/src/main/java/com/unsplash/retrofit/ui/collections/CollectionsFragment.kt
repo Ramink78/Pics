@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -26,7 +27,7 @@ class CollectionsFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: StaggeredGridLayoutManager
-    private val homeAdapter = CollectionsAdapter()
+    private val collectionsAdapter = CollectionsAdapter()
     var page = 1
     val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
     override fun onCreateView(
@@ -48,11 +49,11 @@ class CollectionsFragment : Fragment() {
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = layoutm
-            adapter = homeAdapter
+            adapter = collectionsAdapter
         }
         loadCollections()
 
-        homeAdapter.setOnLoadMoreListener(object : OnLoadMoreListener {
+        collectionsAdapter.setOnLoadMoreListener(object : OnLoadMoreListener {
             override fun onLoadMoreData() {
                 loadMore()
             }
@@ -62,21 +63,22 @@ class CollectionsFragment : Fragment() {
         })
     }
 
-    fun loadCollections() {
+    private fun loadCollections() {
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getCollections(API_KEY, 1, 20)
+        val call = request.getCollections(API_KEY, 1, 25)
         call.enqueue(object : Callback<Collections> {
             override fun onResponse(call: Call<Collections>, response: Response<Collections>) {
                 if (response.isSuccessful) {
                     val result = response.body()
                     if (result != null) {
-
-                        homeAdapter.addItems(result)
+                        collectionsAdapter.clear()
+                        collectionsAdapter.addItems(result)
                     }
                 }
             }
 
             override fun onFailure(call: Call<Collections>, t: Throwable) {
+                Toast.makeText(requireContext(), "Connection Error $t", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -84,19 +86,20 @@ class CollectionsFragment : Fragment() {
     fun loadMore() {
         page++
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getCollections(API_KEY, page, 30)
+        val call = request.getCollections(API_KEY, page, 25)
         call.enqueue(object : Callback<Collections> {
             override fun onResponse(call: Call<Collections>, response: Response<Collections>) {
                 if (response.isSuccessful) {
                     // Log.i("Mytag","ok")
                     val result = response.body()
                     if (result != null) {
-                        homeAdapter.addItems(result)
+                        collectionsAdapter.addItems(result)
                     }
                 }
             }
 
             override fun onFailure(call: Call<Collections>, t: Throwable) {
+                Toast.makeText(requireContext(), "Connection Error $t", Toast.LENGTH_SHORT).show()
             }
         })
     }

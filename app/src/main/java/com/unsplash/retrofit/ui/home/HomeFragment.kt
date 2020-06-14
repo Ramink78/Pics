@@ -1,10 +1,10 @@
 package com.unsplash.retrofit.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
 
     private fun loadNames() {
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getRandom(API_KEY, 1, 25)
+        val call = request.getPhotos(API_KEY, 1, 25)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {
@@ -83,6 +83,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<Data>, t: Throwable) {
+                Toast.makeText(requireContext(),"Connection Error $t", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -90,7 +91,7 @@ class HomeFragment : Fragment() {
     fun loadMore() {
         page++
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getRandom(API_KEY, page, 25)
+        val call = request.getPhotos(API_KEY, page, 25)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {
@@ -103,6 +104,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<Data>, t: Throwable) {
+                Toast.makeText(requireContext(),"Connection Error $t",Toast.LENGTH_SHORT).show()
             }
         })
     }
