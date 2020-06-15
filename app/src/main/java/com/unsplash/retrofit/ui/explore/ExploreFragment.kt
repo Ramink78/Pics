@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.ExploreAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
+import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.random.Explore
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.ui.home.HomeViewModel
@@ -44,7 +45,7 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        layoutm = GridLayoutManager(requireContext(), 3)
+     /*   layoutm = GridLayoutManager(requireContext(), 3)
 
         recyclerView = view.findViewById(R.id.explore_recyceler)
         recyclerView.apply {
@@ -62,7 +63,7 @@ class ExploreFragment : Fragment() {
             override fun onLoadMoreData() {
                 loadMore()
             }
-        })
+        })*/
     }
 
     private fun loadRandom() {
@@ -82,6 +83,13 @@ class ExploreFragment : Fragment() {
             override fun onFailure(call: Call<ExploreData>, t: Throwable) {
                 Toast.makeText(requireContext(), "Connection Error $t", Toast.LENGTH_SHORT).show()
             }
+        })
+        exploreAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
+            override fun onClick(position: Int) {
+                Toast.makeText(requireContext(),"Clicked On Position :$position",Toast.LENGTH_SHORT).show()
+            }
+
+
         })
     }
 

@@ -1,5 +1,6 @@
 package com.unsplash.retrofit.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.unsplash.retrofit.data.collections.CollectionsData
 class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>() {
     private val data: ArrayList<CollectionsData> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
+    private var onPhotoClickListener: OnPhotoClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,6 +39,9 @@ class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
         }
+        holder.itemView.setOnClickListener{
+            onPhotoClickListener?.onClick(position)
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -56,7 +61,9 @@ class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
     }
-
+    fun setOnPhotoClickListener(listener: OnPhotoClickListener){
+        onPhotoClickListener=listener
+    }
     fun clear() {
         val size = data.size
         data.clear()

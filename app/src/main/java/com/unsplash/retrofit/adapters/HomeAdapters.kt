@@ -1,5 +1,6 @@
 package com.unsplash.retrofit.adapters
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,13 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.DataItem
 import com.unsplash.retrofit.R
+import java.lang.Exception
 
 
 class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
     private val data: ArrayList<DataItem> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
+    private var onPhotoClickListener: OnPhotoClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,16 +40,30 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
         holder.seconderyText.text = "@${data[position].user.username}"
         Log.i("Links", data[position].urls.small)
         Log.i("Links", " position is: $position")
-        Picasso.get().load(data[position].urls.small).placeholder(R.color.CardFooterColor)
-            .into(holder.image);
-        Picasso.get().load(data[position].user.profileImage.medium).fit().into(holder.profile);
+        holder.image.setBackgroundColor(Color.parseColor(data[position].color))
+        Picasso.get().load(data[position].urls.small)
+            .into(holder.image)
+        Picasso.get().load(data[position].user.profileImage.medium).into(holder.profile, object : com.squareup.picasso.Callback{
+            override fun onSuccess() {
+                if (position == data.size - 5) {
+                    onLoadMoreListener?.onLoadMoreData()
+                    //    this.notifyItemChanged(data.indexOf(data[position]))
+
+                }
+            }
+
+            override fun onError(p0: Exception?) {
+                TODO("Not yet implemented")
+            }
+
+        })
         var difference = data.size - position
         //    Log.i("difrence", position.toString())
-        if (position == data.size - 5) {
-            onLoadMoreListener?.onLoadMoreData()
-            //    this.notifyItemChanged(data.indexOf(data[position]))
 
+        holder.itemView.setOnClickListener {
+            onPhotoClickListener?.onClick(position)
         }
+
 
     }
 
@@ -69,6 +86,12 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
     }
+    fun setOnPhotoClickListener(listener: OnPhotoClickListener){
+        onPhotoClickListener=listener
+
+
+    }
+
 
     fun updateList(newList: ArrayList<DataItem>) {
         val diffResult = DiffUtil.calculateDiff(MyCallback(this.data, newList))

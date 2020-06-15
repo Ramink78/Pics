@@ -1,5 +1,6 @@
 package com.unsplash.retrofit.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.random.Explore
+import java.lang.Exception
 
 
 class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+    private var onPhotoClickListener: OnPhotoClickListener? = null
     private val data: ArrayList<Explore> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
 
@@ -29,10 +32,12 @@ class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.image.setBackgroundColor(Color.parseColor(data[position].color))
         Picasso.get().load(data[position].urls.thumb)
-            .placeholder(R.color.CardFooterColor).into(holder.image);
-        if (position == data.size - 5) {
-            onLoadMoreListener?.onLoadMoreData()
+            .placeholder(R.color.CardFooterColor).into(holder.image)
+
+        holder.image.setOnClickListener{
+            onPhotoClickListener?.onClick(position)
         }
     }
 
@@ -50,6 +55,9 @@ class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
 
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
+    }
+    fun setOnPhotoClickListener(listener: OnPhotoClickListener){
+        onPhotoClickListener=listener
     }
 
     fun clear() {

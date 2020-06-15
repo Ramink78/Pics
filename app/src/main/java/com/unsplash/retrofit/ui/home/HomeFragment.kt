@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.*
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
+import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,6 +65,13 @@ class HomeFragment : Fragment() {
             override fun onLoadMoreData() {
                 loadMore()
             }
+        })
+        homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener{
+            override fun onClick(position: Int) {
+                Toast.makeText(requireContext(),"Clicked On Position :$position",Toast.LENGTH_SHORT).show()
+            }
+
+
         })
     }
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.CollectionsAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
+import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.collections.Collections
 import com.unsplash.retrofit.ui.home.HomeViewModel
 import retrofit2.Call
@@ -60,6 +61,13 @@ class CollectionsFragment : Fragment() {
         })
 
         collectionsViewModel.text.observe(viewLifecycleOwner, Observer {
+        })
+        collectionsAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
+            override fun onClick(position: Int) {
+                Toast.makeText(requireContext(),"Clicked On Position :$position",Toast.LENGTH_SHORT).show()
+            }
+
+
         })
     }
 
