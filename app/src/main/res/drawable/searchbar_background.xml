@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <item android:state_focused="false">
 
+        <shape android:shape="rectangle"
+            >
+            <corners android:radius="28dp"/>
+            <solid android:color="@color/searchBarColor" />
+            <padding android:left="16dp" android:right="16dp"/>
+        </shape>
+
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp"/>
+            <solid android:color="@color/searchBarColor"/>
+            <stroke android:color="@color/searchBarHintColor" android:width=".5dp"/>
+            <padding android:left="16dp" android:right="16dp"/>
+        </shape>
+
+    </item>
 </selector>

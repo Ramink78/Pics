@@ -39,6 +39,9 @@ class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
         holder.image.setOnClickListener{
             onPhotoClickListener?.onClick(position)
         }
+        if (position == data.size - 5) {
+            onLoadMoreListener?.onLoadMoreData()
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

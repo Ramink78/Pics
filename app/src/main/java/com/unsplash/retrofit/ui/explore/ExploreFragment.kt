@@ -45,7 +45,7 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     /*   layoutm = GridLayoutManager(requireContext(), 3)
+       layoutm = GridLayoutManager(requireContext(), 3)
 
         recyclerView = view.findViewById(R.id.explore_recyceler)
         recyclerView.apply {
@@ -63,7 +63,7 @@ class ExploreFragment : Fragment() {
             override fun onLoadMoreData() {
                 loadMore()
             }
-        })*/
+        })
     }
 
     private fun loadRandom() {

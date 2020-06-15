@@ -10,6 +10,12 @@
     <color name="cardFooterPrimeryTextColor">#E6FFFFFF</color>
     <color name="cardFooterSeconderyTextColor">#99FFFFFF</color>
     <color name="CardFooterColor">#4DFFFFFF</color>
-    <color name="searchBarColor">#0AFFFFFF</color>
-    <color name="searchBarHintColor">#26FFFFFF</color>
+    <color name="searchBarColor">#14FFFFFF</color>
+    <color name="searchBarHintColor">#59FFFFFF</color>
+    <color name="chipEanbledColor">#219653</color>
+    <color name="chipDisabledColor">#14FFFFFF</color>
+    <color name="chipEanbledTextColor">#FFFFFF</color>
+    <color name="chipDisabledTextColor">#4DFFFFFF</color>
+
+
 </resources>
