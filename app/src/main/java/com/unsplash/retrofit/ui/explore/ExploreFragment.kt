@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.ExploreAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
@@ -17,6 +18,7 @@ import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.random.Explore
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.ui.home.HomeViewModel
+import kotlinx.android.synthetic.main.fragment_explore.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +32,7 @@ class ExploreFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: GridLayoutManager
     private val exploreAdapter = ExploreAdapter()
+    private val filters= arrayListOf("Animal","Computer","Color","Children","Dress","House","Phone","Person","Sky","Vehicle")
     val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +67,12 @@ class ExploreFragment : Fragment() {
                 loadMore()
             }
         })
+        for (element in filters){
+            val chip=Chip(chip_group.context,null,R.attr.MyChipStyle)
+            chip.text=element
+            chip_group.addView(chip)
+
+        }
     }
 
     private fun loadRandom() {

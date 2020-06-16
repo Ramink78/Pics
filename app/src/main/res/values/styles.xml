@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="materialCardViewStyle">@style/MycardStyle</item>
         <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
+        <item name="MyChipStyle">@style/ChipsStyle</item>
     </style>
 
     <style name="MycardStyle" parent="Widget.MaterialComponents.CardView">
@@ -69,6 +70,10 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15dp</item>
 
+    </style>
+    <style name="ChipsStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:backgroundTint">@color/chips_color</item>
+        <item name="android:textColor">@color/chips_text_color</item>
     </style>
 
 
