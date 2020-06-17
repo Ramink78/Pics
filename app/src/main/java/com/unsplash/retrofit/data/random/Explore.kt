@@ -2,6 +2,7 @@ package com.unsplash.retrofit.data.random
 
 
 import com.google.gson.annotations.SerializedName
+import com.unsplash.retrofit.data.searchdata.Result
 
 data class Explore(
     @SerializedName("alt_description")
@@ -45,5 +46,7 @@ data class Explore(
     @SerializedName("views")
     var views: Int,
     @SerializedName("width")
-    var width: Int
+    var width: Int,
+    @SerializedName("results")
+    val results: ArrayList<Result>
 )

@@ -16,60 +16,46 @@ import com.unsplash.retrofit.data.searchdata.Search
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 
-class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+class SearchAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
-    private val data: ArrayList<Explore> = arrayListOf()
     private val dataSearch: ArrayList<Result> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
-    private var exploreFragment: ExploreFragment? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExploreAdapter.ViewHolder {
 
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.explore_item, parent, false)
-        exploreFragment = ExploreFragment()
 
-        return ViewHolder(view)
+
+        return ExploreAdapter.ViewHolder(view)
 
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return dataSearch.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.image.setBackgroundColor(Color.parseColor(data[position].color))
-        Picasso.get().load(data[position].urls.thumb)
+    override fun onBindViewHolder(holder: ExploreAdapter.ViewHolder, position: Int) {
+        holder.image.setBackgroundColor(Color.parseColor(dataSearch[position].color))
+        Picasso.get().load(dataSearch[position].urls.small)
             .into(holder.image)
-
-
         holder.image.setOnClickListener {
             onPhotoClickListener?.onClick(position)
         }
-        if (position == data.size - 5) {
+        if (position == dataSearch.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
         }
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ShapeableImageView>(R.id.ePic)
 
-    }
-
-    fun addItems(items: ArrayList<Explore>) {
+    fun addItems(items: ArrayList<Result>) {
         if (items.isEmpty()) return
-        val startIndex = data.size
-        data.addAll(items)
+        val startIndex = dataSearch.size
+        dataSearch.addAll(items)
         notifyItemRangeInserted(startIndex, items.size)
     }
 
-    fun addSearchItems(items: ArrayList<Result>) {
-        if (items.isEmpty()) return
-        data.clear()
-        dataSearch.addAll(items)
-        notifyItemRangeInserted(0, items.size)
-    }
 
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
@@ -80,8 +66,8 @@ class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     }
 
     fun clear() {
-        val size = data.size
-        data.clear()
+        val size = dataSearch.size
+        dataSearch.clear()
         notifyItemRangeRemoved(0, size)
     }
 
