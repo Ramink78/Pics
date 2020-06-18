@@ -92,17 +92,17 @@ class ExploreFragment : Fragment() {
             "Vehicle"
         )
 
-
-        for (element in filters) {
+        chip_group.removeAllViews()
+        filters.forEachIndexed { index, s ->
             val chip = Chip(chip_group.context, null, R.attr.MyChipStyle)
-            chip.text = element
-            chip.tag = element
+            chip.text = s
+            chip.id = index
+            chip.tag = s
             chip_group.addView(chip)
         }
         chip_group.setOnCheckedChangeListener { group, checkedId ->
-            Log.i("checkid", "checkedId :${checkedId}")
             if (checkedId != -1) {
-                val chip = group.getChildAt(checkedId - 1)
+                val chip = group.getChildAt(chip_group.checkedChipId)
                 childTag = chip.tag.toString()
                 filterReq(childTag!!, searchAdapter)
             } else {
