@@ -1,7 +1,6 @@
 package com.unsplash.retrofit.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.random.Explore
-import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Result
-import com.unsplash.retrofit.data.searchdata.Search
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 
@@ -45,7 +42,7 @@ class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
 
 
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(position)
+            onPhotoClickListener?.onClick(data[position].id, position)
         }
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()

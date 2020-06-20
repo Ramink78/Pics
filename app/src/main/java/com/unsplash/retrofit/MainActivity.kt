@@ -8,9 +8,6 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.home.*
 
 
-
-
-
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
@@ -18,13 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
-         navController = Navigation.findNavController(this,R.id.host)
-        NavigationUI.setupWithNavController(nav,navController)
-
-
-
-
-
+        navController = Navigation.findNavController(this, R.id.host)
+        // navController.navigate(R.id.action_navigation_explore_to_navigation_home)
+        NavigationUI.setupWithNavController(nav, navController)
 
 
     }

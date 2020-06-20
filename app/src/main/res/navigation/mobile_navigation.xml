@@ -15,11 +15,34 @@
         android:id="@+id/navigation_explore"
         android:name="com.unsplash.retrofit.ui.explore.ExploreFragment"
         android:label="Explore"
-        tools:layout="@layout/fragment_explore" />
+        tools:layout="@layout/fragment_explore"
+        app:startDestination="@id/action_navigation_explore_to_detailOfImage">
+
+        <action
+            android:id="@+id/action_navigation_explore_to_detailOfImage"
+            app:destination="@id/detailOfImage">
+            <argument
+                android:name="id"
+                app:argType="string"
+                android:defaultValue="noID" />
+
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_collections"
         android:name="com.unsplash.retrofit.ui.collections.CollectionsFragment"
         android:label="Collections"
         tools:layout="@layout/fragment_collections" />
+    <fragment
+        android:id="@+id/detailOfImage"
+        android:name="com.unsplash.retrofit.ui.explore.DetailOfImage"
+        android:label="fragment_detail_of_image"
+        tools:layout="@layout/fragment_detail_of_image">
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="noID" />
+
+    </fragment>
 </navigation>

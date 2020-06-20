@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
-import com.unsplash.retrofit.DataItem
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.collections.CollectionsData
 
@@ -35,12 +34,14 @@ class CollectionsAdapter() : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.primaryText.text = data[position].title
         holder.seconderyText.text = "${data[position].totalPhotos} Photos"
-        Picasso.get().load(data[position].coverPhotos.urls.small).placeholder(R.color.CardFooterColor).into(holder.image);
+        holder.image.setBackgroundColor(Color.parseColor(data[position].coverPhotos.color))
+        Picasso.get().load(data[position].coverPhotos.urls.small)
+            .placeholder(R.color.CardFooterColor).into(holder.image);
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
         }
-        holder.itemView.setOnClickListener{
-            onPhotoClickListener?.onClick(position)
+        holder.itemView.setOnClickListener {
+            onPhotoClickListener?.onClick(null, position)
         }
     }
 

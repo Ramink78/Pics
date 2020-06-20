@@ -47,6 +47,7 @@ class CollectionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.collections_recyceler)
         layoutm = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = layoutm
@@ -63,8 +64,13 @@ class CollectionsFragment : Fragment() {
         collectionsViewModel.text.observe(viewLifecycleOwner, Observer {
         })
         collectionsAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
-            override fun onClick(position: Int) {
-                Toast.makeText(requireContext(),"Clicked On Position :$position",Toast.LENGTH_SHORT).show()
+
+            override fun onClick(id: String?, position: Int) {
+                Toast.makeText(
+                    requireContext(),
+                    "Clicked On Position :$position",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
 

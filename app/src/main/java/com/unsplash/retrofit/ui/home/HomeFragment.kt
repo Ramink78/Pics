@@ -21,10 +21,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: StaggeredGridLayoutManager
-
     private val homeadapter = HomeAdapters()
     var endOfList = false
     var isScroling = false
@@ -56,7 +53,7 @@ class HomeFragment : Fragment() {
 
         recyclerView.adapter = homeadapter
 
-        loadNames()
+        loadPhotos()
 
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
         })
@@ -66,16 +63,20 @@ class HomeFragment : Fragment() {
                 loadMore()
             }
         })
-        homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener{
-            override fun onClick(position: Int) {
-                Toast.makeText(requireContext(),"Clicked On Position :$position",Toast.LENGTH_SHORT).show()
+        homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener {
+            override fun onClick(id: String?, position: Int) {
+                Toast.makeText(
+                    requireContext(),
+                    "Clicked On Position :$position",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
 
         })
     }
 
-    private fun loadNames() {
+    private fun loadPhotos() {
         val request = ServiceBuilder.buildService(API::class.java)
         val call = request.getPhotos(API_KEY, 1, 25)
         call.enqueue(object : Callback<Data> {

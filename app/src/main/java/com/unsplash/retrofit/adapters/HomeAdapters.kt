@@ -61,7 +61,7 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
         //    Log.i("difrence", position.toString())
 
         holder.itemView.setOnClickListener {
-            onPhotoClickListener?.onClick(position)
+            onPhotoClickListener?.onClick(null, position)
         }
 
 

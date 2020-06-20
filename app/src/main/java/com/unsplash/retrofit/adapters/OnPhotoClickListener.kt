@@ -1,6 +1,6 @@
 package com.unsplash.retrofit.adapters
 
 interface OnPhotoClickListener {
-    fun onClick(position: Int)
+    fun onClick(id: String?, position: Int)
 
 }

@@ -1,19 +1,12 @@
 package com.unsplash.retrofit.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
-import com.unsplash.retrofit.data.random.Explore
-import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Result
-import com.unsplash.retrofit.data.searchdata.Search
-import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 
 class SearchAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
@@ -41,7 +34,7 @@ class SearchAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
         Picasso.get().load(dataSearch[position].urls.small)
             .into(holder.image)
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(position)
+            onPhotoClickListener?.onClick(null, position)
         }
         if (position == dataSearch.size - 5) {
             onLoadMoreListener?.onLoadMoreData()

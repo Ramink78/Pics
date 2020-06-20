@@ -4,13 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class CoverPhoto(
     @SerializedName("id")
-    var id:String,
+    var id: String,
     @SerializedName("width")
-    var width:Int,
+    var width: Int,
     @SerializedName("height")
-    var height:Int,
+    var height: Int,
     @SerializedName("urls")
-    var urls:CollectionsCoverUrls
+    var urls: CollectionsCoverUrls,
+    @SerializedName("color")
+    var color: String
 ){
 
 }

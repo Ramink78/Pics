@@ -2,13 +2,14 @@ package com.unsplash.retrofit
 
 
 import com.unsplash.retrofit.data.collections.Collections
-import com.unsplash.retrofit.data.random.Explore
+import com.unsplash.retrofit.data.details.Detail
+import com.unsplash.retrofit.data.details.Details
 import com.unsplash.retrofit.data.random.ExploreData
-import com.unsplash.retrofit.data.searchdata.CoverPhoto
 import com.unsplash.retrofit.data.searchdata.Search
 import retrofit2.Call
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface API {
@@ -42,6 +43,12 @@ interface API {
         @Query("per_page") count: Int,
         @Query("query") keyword: String
     ): Call<Search>
+
+    @GET("photos/{id}")
+    fun getDetails(
+        @Path("id") id: String,
+        @Query("client_id") apikey: String
+    ): Call<Detail>
 
 
 }

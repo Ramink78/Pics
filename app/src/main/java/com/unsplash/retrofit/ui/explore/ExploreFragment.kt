@@ -1,7 +1,6 @@
 package com.unsplash.retrofit.ui.explore
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -32,6 +33,7 @@ class ExploreFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: GridLayoutManager
+    private lateinit var navController: NavController
     private val exploreAdapter = ExploreAdapter()
     private val searchAdapter = SearchAdapter()
     private var page = 1
@@ -49,6 +51,7 @@ class ExploreFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_explore, container, false)
 
 
+
         return root
     }
 
@@ -56,6 +59,7 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         layoutm = GridLayoutManager(requireContext(), 3)
         chip_group.removeAllViews()
+        navController = Navigation.findNavController(view)
         recyclerView = view.findViewById(R.id.explore_recyceler)
         recyclerView.apply {
             layoutManager = layoutm
@@ -130,12 +134,9 @@ class ExploreFragment : Fragment() {
             }
         })
         exploreAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
-            override fun onClick(position: Int) {
-                Toast.makeText(
-                    requireContext(),
-                    "Clicked On Position :$position",
-                    Toast.LENGTH_SHORT
-                ).show()
+            override fun onClick(id: String?, position: Int) {
+                val action = ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(id!!)
+                navController.navigate(action)
             }
 
 
@@ -151,7 +152,6 @@ class ExploreFragment : Fragment() {
                     // Log.i("Mytag","ok")
                     val result = response.body()
                     if (result != null) {
-
                         exploreAdapter.addItems(result)
 
                     }
