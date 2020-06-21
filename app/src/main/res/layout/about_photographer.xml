@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/title_detail"
+        android:id="@+id/pTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_thin"
             android:letterSpacing=".2"
-            android:text="Specifications"
+            android:text="About Photographer"
             android:textColor="@color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,69 +46,15 @@
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_detail">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dimensions"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/detail_items_bg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iso"
-            app:layout_constraintTop_toBottomOf="@+id/shutterSpeed">
-
-            <TextView
-                android:id="@+id/dimensionsSeconderyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="Dimensions"
-                android:textColor="#B3FFFFFF"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/dimensionsAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/dimensionsPrimaryText" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/dimensionsAvatar"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_detail_dimensions" />
-
-            <TextView
-                android:id="@+id/dimensionsPrimaryText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="None"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/dimensionsAvatar"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/pTittle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/iso"
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
             android:background="@drawable/detail_items_bg"
-            app:layout_constraintEnd_toStartOf="@+id/dimensions"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="@+id/aperture"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/aperture">
 
@@ -118,14 +64,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="ISO"
+                android:text="Location"
                 android:textColor="#B3FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/isoAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/isoPrimaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/pLocation" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/isoAvatar"
@@ -137,10 +83,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_detail_iso" />
+                app:srcCompat="@drawable/ic_location" />
 
             <TextView
-                android:id="@+id/isoPrimaryText"
+                android:id="@+id/pLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -171,14 +117,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Aperture"
+                android:text="Twitter"
                 android:textColor="#B3FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/apertureAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/aperturePrimaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/pTwitter" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/apertureAvatar"
@@ -190,10 +136,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_detail_aperture" />
+                app:srcCompat="@drawable/ic_twitter" />
 
             <TextView
-                android:id="@+id/aperturePrimaryText"
+                android:id="@+id/pTwitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -223,14 +169,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Shutter Speed"
+                android:text="Instagram"
                 android:textColor="#B3FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/shutterAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/shutterPrimaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/pInstagram" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shutterAvatar"
@@ -242,10 +188,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_detail_shutter_speed" />
+                app:srcCompat="@drawable/ic_instagram" />
 
             <TextView
-                android:id="@+id/shutterPrimaryText"
+                android:id="@+id/pInstagram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -274,14 +220,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Camera Make"
+                android:text="Full Name"
                 android:textColor="#B3FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/cameraMakeAavatar"
-                app:layout_constraintTop_toBottomOf="@+id/cameraMakePrimaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/pName" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/cameraMakeAavatar"
@@ -293,10 +239,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/details_camera_make" />
+                app:srcCompat="@color/chipDisabledColor" />
 
             <TextView
-                android:id="@+id/cameraMakePrimaryText"
+                android:id="@+id/pName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
@@ -313,7 +259,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/focalLength"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:background="@drawable/detail_items_bg"
             app:layout_constraintEnd_toEndOf="parent"
@@ -327,21 +273,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Focal Length"
+                android:text="Bio"
                 android:textColor="#B3FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/focalAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/focalPrimaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/pBio" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/focalAvatar"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
@@ -349,118 +294,16 @@
                 app:srcCompat="@drawable/ic_detail_focal_length" />
 
             <TextView
-                android:id="@+id/focalPrimaryText"
+                android:id="@+id/pBio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="None"
+                android:maxLength="30"
+                android:text="Nonedddddddddddddddddddddddddddddddd"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/focalAvatar"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/views"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/detail_items_bg"
-            app:layout_constraintEnd_toStartOf="@+id/downloads"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iso">
-
-            <TextView
-                android:id="@+id/viewsSeconderyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="Views"
-                android:textColor="#B3FFFFFF"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/viewsAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/viewsPrimaryText" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/viewsAvatar"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_detail_views" />
-
-            <TextView
-                android:id="@+id/viewsPrimaryText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="None"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/viewsAvatar"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/downloads"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/detail_items_bg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/views"
-            app:layout_constraintTop_toBottomOf="@+id/dimensions">
-
-            <TextView
-                android:id="@+id/downloadsSeconderyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="Downloads"
-                android:textColor="#B3FFFFFF"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/downloadsAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/downloadsPrimaryText" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/downloadsAvatar"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_deatail_download" />
-
-            <TextView
-                android:id="@+id/downloadsPrimaryText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="None"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/downloadsAvatar"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

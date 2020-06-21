@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
@@ -14,27 +15,49 @@ import com.unsplash.retrofit.data.details.Details
 
 class DetailsAdapter(val detail: Detail) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val HEADER_TYPE: Int = 1
-    val TITLE_TYPE: Int = 2
-    val DETAILS_TYPE: Int = 3
+
+    //val TITLE_TYPE: Int = 2
+    val SPECIFICATIONS_TYPE: Int = 2
+    val DOWNLOADS_TYPE: Int = 4
+    val PHOTOGRAPHER_TYPE: Int = 3
     lateinit var view: View
-    lateinit var detailsH: DetailsH
+    lateinit var detailsH: SpecH
     lateinit var headerH: HeaderH
+    lateinit var photographerH: PhotographerH
 
     class HeaderH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ShapeableImageView>(R.id.header)
+        val image: ShapeableImageView = itemView.findViewById(R.id.header)
 
     }
 
-    class DetailsH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    class SpecH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //val title = itemView.findViewById<TextView>(R.id.details_title)
-        val focalLength = itemView.findViewById<TextView>(R.id.focalPrimaryText)
-        val shutterSpeed = itemView.findViewById<TextView>(R.id.shutterPrimaryText)
-        val cameraMake = itemView.findViewById<TextView>(R.id.cameraMakePrimaryText)
-        val aperture = itemView.findViewById<TextView>(R.id.aperturePrimaryText)
+        val focalLength: TextView = itemView.findViewById(R.id.focalPrimaryText)
+        val shutterSpeed: TextView = itemView.findViewById(R.id.shutterPrimaryText)
+        val cameraMake: TextView = itemView.findViewById(R.id.cameraMakePrimaryText)
+        val aperture: TextView = itemView.findViewById(R.id.aperturePrimaryText)
         val views = itemView.findViewById<TextView>(R.id.viewsPrimaryText)
         val downloads = itemView.findViewById<TextView>(R.id.downloadsPrimaryText)
-        val dimentions = itemView.findViewById<TextView>(R.id.dimensionsPrimaryText)
-        val iso = itemView.findViewById<TextView>(R.id.isoPrimaryText)
+        val dimentions: TextView = itemView.findViewById(R.id.dimensionsPrimaryText)
+        val iso: TextView = itemView.findViewById(R.id.isoPrimaryText)
+        val title: ConstraintLayout = itemView.findViewById(R.id.title_detail)
+
+        val expandedLayout: ConstraintLayout = itemView.findViewById(R.id.ExpandedSpecifications)
+
+
+        // val avatar = itemView.findViewById<ShapeableImageView>(R.id.avatarDetails)
+    }
+
+    class PhotographerH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        //val title = itemView.findViewById<TextView>(R.id.details_title)
+        val name: TextView = itemView.findViewById(R.id.pName)
+        val location: TextView = itemView.findViewById(R.id.pLocation)
+        val twitter: TextView = itemView.findViewById(R.id.pTwitter)
+        val instagram: TextView = itemView.findViewById(R.id.pInstagram)
+        val bio = itemView.findViewById<TextView>(R.id.pBio)
+
+
         // val avatar = itemView.findViewById<ShapeableImageView>(R.id.avatarDetails)
     }
 
@@ -48,23 +71,34 @@ class DetailsAdapter(val detail: Detail) : RecyclerView.Adapter<RecyclerView.Vie
                 headerH = HeaderH(view)
                 return headerH
             }
-
-
-            DETAILS_TYPE -> {
+            SPECIFICATIONS_TYPE -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.specifications, parent, false)
-                detailsH = DetailsH(view)
+                detailsH = SpecH(view)
+
                 return detailsH
+            }
+            /* DOWNLOADS_TYPE -> {
+                 view = LayoutInflater.from(parent.context)
+                     .inflate(R.layout.downloads, parent, false)
+                 detailsH = SpecH(view)
+                 return detailsH
+             }*/
+            PHOTOGRAPHER_TYPE -> {
+                view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.about_photographer, parent, false)
+                photographerH = PhotographerH(view)
+                return photographerH
             }
 
         }
-        return DetailsH(view)
+        return SpecH(view)
 
 
     }
 
     override fun getItemCount(): Int {
-        return 2
+        return 3
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -73,7 +107,10 @@ class DetailsAdapter(val detail: Detail) : RecyclerView.Adapter<RecyclerView.Vie
                 return HEADER_TYPE
             }
             1 -> {
-                return DETAILS_TYPE
+                return SPECIFICATIONS_TYPE
+            }
+            2 -> {
+                return PHOTOGRAPHER_TYPE
             }
         }
         return -1
@@ -86,14 +123,33 @@ class DetailsAdapter(val detail: Detail) : RecyclerView.Adapter<RecyclerView.Vie
                 Picasso.get().load(detail.urls.regular)
                     .into(headerH.image)
             }
-            DETAILS_TYPE -> {
+            PHOTOGRAPHER_TYPE -> {
+                photographerH.name.text = detail.user.firstName
+                photographerH.location.text = detail.user.location
+                photographerH.twitter.text = detail.user.twitterUsername
+                photographerH.instagram.text = detail.user.instagramUsername
+                photographerH.bio.text = detail.user.bio
+            }
+
+            SPECIFICATIONS_TYPE -> {
                 detailsH.cameraMake.text = detail.exif.model
                 detailsH.focalLength.text = detail.exif.focalLength
                 detailsH.shutterSpeed.text = detail.exif.exposureTime
                 detailsH.aperture.text = detail.exif.aperture
                 detailsH.iso.text = detail.exif.iso
                 detailsH.dimentions.text = "${detail.width} x ${detail.height}"
-                //   detailsH.aperture.text = detail.exif.aperture
+                if (detail.collapsed) {
+                    detailsH.expandedLayout.visibility = View.GONE
+                } else {
+                    detailsH.expandedLayout.visibility = View.VISIBLE
+                }
+
+                detailsH.title.setOnClickListener {
+                    detail.collapsed = !detail.collapsed
+//                    detailsH.expandedLayout.visibility = View.GONE
+                    notifyItemChanged(1)
+                }
+
             }
         }
     }
