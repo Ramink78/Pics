@@ -17,6 +17,7 @@ import com.unsplash.retrofit.API
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.*
+import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
 import com.unsplash.retrofit.ui.home.HomeViewModel
@@ -40,7 +41,6 @@ class ExploreFragment : Fragment() {
     private var childTag: String? = null
     private var onFilterChangeListener: OnFilterChangeListener? = null
 
-    val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

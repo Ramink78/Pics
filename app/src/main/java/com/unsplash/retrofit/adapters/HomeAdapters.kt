@@ -12,6 +12,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.DataItem
 import com.unsplash.retrofit.R
+import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 import java.lang.Exception
 
 
@@ -25,7 +26,7 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
 
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
-
+        Log.i("Link photo",data[22].urls.small)
         return ViewHolder(view)
 
     }
@@ -36,29 +37,14 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.primaryText.text = data[position].user.firstName
-        holder.seconderyText.text = "@${data[position].user.username}"
-        Log.i("Links", data[position].urls.small)
-        Log.i("Links", " position is: $position")
+    //    holder.image.setAspectRatio(data[position].width, data[position].height)
         holder.image.setBackgroundColor(Color.parseColor(data[position].color))
-        Picasso.get().load(data[position].urls.small)
+        Picasso.get().load(data[position].urls.regular)
             .into(holder.image)
-        Picasso.get().load(data[position].user.profileImage.medium).into(holder.profile, object : com.squareup.picasso.Callback{
-            override fun onSuccess() {
-                if (position == data.size - 5) {
-                    onLoadMoreListener?.onLoadMoreData()
-                    //    this.notifyItemChanged(data.indexOf(data[position]))
 
-                }
-            }
-
-            override fun onError(p0: Exception?) {
-                TODO("Not yet implemented")
-            }
-
-        })
-        var difference = data.size - position
-        //    Log.i("difrence", position.toString())
+        if (position == data.size - 5) {
+            onLoadMoreListener?.onLoadMoreData()
+        }
 
         holder.itemView.setOnClickListener {
             onPhotoClickListener?.onClick(null, position)
@@ -69,10 +55,7 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val primaryText = itemView.findViewById<TextView>(R.id.cetPrimary)
-        val seconderyText = itemView.findViewById<TextView>(R.id.cetSecondery)
         val image = itemView.findViewById<ShapeableImageView>(R.id.cePic)
-        val profile = itemView.findViewById<ShapeableImageView>(R.id.ceProfile)
 
     }
 
@@ -86,23 +69,23 @@ class HomeAdapters : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener
     }
-    fun setOnPhotoClickListener(listener: OnPhotoClickListener){
-        onPhotoClickListener=listener
+
+    fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
+        onPhotoClickListener = listener
 
 
-    }
-
-
-    fun updateList(newList: ArrayList<DataItem>) {
-        val diffResult = DiffUtil.calculateDiff(MyCallback(this.data, newList))
-        this.data.addAll(newList);
-        diffResult.dispatchUpdatesTo(this)
     }
 
     fun clear() {
         val size = data.size
         data.clear()
         notifyItemRangeRemoved(0, size)
+    }
+
+    private fun AspectRatioImageView.setAspectRatio(width: Int?, height: Int?) {
+        if (width != null && height != null) {
+            aspectRatio = height.toDouble() / width.toDouble()
+        }
     }
 
 

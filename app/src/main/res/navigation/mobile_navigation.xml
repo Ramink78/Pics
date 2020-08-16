@@ -36,7 +36,7 @@
         tools:layout="@layout/fragment_collections" />
     <fragment
         android:id="@+id/detailOfImage"
-        android:name="com.unsplash.retrofit.ui.explore.DetailOfImage"
+        android:name="com.unsplash.retrofit.ui.explore.DetailPhoto"
         android:label="fragment_detail_of_image"
         tools:layout="@layout/fragment_detail_of_image">
         <argument

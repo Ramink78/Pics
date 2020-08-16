@@ -2,8 +2,7 @@ package com.unsplash.retrofit
 
 
 import com.unsplash.retrofit.data.collections.Collections
-import com.unsplash.retrofit.data.details.Detail
-import com.unsplash.retrofit.data.details.Details
+import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
 import retrofit2.Call
@@ -48,7 +47,7 @@ interface API {
     fun getDetails(
         @Path("id") id: String,
         @Query("client_id") apikey: String
-    ): Call<Detail>
+    ): Call<Photo>
 
 
 }

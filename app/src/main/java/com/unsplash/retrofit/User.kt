@@ -25,7 +25,7 @@ data class User(
     @SerializedName("portfolio_url")
     val portfolioUrl: Any,
     @SerializedName("profile_image")
-    val profileImage: ProfileImageX,
+    val profileImage: ProfileImage,
     @SerializedName("total_collections")
     val totalCollections: Int,
     @SerializedName("total_likes")

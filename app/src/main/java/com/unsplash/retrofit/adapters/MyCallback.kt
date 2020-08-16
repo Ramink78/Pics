@@ -28,7 +28,7 @@ class MyCallback():DiffUtil.Callback(){
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldData[oldItemPosition].id.equals(newData[newItemPosition].id);
+        return oldData[oldItemPosition].id.equals(newData[newItemPosition].id)
     }
 
 

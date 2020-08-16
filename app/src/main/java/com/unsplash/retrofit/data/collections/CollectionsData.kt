@@ -1,6 +1,7 @@
 package com.unsplash.retrofit.data.collections
 
 import com.google.gson.annotations.SerializedName
+import com.unsplash.retrofit.User
 
 data class CollectionsData(
     @SerializedName("id")
@@ -12,5 +13,8 @@ data class CollectionsData(
     @SerializedName("total_photos")
     var totalPhotos:Int,
     @SerializedName("cover_photo")
-    var coverPhotos:CoverPhoto
+    var coverPhotos:CoverPhoto,
+    @SerializedName("user")
+    val user:User
+
 )

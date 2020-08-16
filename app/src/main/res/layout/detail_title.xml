@@ -12,7 +12,6 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_thin"
         android:letterSpacing=".2"
-        android:text="Specifications"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

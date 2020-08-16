@@ -8,12 +8,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.CollectionsAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
+import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.collections.Collections
 import com.unsplash.retrofit.ui.home.HomeViewModel
 import retrofit2.Call
@@ -27,10 +28,9 @@ class CollectionsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var layoutm: StaggeredGridLayoutManager
-    private val collectionsAdapter = CollectionsAdapter()
+    private lateinit var layoutm: LinearLayoutManager
+    private var collectionsAdapter: CollectionsAdapter?=null
     var page = 1
-    val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,24 +38,22 @@ class CollectionsFragment : Fragment() {
     ): View? {
         collectionsViewModel =
             ViewModelProviders.of(this).get(CollectionsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_collections, container, false)
 
-        return root
+        return inflater.inflate(R.layout.c_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.collections_recyceler)
-        layoutm = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
-
+       recyclerView = view.findViewById(R.id.collections_recyceler)
+        layoutm = LinearLayoutManager(requireContext())
+        collectionsAdapter= CollectionsAdapter((requireContext()))
         recyclerView.apply {
-            setHasFixedSize(true)
             layoutManager = layoutm
             adapter = collectionsAdapter
         }
         loadCollections()
 
-        collectionsAdapter.setOnLoadMoreListener(object : OnLoadMoreListener {
+        collectionsAdapter?.setOnLoadMoreListener(object : OnLoadMoreListener {
             override fun onLoadMoreData() {
                 loadMore()
             }
@@ -63,7 +61,7 @@ class CollectionsFragment : Fragment() {
 
         collectionsViewModel.text.observe(viewLifecycleOwner, Observer {
         })
-        collectionsAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
+        collectionsAdapter?.setOnPhotoClickListener(object : OnPhotoClickListener {
 
             override fun onClick(id: String?, position: Int) {
                 Toast.makeText(
@@ -79,14 +77,14 @@ class CollectionsFragment : Fragment() {
 
     private fun loadCollections() {
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getCollections(API_KEY, 1, 25)
+        val call = request.getCollections(API_KEY, 1, 50)
         call.enqueue(object : Callback<Collections> {
             override fun onResponse(call: Call<Collections>, response: Response<Collections>) {
                 if (response.isSuccessful) {
                     val result = response.body()
                     if (result != null) {
-                        collectionsAdapter.clear()
-                        collectionsAdapter.addItems(result)
+                        collectionsAdapter?.clear()
+                        collectionsAdapter?.addItems(result)
                     }
                 }
             }
@@ -100,14 +98,14 @@ class CollectionsFragment : Fragment() {
     fun loadMore() {
         page++
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getCollections(API_KEY, page, 25)
+        val call = request.getCollections(API_KEY, page, 50)
         call.enqueue(object : Callback<Collections> {
             override fun onResponse(call: Call<Collections>, response: Response<Collections>) {
                 if (response.isSuccessful) {
                     // Log.i("Mytag","ok")
                     val result = response.body()
                     if (result != null) {
-                        collectionsAdapter.addItems(result)
+                        collectionsAdapter?.addItems(result)
                     }
                 }
             }

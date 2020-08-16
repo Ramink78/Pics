@@ -13,7 +13,7 @@ import com.unsplash.retrofit.data.searchdata.Result
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 
-class ExploreAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+class ExploreAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
     private val data: ArrayList<Explore> = arrayListOf()
     private val dataSearch: ArrayList<Result> = arrayListOf()

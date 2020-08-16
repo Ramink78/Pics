@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.unsplash.retrofit.Urls
 import com.unsplash.retrofit.User
 
-class Detail(
+class Photo(
     @SerializedName("user")
     val user: User, @SerializedName("width")
     val width: Int, @SerializedName("height")

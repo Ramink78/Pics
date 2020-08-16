@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
+import com.unsplash.retrofit.data.API_KEY
+import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
+import jp.wasabeef.blurry.Blurry
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +30,7 @@ class HomeFragment : Fragment() {
     var isScroling = false
     var isloading = false
     var page = 1
-    val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
+ //   val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +39,7 @@ class HomeFragment : Fragment() {
 
     ): View? {
         homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         return root
@@ -49,9 +52,13 @@ class HomeFragment : Fragment() {
         recyclerView = view.findViewById(R.id.home_recyceler)
         recyclerView.apply {
             layoutManager = layoutm
+            addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space),2))
+
         }
 
         recyclerView.adapter = homeadapter
+
+
 
         loadPhotos()
 
@@ -78,7 +85,7 @@ class HomeFragment : Fragment() {
 
     private fun loadPhotos() {
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getPhotos(API_KEY, 1, 25)
+        val call = request.getPhotos(API_KEY, 1, 90)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {
@@ -86,6 +93,7 @@ class HomeFragment : Fragment() {
                     if (result != null) {
                         homeadapter.clear()
                         homeadapter.addItems(result)
+
 
                     }
                 }
@@ -100,7 +108,7 @@ class HomeFragment : Fragment() {
     fun loadMore() {
         page++
         val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getPhotos(API_KEY, page, 25)
+        val call = request.getPhotos(API_KEY, page, 90)
         call.enqueue(object : Callback<Data> {
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {

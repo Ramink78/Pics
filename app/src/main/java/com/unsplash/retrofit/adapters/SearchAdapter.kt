@@ -9,7 +9,7 @@ import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.searchdata.Result
 
 
-class SearchAdapter() : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+class SearchAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
     private val dataSearch: ArrayList<Result> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null

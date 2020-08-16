@@ -13,6 +13,4 @@ data class CoverPhoto(
     var urls: CollectionsCoverUrls,
     @SerializedName("color")
     var color: String
-){
-
-}
+)

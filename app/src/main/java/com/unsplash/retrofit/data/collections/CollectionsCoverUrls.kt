@@ -13,6 +13,4 @@ data class CollectionsCoverUrls(
     var small:String,
     @SerializedName("thumb")
     var thumb:String
-){
-
-}
+)
