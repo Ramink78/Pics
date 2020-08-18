@@ -1,6 +1,7 @@
 package com.unsplash.retrofit
 
 
+import com.unsplash.retrofit.data.collections.CollectionPhotos
 import com.unsplash.retrofit.data.collections.Collections
 import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.data.random.ExploreData
@@ -48,6 +49,13 @@ interface API {
         @Path("id") id: String,
         @Query("client_id") apikey: String
     ): Call<Photo>
+    @GET("collections/{id}/photos")
+    fun getCollectionPhotos(
+        @Path("id") id: String,
+        @Query("client_id") apikey: String,
+        @Query("page") page:Int
+    ): Call<CollectionPhotos>
+
 
 
 }

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="image_id"
+            type="com.unsplash.retrofit.data.details.Photo" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,14 +12,12 @@
     android:layout_height="wrap_content"
     >
 
-    <com.google.android.material.imageview.ShapeableImageView
-
+    <com.unsplash.retrofit.ui.widgets.AspectRatioImageView
+        android:transitionName="@{@string/image_transition_name(image_id.id)}"
         android:id="@+id/cePic"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="4:6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,5 +25,5 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    </layout>
 

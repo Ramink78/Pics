@@ -16,4 +16,5 @@
     <string name="username">Username</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
+    <string name="image_transition_name">transition image %d</string>
 </resources>

@@ -19,7 +19,7 @@ class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>) :
     val item_type: Int = 2
 
     class HeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ShapeableImageView>(R.id.header)
+        val image = itemView.findViewById<AspectRatioImageView>(R.id.header)
     }
 
     class ItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -79,6 +79,7 @@ class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>) :
             header_type -> {
                 holder as HeaderVH
                 val header = (rows[position] as DetailPhoto.Row.Header)
+                holder.image.setAspectRatio(header.width,header.height)
                 holder.image.setBackgroundColor(Color.parseColor(header.color))
                 Picasso.get().load( header.url)
                     .into(holder.image)

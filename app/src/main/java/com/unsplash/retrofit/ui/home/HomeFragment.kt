@@ -15,7 +15,6 @@ import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
-import jp.wasabeef.blurry.Blurry
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,8 +23,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutm: StaggeredGridLayoutManager
-    private val homeadapter = HomeAdapters()
+    private lateinit var  homeadapter:HomeAdapters
     var endOfList = false
     var isScroling = false
     var isloading = false
@@ -40,23 +38,20 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        return root
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        layoutm = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+        homeadapter= HomeAdapters(requireContext())
 
         recyclerView = view.findViewById(R.id.home_recyceler)
         recyclerView.apply {
-            layoutManager = layoutm
             addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space),2))
-
+            adapter = homeadapter
         }
 
-        recyclerView.adapter = homeadapter
 
 
 
@@ -71,7 +66,7 @@ class HomeFragment : Fragment() {
             }
         })
         homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener {
-            override fun onClick(id: String?, position: Int) {
+            override fun onClick(id: String?, position: Int,view: View) {
                 Toast.makeText(
                     requireContext(),
                     "Clicked On Position :$position",

@@ -35,7 +35,8 @@ class ExploreFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: GridLayoutManager
     private lateinit var navController: NavController
-    private val exploreAdapter = ExploreAdapter()
+    private lateinit var exploreAdapter : ExploreAdapter
+
     private val searchAdapter = SearchAdapter()
     private var page = 1
     private var childTag: String? = null
@@ -58,6 +59,7 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layoutm = GridLayoutManager(requireContext(), 3)
+        exploreAdapter= ExploreAdapter(requireContext())
         chip_group.removeAllViews()
         navController = Navigation.findNavController(view)
         recyclerView = view.findViewById(R.id.explore_recyceler)
@@ -134,7 +136,7 @@ class ExploreFragment : Fragment() {
             }
         })
         exploreAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
-            override fun onClick(id: String?, position: Int) {
+            override fun onClick(id: String?, position: Int,view: View) {
                 val action = ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(id!!)
                 navController.navigate(action)
             }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.transition.TransitionInflater
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.adapters.DetailsAdapter
 import com.unsplash.retrofit.data.random.Exif
@@ -31,6 +32,8 @@ class DetailPhoto : Fragment() {
     val args: DetailPhotoArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSharedElementTransitionOnEnter()
+        postponeEnterTransition()
         lmanager = GridLayoutManager(requireContext(),2)
         lmanager!!.spanSizeLookup= object :GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
@@ -82,5 +85,9 @@ class DetailPhoto : Fragment() {
         data class Header(val url: String, val color:String,val width:Int,val height:Int):Row()
         data class Title(val title:String):Row()
 
+    }
+    private fun setSharedElementTransitionOnEnter() {
+        sharedElementEnterTransition = TransitionInflater.from(context)
+            .inflateTransition(R.transition.shared_element_transition)
     }
 }

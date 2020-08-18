@@ -2,6 +2,7 @@ package com.unsplash.retrofit
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -14,9 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
-
         navController = Navigation.findNavController(this, R.id.host)
-        // navController.navigate(R.id.action_navigation_explore_to_navigation_home)
         NavigationUI.setupWithNavController(nav, navController)
 
 

@@ -1,10 +1,14 @@
 package com.unsplash.retrofit.adapters
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
@@ -13,7 +17,7 @@ import com.unsplash.retrofit.data.searchdata.Result
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 
-class ExploreAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
     private val data: ArrayList<Explore> = arrayListOf()
     private val dataSearch: ArrayList<Result> = arrayListOf()
@@ -37,12 +41,14 @@ class ExploreAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.image.setBackgroundColor(Color.parseColor(data[position].color))
-        Picasso.get().load(data[position].urls.thumb)
-            .into(holder.image)
+        Glide.with(context).load(data[position].urls.thumb)
+            .placeholder(ColorDrawable(Color.parseColor(data[position].color)))
+            .transition(DrawableTransitionOptions.withCrossFade()).into(holder.image)
+
 
 
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position)
+            onPhotoClickListener?.onClick(data[position].id, position,it)
         }
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()

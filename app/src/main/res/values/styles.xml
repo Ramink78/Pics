@@ -12,6 +12,7 @@
         <item name="materialCardViewStyle">@style/MycardStyle</item>
         <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
         <item name="MyChipStyle">@style/ChipsStyle</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="MycardStyle" parent="Widget.MaterialComponents.CardView">
