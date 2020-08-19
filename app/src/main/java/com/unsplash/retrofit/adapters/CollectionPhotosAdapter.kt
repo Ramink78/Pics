@@ -85,12 +85,12 @@ class CollectionPhotosAdapter(val context: Context) :
                 )
                 it.findNavController().navigate(dest,extras)
             }
-//            image.setBackgroundColor(Color.parseColor(photo.color))
+
             Glide.with(binding.root.context).load(photo.urls.regular)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color)))
                 .transition(DrawableTransitionOptions.withCrossFade()).into(image)
             binding.executePendingBindings()
-
+//            image.setBackgroundColor(Color.parseColor(photo.color))
         }
 
 
