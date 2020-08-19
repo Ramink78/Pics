@@ -1,18 +1,20 @@
 package com.unsplash.retrofit.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ui.explore.DetailPhoto
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 
-class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>) :
+class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>, val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val header_type: Int = 0
     val title_type: Int = 1
@@ -80,9 +82,10 @@ class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>) :
                 holder as HeaderVH
                 val header = (rows[position] as DetailPhoto.Row.Header)
                 holder.image.setAspectRatio(header.width,header.height)
+                holder.image.transitionName=header.id
                 holder.image.setBackgroundColor(Color.parseColor(header.color))
-                Picasso.get().load( header.url)
-                    .into(holder.image)
+                Glide.with(context).load(header.url).dontAnimate().into(holder.image)
+
             }
             item_type -> {
                 val item=rows[position] as DetailPhoto.Row.Item

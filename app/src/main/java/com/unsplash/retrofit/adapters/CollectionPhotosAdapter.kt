@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -16,7 +18,10 @@ import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.collections.CollectionsData
 import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.toTransitionGroup
+import com.unsplash.retrofit.databinding.CDetailsBinding
 import com.unsplash.retrofit.databinding.HomeItemBinding
+import com.unsplash.retrofit.ui.collections.CollectionPhotosFragmentDirections
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 import java.util.*
 
@@ -30,6 +35,7 @@ class CollectionPhotosAdapter(val context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater=LayoutInflater.from(parent.context)
+
         return ViewHolder(HomeItemBinding.inflate(inflater,parent,false))
 
     }
@@ -40,6 +46,7 @@ class CollectionPhotosAdapter(val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(data[position])
+
      /*   holder.image.setAspectRatio(
             data[position].width,
             data[position].height
@@ -60,13 +67,24 @@ class CollectionPhotosAdapter(val context: Context) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       private lateinit var binding:HomeItemBinding
-        val image = itemView.findViewById<AspectRatioImageView>(R.id.cePic)
+        val image: AspectRatioImageView = itemView.findViewById(R.id.cePic)
+
         constructor(binding: HomeItemBinding) : this(binding.root){
             this.binding=binding
 
+
         }
         fun bind(photo:Photo){
-            image.aspectRatio=photo.width.toDouble()/photo.height.toDouble()
+            image.setOnClickListener {
+                val dest=CollectionPhotosFragmentDirections.actionCollectionPhotosFragmentToDetailOfImage(photo.id)
+                val trsname=photo.id
+                binding.cePic.transitionName=trsname
+                val pair=Pair<View,String>(binding.cePic,trsname)
+                val extras= FragmentNavigatorExtras(
+                  pair
+                )
+                it.findNavController().navigate(dest,extras)
+            }
 //            image.setBackgroundColor(Color.parseColor(photo.color))
             Glide.with(binding.root.context).load(photo.urls.regular)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color)))
@@ -100,11 +118,7 @@ class CollectionPhotosAdapter(val context: Context) :
         notifyItemRangeRemoved(0, size)
     }
 
-    private fun AspectRatioImageView.setAspectRatio(width: Int?, height: Int?) {
-        if (width != null && height != null) {
-            aspectRatio = height.toDouble() / width.toDouble()
-        }
-    }
+
 
 
 }

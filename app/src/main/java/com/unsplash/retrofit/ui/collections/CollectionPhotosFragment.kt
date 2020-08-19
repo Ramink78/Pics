@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ import com.unsplash.retrofit.R
 import com.unsplash.retrofit.adapters.CollectionPhotosAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
+import com.unsplash.retrofit.databinding.CDetailsBinding
 import com.unsplash.retrofit.ui.explore.DetailPhotoArgs
 import com.unsplash.retrofit.ui.explore.ExploreFragmentDirections
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
@@ -30,6 +32,7 @@ class CollectionPhotosFragment:Fragment() {
     private lateinit var viewmodel:CollectionPhotosViewModel
     lateinit var navController: NavController
     private var page=1
+    lateinit var binding: CDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +40,8 @@ class CollectionPhotosFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewmodel=ViewModelProvider(this).get(CollectionPhotosViewModel::class.java)
-        return inflater.inflate(R.layout.c_details,container,false)
+        binding=CDetailsBinding.inflate(inflater,container,false)
+        return  binding.root
     }
     val args: CollectionPhotosFragmentArgs by navArgs()
 
@@ -46,7 +50,7 @@ class CollectionPhotosFragment:Fragment() {
 
         navController=Navigation.findNavController(view)
        val myadapter=CollectionPhotosAdapter(requireContext())
-        rv_collection_photos.apply {
+        binding.rvCollectionPhotos.apply {
             adapter=myadapter
             addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space),2))
         }
@@ -66,6 +70,9 @@ class CollectionPhotosFragment:Fragment() {
 
                     navController.navigate(action)
                 }
+                postponeEnterTransition()
+                binding.rvCollectionPhotos.doOnPreDraw { startPostponedEnterTransition() }
+
                 //1
 
                 val extraInfoForSharedElement = FragmentNavigatorExtras(

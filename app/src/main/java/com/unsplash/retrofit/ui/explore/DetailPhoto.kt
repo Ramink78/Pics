@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_detail_of_image.*
 class DetailPhoto : Fragment() {
     var lmanager: GridLayoutManager? = null
     lateinit var photoViewModel: DetailPhotoViewModel
-    var detailadapter=DetailsAdapter(arrayListOf())
+   lateinit var detailadapter:DetailsAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,8 +33,11 @@ class DetailPhoto : Fragment() {
     val args: DetailPhotoArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSharedElementTransitionOnEnter()
-        postponeEnterTransition()
+        detailadapter= DetailsAdapter(arrayListOf(),requireContext())
+          //  TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+       setSharedElementTransitionOnEnter()
+        Toast.makeText(requireContext(),args.id,Toast.LENGTH_SHORT).show()
+     //   postponeEnterTransition()
         lmanager = GridLayoutManager(requireContext(),2)
         lmanager!!.spanSizeLookup= object :GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
@@ -58,7 +62,7 @@ class DetailPhoto : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         photoViewModel.result.observe(viewLifecycleOwner, Observer {
-            detailadapter.addItem(Row.Header(it.urls.regular,it.color,it.width,it.height))
+            detailadapter.addItem(Row.Header(it.urls.regular,it.color,it.width,it.height,it.id))
             detailadapter.addItem(Row.Title(getString(R.string.specfication_title)))
             detailadapter.addItem(Row.Item(it.exif.model,getString(R.string.cameramodel_title),R.drawable.details_camera_make))
             detailadapter.addItem(Row.Item(it.exif.focalLength,getString(R.string.focallength_title),R.drawable.ic_detail_focal_length))
@@ -82,7 +86,7 @@ class DetailPhoto : Fragment() {
 
     sealed class Row{
         data class Item(val primary:String?, val secondary:String?, val drawableRes: Int):Row()
-        data class Header(val url: String, val color:String,val width:Int,val height:Int):Row()
+        data class Header(val url: String, val color:String,val width:Int,val height:Int,val id:String):Row()
         data class Title(val title:String):Row()
 
     }
