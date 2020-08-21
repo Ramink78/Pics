@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -18,6 +21,7 @@ import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.*
 import com.unsplash.retrofit.data.API_KEY
+import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
 import com.unsplash.retrofit.ui.home.HomeViewModel
@@ -48,7 +52,7 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         exploreViewModel =
-            ViewModelProviders.of(this).get(ExploreViewModel::class.java)
+            ViewModelProvider(this).get(ExploreViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_explore, container, false)
 
 
@@ -136,9 +140,19 @@ class ExploreFragment : Fragment() {
             }
         })
         exploreAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
-            override fun onClick(id: String?, position: Int,view: View) {
-                val action = ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(id!!)
-                navController.navigate(action)
+            override fun onClick(
+                id: String?, position: Int,
+                view: View,
+                photo: Photo?
+            ) {
+                val action = photo?.let { ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(photo = it) }
+                val extras= FragmentNavigatorExtras(
+                    view to (id ?: "no id")
+                )
+
+                if (action != null) {
+                    navController.navigate(action, extras)
+                }
             }
 
 

@@ -28,8 +28,8 @@ class CollectionPhotosViewModel :ViewModel(){
                 if (response.isSuccessful) {
                     if(response.body()?.isNotEmpty()!!) {
                         Log.i("pages total","page is $page ")
-
-                        _photos.value = response.body()
+                            if(_photos.value != response.body())
+                            _photos.value = response.body()
                     }
 
                 }

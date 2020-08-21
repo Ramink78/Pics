@@ -1,8 +1,11 @@
 package com.unsplash.retrofit.data.details
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.unsplash.retrofit.Urls
 import com.unsplash.retrofit.User
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 class Photo(
     @SerializedName("user")
@@ -15,4 +18,4 @@ class Photo(
     val id: String, @SerializedName("created_at")
     val createdAt: String, @SerializedName("urls")
     val urls: Urls, var collapsed: Boolean = false
-)
+) : Serializable
