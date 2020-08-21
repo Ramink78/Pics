@@ -8,17 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.*
 import com.unsplash.retrofit.*
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.API_KEY
-import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,8 +24,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var  homeadapter:HomeAdapters
-    private lateinit var navController: NavController
-
     var endOfList = false
     var isScroling = false
     var isloading = false
@@ -52,7 +45,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         homeadapter= HomeAdapters(requireContext())
-        navController=Navigation.findNavController(view)
+
         recyclerView = view.findViewById(R.id.home_recyceler)
         recyclerView.apply {
             addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space),2))
@@ -73,17 +66,12 @@ class HomeFragment : Fragment() {
             }
         })
         homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener {
-            override fun onClick(
-                id: String?, position: Int,
-                view: View,
-                photo: Photo?
-
-            ) {
-               Toast.makeText(requireContext(),photo!!.id,Toast.LENGTH_SHORT).show()
-                val action=photo.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it)}
-                val extras= FragmentNavigatorExtras(view to (id ?: "no id"))
-                navController.navigate(action,extras)
-
+            override fun onClick(id: String?, position: Int,view: View) {
+                Toast.makeText(
+                    requireContext(),
+                    "Clicked On Position :$position",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
 

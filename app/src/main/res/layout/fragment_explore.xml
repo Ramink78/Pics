@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     tools:context=".ui.explore.ExploreFragment">
 
@@ -22,9 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="8dp"
-        android:fitsSystemWindows="true"
         android:background="@drawable/searchbar_background"
-        android:drawableStart="@drawable/ic_searchbar"
+        android:drawableLeft="@drawable/ic_searchbar"
         android:drawablePadding="8dp"
         android:drawableTint="@color/searchBarHintColor"
         android:hint="Search"

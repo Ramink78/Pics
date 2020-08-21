@@ -13,8 +13,6 @@
         <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
         <item name="MyChipStyle">@style/ChipsStyle</item>
         <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowSharedElementEnterTransition">@transition/shared_element_transition</item>
-        <item name="android:windowSharedElementExitTransition">@transition/shared_element_transition</item>
     </style>
 
     <style name="MycardStyle" parent="Widget.MaterialComponents.CardView">

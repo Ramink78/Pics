@@ -18,7 +18,6 @@ import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.collections.Collections
-import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.ui.home.HomeViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,11 +68,7 @@ class CollectionsFragment : Fragment() {
         })
         collectionsAdapter?.setOnPhotoClickListener(object : OnPhotoClickListener {
 
-            override fun onClick(
-                id: String?, position: Int,
-                view: View,
-                photo: Photo?
-            ) {
+            override fun onClick(id: String?, position: Int,view: View) {
                 val action= id?.let {
                     CollectionsFragmentDirections.actionNavigationCollectionsToCollectionPhotosFragment(
                         it

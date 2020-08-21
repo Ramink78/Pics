@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
@@ -31,8 +30,8 @@ class CollectionPhotosAdapter(val context: Context) :
     RecyclerView.Adapter<CollectionPhotosAdapter.ViewHolder>() {
     private val data: ArrayList<Photo> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
-    lateinit var onPhotoClickListener: OnPhotoClickListener
-    lateinit var photoSelectedListener: PhotoSelectedListener
+    private var onPhotoClickListener: OnPhotoClickListener? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater=LayoutInflater.from(parent.context)
@@ -58,10 +57,15 @@ class CollectionPhotosAdapter(val context: Context) :
             .placeholder(ColorDrawable(Color.parseColor(data[position].color)))
             .transition(DrawableTransitionOptions.withCrossFade()).into(holder.image)*/
 
-
+        if (position == data.size - 5) {
+            onLoadMoreListener?.onLoadMoreData()
+        }
+        holder.itemView.setOnClickListener {
+            onPhotoClickListener?.onClick(data[position].id, position,it)
+        }
     }
 
-  inner  class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       private lateinit var binding:HomeItemBinding
         val image: AspectRatioImageView = itemView.findViewById(R.id.cePic)
 
@@ -71,21 +75,22 @@ class CollectionPhotosAdapter(val context: Context) :
 
         }
         fun bind(photo:Photo){
-            image.apply {
-                transitionName=photo.id
-                aspectRatio =photo.height.toDouble() / photo.width.toDouble()
-            }
-            if (adapterPosition == data.size - 5) {
-                onLoadMoreListener?.onLoadMoreData()
-            }
             image.setOnClickListener {
-                photoSelectedListener.onPhotoSelected(photo,image)
+                val dest=CollectionPhotosFragmentDirections.actionCollectionPhotosFragmentToDetailOfImage(photo.id)
+                val trsname=photo.id
+                binding.cePic.transitionName=trsname
+                val pair=Pair<View,String>(binding.cePic,trsname)
+                val extras= FragmentNavigatorExtras(
+                  pair
+                )
+                it.findNavController().navigate(dest,extras)
             }
 
-            Glide.with(context).load(photo.urls.regular)
+            Glide.with(binding.root.context).load(photo.urls.regular)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color)))
                 .transition(DrawableTransitionOptions.withCrossFade()).into(image)
             binding.executePendingBindings()
+//            image.setBackgroundColor(Color.parseColor(photo.color))
         }
 
 
@@ -103,23 +108,15 @@ class CollectionPhotosAdapter(val context: Context) :
         onLoadMoreListener = listener
     }
 
+    fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
+        onPhotoClickListener = listener
+    }
+
     fun clear() {
         val size = data.size
         data.clear()
         notifyItemRangeRemoved(0, size)
     }
-    interface PhotoSelectedListener {
-        fun onPhotoSelected(photo: Photo, imageView: AspectRatioImageView)
-    }
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
-
-
 
 
 
