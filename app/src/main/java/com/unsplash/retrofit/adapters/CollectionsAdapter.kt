@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
-import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.collections.CollectionsData
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
@@ -62,7 +60,7 @@ class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<Collection
             onLoadMoreListener?.onLoadMoreData()
         }
         holder.itemView.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it)
+            onPhotoClickListener?.onClick(data[position].id, position,it,data[position].coverPhotos)
         }
     }
 
@@ -99,6 +97,13 @@ class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<Collection
         if (width != null && height != null) {
             aspectRatio = height.toDouble() / width.toDouble()
         }
+    }
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 

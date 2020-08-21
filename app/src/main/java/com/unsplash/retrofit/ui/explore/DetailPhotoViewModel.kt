@@ -1,5 +1,6 @@
 package com.unsplash.retrofit.ui.explore
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class DetailPhotoViewModel : ViewModel() {
             override fun onResponse(call: Call<Photo>, response: Response<Photo>) {
                 if (response.isSuccessful) {
                     _result.value = response.body()
+                    Log.i("in view model", "hi ramin")
 
                 }
             }

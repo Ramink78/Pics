@@ -1,3 +1,5 @@
 package com.unsplash.retrofit.data.random
 
- class ExploreData: ArrayList<Explore>()
+import com.unsplash.retrofit.data.details.Photo
+
+class ExploreData: ArrayList<Photo>()

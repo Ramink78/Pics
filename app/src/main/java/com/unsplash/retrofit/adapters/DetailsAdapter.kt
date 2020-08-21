@@ -2,27 +2,35 @@ package com.unsplash.retrofit.adapters
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ui.explore.DetailPhoto
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 
-class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>, val context: Context) :
+class DetailsAdapter(private val rows: ArrayList<DetailPhoto.Row>, val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val header_type: Int = 0
     val title_type: Int = 1
     val item_type: Int = 2
 
-    class HeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    /*class HeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image = itemView.findViewById<AspectRatioImageView>(R.id.header)
-    }
+    }*/
 
     class ItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val primaryText = itemView.findViewById<TextView>(R.id.item_primaryText)
@@ -37,11 +45,11 @@ class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>, val context: Context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
-            header_type -> {
+      /*      header_type -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.headr_of_detail_image, parent, false)
                 return HeaderVH(view)
-            }
+            }*/
             item_type -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.detail_item, parent, false)
@@ -72,47 +80,47 @@ class DetailsAdapter(val rows: ArrayList<DetailPhoto.Row>, val context: Context)
         return when (rows[position]) {
             is DetailPhoto.Row.Item -> item_type
             is DetailPhoto.Row.Title -> title_type
-            is DetailPhoto.Row.Header -> header_type
+     //       is DetailPhoto.Row.Header -> header_type
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            header_type -> {
-                holder as HeaderVH
-                val header = (rows[position] as DetailPhoto.Row.Header)
-                holder.image.setAspectRatio(header.width,header.height)
-                holder.image.transitionName=header.id
-                holder.image.setBackgroundColor(Color.parseColor(header.color))
-                Glide.with(context).load(header.url).dontAnimate().into(holder.image)
+            /*header_type -> {
+                 holder as HeaderVH
+                 val header = (rows[position] as DetailPhoto.Row.Header)
+                 holder.image.setAspectRatio(header.width, header.height)
+                 //      ViewCompat.setTransitionName(holder.image,header.id)
+                Glide.with(context)
+                    .load(header.url)
+                    .placeholder(ColorDrawable(Color.parseColor(header.color))).into(holder.image)
 
-            }
+             }*/
             item_type -> {
-                val item=rows[position] as DetailPhoto.Row.Item
+                val item = rows[position] as DetailPhoto.Row.Item
                 (holder as ItemVH).primaryText.text = item.primary
                 holder.secondaryText.text = item.secondary
-                holder.avatar. setImageResource(item.drawableRes)
+                holder.avatar.setImageResource(item.drawableRes)
             }
             title_type -> {
-                val title=(rows[position]as DetailPhoto.Row.Title).title
+                val title = (rows[position] as DetailPhoto.Row.Title).title
                 holder as TitleVH
-                holder.title.text=title
+                holder.title.text = title
             }
         }
     }
-    fun addItem(row:DetailPhoto.Row){
+
+    fun addItem(row: DetailPhoto.Row) {
         rows.add(row)
-        notifyDataSetChanged()
+   //     notifyDataSetChanged()
     }
-    fun collapse(row: DetailPhoto.Row){
+
+    fun collapse(row: DetailPhoto.Row) {
 
 
     }
-    private fun AspectRatioImageView.setAspectRatio(width: Int?, height: Int?) {
-        if (width != null && height != null) {
-            aspectRatio = height.toDouble() / width.toDouble()
-        }
-    }
+
+
 
 
 }

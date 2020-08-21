@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
+import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.data.random.Explore
 import com.unsplash.retrofit.data.searchdata.Result
 import com.unsplash.retrofit.ui.explore.ExploreFragment
@@ -19,7 +20,7 @@ import com.unsplash.retrofit.ui.explore.ExploreFragment
 
 class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
-    private val data: ArrayList<Explore> = arrayListOf()
+    private val data: ArrayList<Photo> = arrayListOf()
     private val dataSearch: ArrayList<Result> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
     private var exploreFragment: ExploreFragment? = null
@@ -40,7 +41,7 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.image.setBackgroundColor(Color.parseColor(data[position].color))
+        holder.image.transitionName=data[position].id
         Glide.with(context).load(data[position].urls.thumb)
             .placeholder(ColorDrawable(Color.parseColor(data[position].color)))
             .transition(DrawableTransitionOptions.withCrossFade()).into(holder.image)
@@ -48,7 +49,7 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
 
 
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it)
+            onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
         }
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
@@ -56,11 +57,11 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ShapeableImageView>(R.id.ePic)
+        val image: ShapeableImageView = itemView.findViewById(R.id.ePic)
 
     }
 
-    fun addItems(items: ArrayList<Explore>) {
+    fun addItems(items: ArrayList<Photo>) {
         if (items.isEmpty()) return
         val startIndex = data.size
         data.addAll(items)
