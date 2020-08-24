@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.unsplash.retrofit.DataItem
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
-import java.lang.Exception
 
 
 class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
@@ -45,7 +43,7 @@ class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.Vie
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.image.apply {
            this.transitionName=data[position].id
-            aspectRatio =data[position].height.toDouble() / data[position].width.toDouble()
+            aspectRatio =data[position].height!!.toDouble() / data[position].width!!.toDouble()
             Glide.with(context).load(data[position].urls.regular)
                 .placeholder(ColorDrawable(Color.parseColor(data[position].color)))
                 .transition(DrawableTransitionOptions.withCrossFade()).into(this)
@@ -53,6 +51,7 @@ class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.Vie
 
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
+
         }
 
         holder.image.setOnClickListener {

@@ -10,32 +10,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.recyclerview.widget.*
-import com.unsplash.retrofit.*
+import androidx.recyclerview.widget.RecyclerView
+import com.unsplash.retrofit.R
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
-import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.details.Photo
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.android.synthetic.main.fragment_home.*
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var  homeadapter:HomeAdapters
+    private lateinit var homeadapter: HomeAdapters
     private lateinit var navController: NavController
-
-    var endOfList = false
-    var isScroling = false
-    var isloading = false
-    var page = 1
- //   val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,44 +36,48 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeadapter= HomeAdapters(requireContext())
-        navController=Navigation.findNavController(view)
+        homeadapter = HomeAdapters(requireContext())
+        navController = Navigation.findNavController(view)
+
+        home_swiperefresh.setOnRefreshListener {
+         //   homeViewModel.loadPhotos()
+        }
         recyclerView = view.findViewById(R.id.home_recyceler)
         recyclerView.apply {
-            addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space),2))
+            addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space), 2))
             adapter = homeadapter
         }
 
 
-
-
-        loadPhotos()
-
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        homeViewModel.photos.observe(viewLifecycleOwner, Observer {
+            homeadapter.addItems(it)
+            home_swiperefresh.isRefreshing = false
         })
-
+        homeViewModel.loadPhotos()
         homeadapter.setOnLoadMoreListener(object : OnLoadMoreListener {
             override fun onLoadMoreData() {
-                loadMore()
+                //homeViewModel.loadMore()
             }
         })
-        homeadapter.setOnPhotoClickListener(object :OnPhotoClickListener {
+        homeadapter.setOnPhotoClickListener(object : OnPhotoClickListener {
             override fun onClick(
                 id: String?, position: Int,
                 view: View,
-                photo: Photo?
+                photo: Photo
 
             ) {
-               Toast.makeText(requireContext(),photo!!.id,Toast.LENGTH_SHORT).show()
-                val action=photo.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it)}
-                val extras= FragmentNavigatorExtras(view to (id ?: "no id"))
-                navController.navigate(action,extras)
+                Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
+              val action =
+                    photo.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
+                val extras = FragmentNavigatorExtras(view to (id ?: "no id"))
+                navController.navigate(action, extras)
 
             }
 
@@ -90,47 +85,18 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun loadPhotos() {
-        val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getPhotos(API_KEY, 1, 90)
-        call.enqueue(object : Callback<Data> {
-            override fun onResponse(call: Call<Data>, response: Response<Data>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    if (result != null) {
-                        homeadapter.clear()
-                        homeadapter.addItems(result)
-
-
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Data>, t: Throwable) {
-                Toast.makeText(requireContext(),"Connection Error $t", Toast.LENGTH_SHORT).show()
-            }
-        })
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Toast.makeText(requireContext(), "on saved", Toast.LENGTH_SHORT).show()
     }
 
-    fun loadMore() {
-        page++
-        val request = ServiceBuilder.buildService(API::class.java)
-        val call = request.getPhotos(API_KEY, page, 90)
-        call.enqueue(object : Callback<Data> {
-            override fun onResponse(call: Call<Data>, response: Response<Data>) {
-                if (response.isSuccessful) {
-                    // Log.i("Mytag","ok")
-                    val result = response.body()
-                    if (result != null) {
-                        homeadapter.addItems(result)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Data>, t: Throwable) {
-                Toast.makeText(requireContext(),"Connection Error $t",Toast.LENGTH_SHORT).show()
-            }
-        })
+    override fun onPause() {
+        super.onPause()
+        Toast.makeText(requireContext(), "on pused", Toast.LENGTH_SHORT).show()
     }
+
+
+
+
 
 }

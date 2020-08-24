@@ -60,7 +60,7 @@ class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<Collection
             onLoadMoreListener?.onLoadMoreData()
         }
         holder.itemView.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it,data[position].coverPhotos)
+            //onPhotoClickListener?.onClick(data[position].id, position,it,data[position].coverPhotos)
         }
     }
 

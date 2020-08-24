@@ -72,7 +72,7 @@ class CollectionsFragment : Fragment() {
             override fun onClick(
                 id: String?, position: Int,
                 view: View,
-                photo: Photo?
+                photo: Photo
             ) {
                 val action= id?.let {
                     CollectionsFragmentDirections.actionNavigationCollectionsToCollectionPhotosFragment(

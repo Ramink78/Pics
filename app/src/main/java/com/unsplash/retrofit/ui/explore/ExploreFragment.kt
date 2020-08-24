@@ -8,10 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -143,16 +141,14 @@ class ExploreFragment : Fragment() {
             override fun onClick(
                 id: String?, position: Int,
                 view: View,
-                photo: Photo?
+                photo: Photo
             ) {
                 val action = photo?.let { ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(photo = it) }
                 val extras= FragmentNavigatorExtras(
                     view to (id ?: "no id")
                 )
 
-                if (action != null) {
-                    navController.navigate(action, extras)
-                }
+                navController.navigate(action, extras)
             }
 
 

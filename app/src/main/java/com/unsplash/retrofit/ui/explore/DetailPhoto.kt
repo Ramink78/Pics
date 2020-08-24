@@ -145,14 +145,9 @@ class DetailPhoto : Fragment() {
             detailadapter.notifyItemRangeInserted(0, 13)
 
         })
-        photoViewModel.getDetails(args.photo!!.id)
+        photoViewModel.getDetails(args.photo.id)
 
-        /* header2.apply {
-              //  aspectRatio=args.photo.height.toDouble()/args.photo.width.toDouble()
-                transitionName=args.photo.id
-                Glide.with(context).load(args.photo.urls.regular)
-                    .placeholder(ColorDrawable(Color.parseColor(args.photo.color))).into(this)
-            }*/
+
 
 
     }

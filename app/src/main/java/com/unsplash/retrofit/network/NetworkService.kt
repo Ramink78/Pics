@@ -1,5 +1,6 @@
-package com.unsplash.retrofit
+package com.unsplash.retrofit.network
 
+import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.data.photo.PhotoAPI
 import com.unsplash.retrofit.data.photo.model.Photo
 import okhttp3.Interceptor
@@ -9,25 +10,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object ServiceBuilder {
+class NetworkService {
+    private val service: PhotoAPI
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor())
         .addInterceptor(
             createHeader()
         )
         .build()
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.unsplash.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
-
-
-
-   fun <T> buildService(service: Class<T>): T {
-        return retrofit.create(service)
+    init {
+        val retrofit2: Retrofit = Retrofit.Builder()
+            .baseUrl("https://api.unsplash.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        service =retrofit2.create(PhotoAPI::class.java)
     }
-
     private fun createHeader(): Interceptor {
         return Interceptor {
             val request = it.request()
@@ -37,5 +35,9 @@ object ServiceBuilder {
             it.proceed(request)
 
         }
+    }
+    suspend fun getPhotos(page:Int,per_page:Int):ArrayList<Photo>{
+        return service.getPhotos(page, per_page)
+
     }
 }

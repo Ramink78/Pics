@@ -18,7 +18,6 @@ interface API {
 
     @GET("photos/")
     fun getPhotos(
-        @Query("client_id") key: String,
         @Query("page") page: Int,
         @Query("per_page") count: Int
     ): Call<Data>

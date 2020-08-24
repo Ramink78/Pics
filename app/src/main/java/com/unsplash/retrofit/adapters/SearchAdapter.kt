@@ -34,7 +34,7 @@ class SearchAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
         Picasso.get().load(dataSearch[position].urls.small)
             .into(holder.image)
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(null, position,it,null)
+            //onPhotoClickListener?.onClick(null, position,it,null)
         }
         if (position == dataSearch.size - 5) {
             onLoadMoreListener?.onLoadMoreData()

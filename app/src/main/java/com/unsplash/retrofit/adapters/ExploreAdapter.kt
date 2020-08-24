@@ -10,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
-import com.squareup.picasso.Picasso
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.details.Photo
-import com.unsplash.retrofit.data.random.Explore
 import com.unsplash.retrofit.data.searchdata.Result
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
@@ -49,7 +47,7 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
 
 
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
+          //  onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
         }
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()

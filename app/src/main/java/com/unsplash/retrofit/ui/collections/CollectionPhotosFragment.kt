@@ -39,7 +39,6 @@ class CollectionPhotosFragment : Fragment() {
     val args: CollectionPhotosFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
             navController = Navigation.findNavController(view)
             val myadapter = CollectionPhotosAdapter(requireContext())
             binding.rvCollectionPhotos.apply {
@@ -81,7 +80,7 @@ class CollectionPhotosFragment : Fragment() {
 
             })
 
-        }
+
     }
 
 }
