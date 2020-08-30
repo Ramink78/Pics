@@ -18,8 +18,7 @@ import com.unsplash.retrofit.adapters.OnLoadMoreListener
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.collections.Collections
-import com.unsplash.retrofit.data.details.Photo
-import com.unsplash.retrofit.ui.home.HomeViewModel
+import com.unsplash.retrofit.data.details.model.Photo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +26,6 @@ import retrofit2.Response
 class CollectionsFragment : Fragment() {
 
     private lateinit var collectionsViewModel: CollectionsViewModel
-    private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -72,7 +70,7 @@ class CollectionsFragment : Fragment() {
             override fun onClick(
                 id: String?, position: Int,
                 view: View,
-                photo: Photo
+                photo: Photo?
             ) {
                 val action= id?.let {
                     CollectionsFragmentDirections.actionNavigationCollectionsToCollectionPhotosFragment(

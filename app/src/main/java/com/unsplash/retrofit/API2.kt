@@ -6,34 +6,34 @@ import com.unsplash.retrofit.data.collections.Collections
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
-import retrofit2.Call
+import io.reactivex.Single
 
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface API {
+interface API2 {
     @GET("search/photos/")
-    fun getresult(@Query("client_id") key: String, @Query("query") quer: String): Call<Data>
+    fun getresult(@Query("client_id") key: String, @Query("query") quer: String): Single<Data>
 
     @GET("photos/")
     fun getPhotos(
         @Query("page") page: Int,
         @Query("per_page") count: Int
-    ): Call<Data>
+    ): Single<Data>
 
     @GET("collections/")
     fun getCollections(
         @Query("client_id") key: String,
         @Query("page") page: Int,
         @Query("per_page") count: Int
-    ): Call<Collections>
+    ): Single<Collections>
 
     @GET("photos/random")
     fun getRandom(
         @Query("client_id") key: String,
         @Query("count") count: Int
-    ): Call<ExploreData>
+    ): Single<ExploreData>
 
     @GET("search/photos")
     fun photosFilter(
@@ -41,19 +41,19 @@ interface API {
         @Query("page") page: Int,
         @Query("per_page") count: Int,
         @Query("query") keyword: String
-    ): Call<Search>
+    ): Single<Search>
 
     @GET("photos/{id}")
     fun getDetails(
         @Path("id") id: String,
         @Query("client_id") apikey: String
-    ): Call<Photo>
+    ): Single<Photo>
     @GET("collections/{id}/photos")
     fun getCollectionPhotos(
         @Path("id") id: String,
         @Query("client_id") apikey: String,
         @Query("page") page:Int
-    ): Call<CollectionPhotos>
+    ): Single<CollectionPhotos>
 
 
 

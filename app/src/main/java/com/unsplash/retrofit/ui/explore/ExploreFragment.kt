@@ -19,10 +19,9 @@ import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.*
 import com.unsplash.retrofit.data.API_KEY
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
-import com.unsplash.retrofit.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_explore.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,10 +30,7 @@ import retrofit2.Response
 class ExploreFragment : Fragment() {
 
     private lateinit var exploreViewModel: ExploreViewModel
-    private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var layoutm: GridLayoutManager
     private lateinit var navController: NavController
     private lateinit var exploreAdapter : ExploreAdapter
@@ -138,18 +134,17 @@ class ExploreFragment : Fragment() {
             }
         })
         exploreAdapter.setOnPhotoClickListener(object : OnPhotoClickListener {
-            override fun onClick(
-                id: String?, position: Int,
-                view: View,
-                photo: Photo
-            ) {
-                val action = photo?.let { ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(photo = it) }
+
+            override fun onClick(id: String?, position: Int, view: View, photo: Photo?) {
+                val action = photo.let { ExploreFragmentDirections.actionNavigationExploreToDetailOfImage(photo = it!!) }
                 val extras= FragmentNavigatorExtras(
                     view to (id ?: "no id")
                 )
 
                 navController.navigate(action, extras)
             }
+
+
 
 
         })

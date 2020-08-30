@@ -1,6 +1,6 @@
 package com.unsplash.retrofit
 
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 
 
 class Data : ArrayList<Photo>()

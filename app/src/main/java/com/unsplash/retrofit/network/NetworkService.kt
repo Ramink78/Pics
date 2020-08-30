@@ -36,8 +36,5 @@ class NetworkService {
 
         }
     }
-    suspend fun getPhotos(page:Int,per_page:Int):ArrayList<Photo>{
-        return service.getPhotos(page, per_page)
 
-    }
 }

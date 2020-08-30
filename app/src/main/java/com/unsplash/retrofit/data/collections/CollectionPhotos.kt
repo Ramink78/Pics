@@ -1,6 +1,5 @@
 package com.unsplash.retrofit.data.collections
 
-import android.provider.ContactsContract
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 
 class CollectionPhotos: ArrayList<Photo>()

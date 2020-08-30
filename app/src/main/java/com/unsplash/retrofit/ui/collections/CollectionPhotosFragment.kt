@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.adapters.CollectionPhotosAdapter
 import com.unsplash.retrofit.adapters.OnLoadMoreListener
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.databinding.CDetailsBinding
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
@@ -61,7 +61,7 @@ class CollectionPhotosFragment : Fragment() {
                         val extras = FragmentNavigatorExtras(
                             imageView to photo.id
                         )
-                        findNavController().navigate(action, extras)
+                        navController.navigate(action, extras)
                     }
 
                 }

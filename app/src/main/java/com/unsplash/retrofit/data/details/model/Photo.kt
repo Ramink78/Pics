@@ -1,13 +1,11 @@
-package com.unsplash.retrofit.data.details
+package com.unsplash.retrofit.data.details.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.unsplash.retrofit.Urls
 import com.unsplash.retrofit.User
-import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
-class Photo(
+data class Photo(
     @SerializedName("user")
     val user: User, @SerializedName("width")
     val width: Int, @SerializedName("height")

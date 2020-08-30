@@ -2,7 +2,7 @@ package com.unsplash.retrofit.data.collections
 
 import com.google.gson.annotations.SerializedName
 import com.unsplash.retrofit.User
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 
 data class CollectionsData(
     @SerializedName("id")

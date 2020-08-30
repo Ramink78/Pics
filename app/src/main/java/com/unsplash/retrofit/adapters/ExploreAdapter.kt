@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.unsplash.retrofit.R
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.searchdata.Result
 import com.unsplash.retrofit.ui.explore.ExploreFragment
 
@@ -19,17 +19,14 @@ import com.unsplash.retrofit.ui.explore.ExploreFragment
 class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
     private var onPhotoClickListener: OnPhotoClickListener? = null
     private val data: ArrayList<Photo> = arrayListOf()
-    private val dataSearch: ArrayList<Result> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
-    private var exploreFragment: ExploreFragment? = null
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.explore_item, parent, false)
-        exploreFragment = ExploreFragment()
-
         return ViewHolder(view)
 
     }
@@ -47,7 +44,7 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
 
 
         holder.image.setOnClickListener {
-          //  onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
+            onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
         }
         if (position == data.size - 5) {
             onLoadMoreListener?.onLoadMoreData()
@@ -66,12 +63,6 @@ class ExploreAdapter(val context: Context) : RecyclerView.Adapter<ExploreAdapter
         notifyItemRangeInserted(startIndex, items.size)
     }
 
-    fun addSearchItems(items: ArrayList<Result>) {
-        if (items.isEmpty()) return
-        data.clear()
-        dataSearch.addAll(items)
-        notifyItemRangeInserted(0, items.size)
-    }
 
     fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
         onLoadMoreListener = listener

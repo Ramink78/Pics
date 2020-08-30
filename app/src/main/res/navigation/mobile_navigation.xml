@@ -53,7 +53,7 @@
         tools:layout="@layout/fragment_detail_of_image">
         <argument
             android:name="photo"
-            app:argType="com.unsplash.retrofit.data.details.Photo"
+            app:argType="com.unsplash.retrofit.data.details.model.Photo"
 
             />
     </fragment>

@@ -8,42 +8,52 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.whenCreated
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
+import com.unsplash.retrofit.API2
 import com.unsplash.retrofit.R
+import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.DetailsAdapter
+import com.unsplash.retrofit.data.details.DetailsAPI
+import com.unsplash.retrofit.repo.PhotoDetailsRepo
 import kotlinx.android.synthetic.main.fragment_detail_of_image.rv_details
-import kotlinx.android.synthetic.main.tt.*
+import kotlinx.android.synthetic.main.fragment_detail_of_image.*
 
 
 class DetailPhoto : Fragment() {
     var lmanager: GridLayoutManager? = null
-    lateinit var photoViewModel: DetailPhotoViewModel
+    lateinit var photoViewModel: DetailPhotoViewModel2
     lateinit var detailadapter: DetailsAdapter
+    lateinit var photoRepo: PhotoDetailsRepo
+    private val args: DetailPhotoArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        photoViewModel = ViewModelProvider(this).get(DetailPhotoViewModel::class.java)
-        return inflater.inflate(R.layout.tt, container, false)
+        photoRepo= PhotoDetailsRepo(ServiceBuilder.buildService(DetailsAPI::class.java))
+        photoViewModel=getViewModel(args.photo!!.id)
+        return inflater.inflate(R.layout.fragment_detail_of_image, container, false)
     }
 
-    private val args: DetailPhotoArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         detailadapter = DetailsAdapter(arrayListOf(), requireContext())
 
-        header.apply {
-            transitionName = args.photo.id
-            aspectRatio = args.photo.height.toDouble() / args.photo.width.toDouble()
-            Glide.with(context).load(args.photo.urls.regular)
-                .placeholder(ColorDrawable(Color.parseColor(args.photo.color))).into(this)
+            header.apply {
+                transitionName = args.photo.id
+                aspectRatio = args.photo.height.toDouble() / args.photo.width.toDouble()
+                Glide.with(context).load(args.photo.urls.regular)
+                    .placeholder(ColorDrawable(Color.parseColor(args.photo.color))).into(this)
+
         }
+
 
         lmanager = GridLayoutManager(requireContext(), 2)
         lmanager!!.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -61,7 +71,7 @@ class DetailPhoto : Fragment() {
             adapter = detailadapter
 
         }
-        photoViewModel.result.observe(viewLifecycleOwner, Observer {
+        photoViewModel.photoDetails.observe(viewLifecycleOwner, Observer {
             //     detailadapter.addItem(Row.Header(it.urls.regular,it.color,it.width,it.height,it.id))
             detailadapter.addItem(Row.Title(getString(R.string.specfication_title)))
             detailadapter.addItem(
@@ -142,10 +152,9 @@ class DetailPhoto : Fragment() {
                     R.drawable.ic_twitter
                 )
             )
-            detailadapter.notifyItemRangeInserted(0, 13)
 
         })
-        photoViewModel.getDetails(args.photo.id)
+    //    photoViewModel.getDetails(args.photo.id)
 
 
 
@@ -170,6 +179,14 @@ class DetailPhoto : Fragment() {
         data class Title(val title: String) : Row()
 
 
+    }
+    private fun getViewModel(photoId:String):DetailPhotoViewModel2{
+        return ViewModelProvider(this,object:ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("cast eception")
+                return DetailPhotoViewModel2(photoRepo,photoId) as T
+            }
+        })[DetailPhotoViewModel2::class.java]
     }
 
 

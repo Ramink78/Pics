@@ -6,17 +6,18 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.unsplash.retrofit.R
-import com.unsplash.retrofit.data.details.Photo
+import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 
 
-class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.ViewHolder>() {
-    private val data: ArrayList<Photo> = arrayListOf()
-    private var onLoadMoreListener: OnLoadMoreListener? = null
+class HomeAdapters(val context: Context) :
+    PagedListAdapter<Photo, HomeAdapters.ViewHolder>(PhotoDiffCallBack()) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
 
 
@@ -27,9 +28,6 @@ class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.Vie
 
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -41,21 +39,21 @@ class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.Vie
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item=getItem(position)
         holder.image.apply {
-           this.transitionName=data[position].id
-            aspectRatio =data[position].height!!.toDouble() / data[position].width!!.toDouble()
-            Glide.with(context).load(data[position].urls.regular)
-                .placeholder(ColorDrawable(Color.parseColor(data[position].color)))
+            this.transitionName = item?.id
+            aspectRatio =
+                item!!.height.toDouble() / item.width.toDouble()
+            Glide.with(context).load(item.urls.regular)
+                .thumbnail(
+                    Glide.with(context).load(item.urls.thumb)
+                )
+                .placeholder(ColorDrawable(Color.parseColor(item.color)))
                 .transition(DrawableTransitionOptions.withCrossFade()).into(this)
         }
 
-        if (position == data.size - 5) {
-            onLoadMoreListener?.onLoadMoreData()
-
-        }
-
         holder.image.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it,data[position])
+            onPhotoClickListener?.onClick(item?.id, position, it, item)
         }
 
 
@@ -67,29 +65,23 @@ class HomeAdapters(val context: Context) : RecyclerView.Adapter<HomeAdapters.Vie
 
     }
 
-    fun addItems(items: ArrayList<Photo>) {
-        if (items.isEmpty()) return
-        val startIndex = data.size
-        data.addAll(items)
-        notifyItemRangeInserted(startIndex, items.size)
-    }
-
-    fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
-        onLoadMoreListener = listener
-    }
-
     fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
         onPhotoClickListener = listener
 
 
     }
 
-    fun clear() {
-        val size = data.size
-        data.clear()
-        notifyItemRangeRemoved(0, size)
-    }
 
+    class PhotoDiffCallBack : DiffUtil.ItemCallback<Photo>() {
+        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+            return oldItem == (newItem)
+        }
+
+    }
 
 
 }

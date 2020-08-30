@@ -1,23 +1,24 @@
 package com.unsplash.retrofit.data.photo
 
-import com.unsplash.retrofit.data.photo.model.Photo
+import com.unsplash.retrofit.data.details.model.Photo
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PhotoAPI {
     @GET("photos")
-  suspend  fun getPhotos(
+    fun getPhotos(
         @Query("page") page:Int?,
         @Query("per_page") per_page:Int?
-    ):ArrayList<Photo>
+    ):Single<ArrayList<Photo>>
     @GET("collections/{id}/photos")
-   suspend fun getPhotosFromCollection(
+    fun getPhotosFromCollection(
         @Query("id") id:Int?,
         @Query("page") page:Int?,
         @Query("per_page") per_page: Int?
     ):List<Photo>
      @GET("photos/{id}")
-   suspend  fun getPhoto(
+     fun getPhoto(
          @Query("id") id:String?
      ):Photo
 
