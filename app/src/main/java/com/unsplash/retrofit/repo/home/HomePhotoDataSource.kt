@@ -1,4 +1,4 @@
-package com.unsplash.retrofit.repo
+package com.unsplash.retrofit.repo.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -27,6 +27,8 @@ class HomePhotoDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         _networkstate.postValue(NetworkState.PROSSECING)
+        Log.i(this::class.java.simpleName, "load after")
+
         compositeDisposable.add(
             service.getPhotos(params.key, PER_PAGE)
                 .subscribeOn(Schedulers.io())
@@ -45,6 +47,8 @@ class HomePhotoDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, Photo>
     ) {
+        Log.i(this::class.java.simpleName, "load before")
+
 
     }
 
@@ -52,9 +56,10 @@ class HomePhotoDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Photo>
     ) {
+        Log.i(this::class.java.simpleName, "load init")
         _networkstate.postValue(NetworkState.PROSSECING)
         compositeDisposable.add(
-            service.getPhotos(page, PER_PAGE)
+            service.getPhotos(FIRST_PAGE, PER_PAGE)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     callback.onResult(it, null, page + 1)

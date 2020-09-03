@@ -1,4 +1,4 @@
-package com.unsplash.retrofit.repo
+package com.unsplash.retrofit.repo.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
@@ -8,9 +8,9 @@ import io.reactivex.disposables.CompositeDisposable
 
 class PhotoDataSourceFactory (private val service:PhotoAPI,private val compositeDisposable: CompositeDisposable )
     :DataSource.Factory<Int,Photo>() {
-    private val homePhotoDataSource=MutableLiveData<HomePhotoDataSource>()
+     val homePhotoDataSource=MutableLiveData<HomePhotoDataSource>()
     override fun create(): DataSource<Int, Photo> {
-        val homeDataSource=HomePhotoDataSource(service,compositeDisposable)
+        val homeDataSource= HomePhotoDataSource(service,compositeDisposable)
         homePhotoDataSource.postValue(homeDataSource)
         return homeDataSource
     }

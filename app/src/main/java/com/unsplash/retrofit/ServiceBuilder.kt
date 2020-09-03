@@ -10,7 +10,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 const val FIRST_PAGE=1
-const val PER_PAGE=30
+const val PER_PAGE=100
 object ServiceBuilder {
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor())

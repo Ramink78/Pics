@@ -9,13 +9,13 @@ import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.network.NetworkState
-import com.unsplash.retrofit.repo.PhotoDetailsRepo
+import com.unsplash.retrofit.repo.photos.PhotoDetailsRepo
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailPhotoViewModel2(private val photoRepo:PhotoDetailsRepo,photoId:String) : ViewModel() {
+class DetailPhotoViewModel2(private val photoRepo: PhotoDetailsRepo, photoId:String) : ViewModel() {
     private val compositeDisposable=CompositeDisposable()
     val photoDetails:LiveData<Photo> by lazy {
         photoRepo.fetchDetails(compositeDisposable,photoId)

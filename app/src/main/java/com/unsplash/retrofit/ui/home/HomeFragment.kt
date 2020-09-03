@@ -9,18 +9,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.photo.PhotoAPI
-import com.unsplash.retrofit.repo.HomePhotosRepo
+import com.unsplash.retrofit.repo.home.HomePhotosRepo
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -28,7 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeadapter: HomeAdapters
     private lateinit var navController: NavController
     lateinit var homePhotosRepo: HomePhotosRepo
-    lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
 
     override fun onCreateView(
@@ -45,16 +49,22 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         Toast.makeText(requireContext(), "view created", Toast.LENGTH_SHORT).show()
         homeadapter = HomeAdapters(requireContext())
         navController = Navigation.findNavController(view)
         home_recyceler.apply {
             addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space), 2))
             adapter = homeadapter
+
         }
+
         homeViewModel.homephotos.observe(viewLifecycleOwner, Observer {
             homeadapter.submitList(it)
 
+        })
+        homeViewModel.networkstate.observe(viewLifecycleOwner, Observer {
+           // Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
         })
         homeadapter.setOnPhotoClickListener(object : OnPhotoClickListener {
             override fun onClick(
@@ -80,7 +90,7 @@ class HomeFragment : Fragment() {
         return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("cast eception")
-                return activity?.application?.let { HomeViewModel(homePhotosRepo) } as T
+                return HomeViewModel(homePhotosRepo)  as T
             }
         })[HomeViewModel::class.java]
     }

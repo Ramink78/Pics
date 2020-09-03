@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.searchdata.Result
 
@@ -31,7 +31,7 @@ class SearchAdapter : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ExploreAdapter.ViewHolder, position: Int) {
         holder.image.setBackgroundColor(Color.parseColor(dataSearch[position].color))
-        Picasso.get().load(dataSearch[position].urls.small)
+        Glide.with(holder.itemView.context).load(dataSearch[position].urls.small)
             .into(holder.image)
         holder.image.setOnClickListener {
             //onPhotoClickListener?.onClick(null, position,it,null)

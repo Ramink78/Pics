@@ -10,17 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.whenCreated
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
-import com.unsplash.retrofit.API2
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.DetailsAdapter
 import com.unsplash.retrofit.data.details.DetailsAPI
-import com.unsplash.retrofit.repo.PhotoDetailsRepo
+import com.unsplash.retrofit.repo.photos.PhotoDetailsRepo
 import kotlinx.android.synthetic.main.fragment_detail_of_image.rv_details
 import kotlinx.android.synthetic.main.fragment_detail_of_image.*
 
@@ -37,7 +35,7 @@ class DetailPhoto : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         photoRepo= PhotoDetailsRepo(ServiceBuilder.buildService(DetailsAPI::class.java))
-        photoViewModel=getViewModel(args.photo!!.id)
+        photoViewModel=getViewModel(args.photo.id)
         return inflater.inflate(R.layout.fragment_detail_of_image, container, false)
     }
 
@@ -50,6 +48,9 @@ class DetailPhoto : Fragment() {
                 transitionName = args.photo.id
                 aspectRatio = args.photo.height.toDouble() / args.photo.width.toDouble()
                 Glide.with(context).load(args.photo.urls.regular)
+                    .thumbnail(
+                        Glide.with(context).load(args.photo.urls.thumb)
+                    )
                     .placeholder(ColorDrawable(Color.parseColor(args.photo.color))).into(this)
 
         }
@@ -72,7 +73,6 @@ class DetailPhoto : Fragment() {
 
         }
         photoViewModel.photoDetails.observe(viewLifecycleOwner, Observer {
-            //     detailadapter.addItem(Row.Header(it.urls.regular,it.color,it.width,it.height,it.id))
             detailadapter.addItem(Row.Title(getString(R.string.specfication_title)))
             detailadapter.addItem(
                 Row.Item(

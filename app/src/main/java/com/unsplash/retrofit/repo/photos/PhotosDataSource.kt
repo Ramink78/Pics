@@ -1,10 +1,8 @@
-package com.unsplash.retrofit.repo
+package com.unsplash.retrofit.repo.photos
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.unsplash.retrofit.API2
-import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.details.DetailsAPI
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.network.NetworkState
