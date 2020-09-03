@@ -66,8 +66,8 @@ class HomeAdapters(val context: Context) :
 
 
     fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
-        onPhotoClickListener = listener
 
+      //  onPhotoClickListener = listener
 
     }
 
