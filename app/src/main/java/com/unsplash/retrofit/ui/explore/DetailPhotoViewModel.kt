@@ -37,7 +37,7 @@ class DetailPhotoViewModel(private val photoRepo: PhotoDetailsRepo, photoId:Stri
             override fun onResponse(call: Call<Photo>, response: Response<Photo>) {
                 if (response.isSuccessful) {
                     _result.value = response.body()
-                    Log.i("in view model", "hi ramin")
+                    // SIMPLE CHANGING
 
                 }
             }
