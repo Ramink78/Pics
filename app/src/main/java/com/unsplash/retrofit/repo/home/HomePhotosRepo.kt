@@ -18,6 +18,7 @@ class HomePhotosRepo (private val service:PhotoAPI){
         val config= PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(PER_PAGE)
+            .setInitialLoadSizeHint(2)
             .build()
         homePagedList=LivePagedListBuilder(homePhotoDataSourceFactory,config).build()
 

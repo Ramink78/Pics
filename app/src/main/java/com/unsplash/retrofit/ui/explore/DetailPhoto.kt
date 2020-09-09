@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -18,14 +19,15 @@ import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.DetailsAdapter
 import com.unsplash.retrofit.data.details.DetailsAPI
+import com.unsplash.retrofit.data.setAspectRatio
+import com.unsplash.retrofit.network.NetworkState
 import com.unsplash.retrofit.repo.photos.PhotoDetailsRepo
-import kotlinx.android.synthetic.main.fragment_detail_of_image.rv_details
 import kotlinx.android.synthetic.main.fragment_detail_of_image.*
 
 
 class DetailPhoto : Fragment() {
     var lmanager: GridLayoutManager? = null
-    lateinit var photoViewModel: DetailPhotoViewModel2
+    lateinit var photoViewModel: DetailPhotoViewModel
     lateinit var detailadapter: DetailsAdapter
     lateinit var photoRepo: PhotoDetailsRepo
     private val args: DetailPhotoArgs by navArgs()
@@ -34,24 +36,30 @@ class DetailPhoto : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        photoRepo= PhotoDetailsRepo(ServiceBuilder.buildService(DetailsAPI::class.java))
-        photoViewModel=getViewModel(args.photo.id)
+
+        photoRepo = PhotoDetailsRepo(ServiceBuilder.buildService(DetailsAPI::class.java))
+        photoViewModel = getViewModel(args.photo.id)
+        sharedElementEnterTransition = TransitionInflater.from(context)
+            .inflateTransition(R.transition.shared_element_transition2)
+       // exitTransition=TransitionInflater.from(context).inflateTransition(android.R.transition.explode)
         return inflater.inflate(R.layout.fragment_detail_of_image, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         detailadapter = DetailsAdapter(arrayListOf(), requireContext())
 
-            header.apply {
-                transitionName = args.photo.id
-                aspectRatio = args.photo.height.toDouble() / args.photo.width.toDouble()
-                Glide.with(context).load(args.photo.urls.regular)
-                    .thumbnail(
-                        Glide.with(context).load(args.photo.urls.thumb)
-                    )
-                    .placeholder(ColorDrawable(Color.parseColor(args.photo.color))).into(this)
+        header.apply {
+            ViewCompat.setTransitionName(this, args.photo.id)
+            setAspectRatio(args.photo.width,args.photo.height)
+            Glide.with(context)
+                .load(args.photo.urls.regular)
+                .placeholder(ColorDrawable(Color.parseColor(args.photo.color)))
+                .thumbnail(Glide.with(context).load(args.photo.urls.small))
+                .dontAnimate()
+                .dontTransform()
+                .into(this)
+
 
         }
 
@@ -71,7 +79,9 @@ class DetailPhoto : Fragment() {
             layoutManager = lmanager
             adapter = detailadapter
 
+
         }
+
         photoViewModel.photoDetails.observe(viewLifecycleOwner, Observer {
             detailadapter.addItem(Row.Title(getString(R.string.specfication_title)))
             detailadapter.addItem(
@@ -154,39 +164,38 @@ class DetailPhoto : Fragment() {
             )
 
         })
-    //    photoViewModel.getDetails(args.photo.id)
+        photoViewModel.networkState.observe(viewLifecycleOwner, Observer {
+            when(it){
+                NetworkState.PROSSECING-> detailadapter.addItem(Row.Loading(it))
+                NetworkState.SUCCESS->detailadapter.removeItem(0)
+            }
 
 
 
-
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition =
-            TransitionInflater.from(context).inflateTransition(R.transition.shared_element_transition)
-
-
+        })
 
 
     }
+
 
     sealed class Row {
+
         data class Item(val primary: String?, val secondary: String?, val drawableRes: Int) : Row()
 
         //  data class Header(val url: String, val color:String,val width:Int,val height:Int,val id:String):Row()
         data class Title(val title: String) : Row()
+        data class Loading(val networkState: NetworkState) : Row()
 
 
     }
-    private fun getViewModel(photoId:String):DetailPhotoViewModel2{
-        return ViewModelProvider(this,object:ViewModelProvider.Factory{
+
+    private fun getViewModel(photoId: String): DetailPhotoViewModel {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("cast eception")
-                return DetailPhotoViewModel2(photoRepo,photoId) as T
+                return DetailPhotoViewModel(photoRepo, photoId) as T
             }
-        })[DetailPhotoViewModel2::class.java]
+        })[DetailPhotoViewModel::class.java]
     }
 
 

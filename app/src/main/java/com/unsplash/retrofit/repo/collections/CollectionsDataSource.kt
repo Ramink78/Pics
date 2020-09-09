@@ -1,4 +1,4 @@
-package com.unsplash.retrofit.repo.home
+package com.unsplash.retrofit.repo.collections
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,31 +6,53 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.unsplash.retrofit.FIRST_PAGE
 import com.unsplash.retrofit.PER_PAGE
-import com.unsplash.retrofit.data.details.model.Photo
-import com.unsplash.retrofit.data.photo.PhotoAPI
+import com.unsplash.retrofit.data.collections.CollectionsAPI
+import com.unsplash.retrofit.data.collections.model.Collection
 import com.unsplash.retrofit.network.NetworkState
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class HomePhotoDataSource(
-    private val service: PhotoAPI,
+class CollectionsDataSource(
+    private val collectionsAPI: CollectionsAPI,
     private val compositeDisposable: CompositeDisposable
-) : PageKeyedDataSource<Int, Photo>() {
+) : PageKeyedDataSource<Int, Collection>() {
+    private val _collections = MutableLiveData<ArrayList<Collection>>()
+    val collections: LiveData<ArrayList<Collection>>
+        get() = _collections
+
+    var page = FIRST_PAGE
     private val _networkstate = MutableLiveData<NetworkState>()
     val networkstate: LiveData<NetworkState>
         get() = _networkstate
 
-    private var page = FIRST_PAGE
-    private val _photos = MutableLiveData<ArrayList<Photo>>()
-    val photos: LiveData<ArrayList<Photo>>
-        get() = _photos
-
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
-        _networkstate.postValue(NetworkState.PROSSECING)
-        Log.i(this::class.java.simpleName, "load after")
-
+    override fun loadInitial(
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, Collection>
+    ) {
+        _networkstate.postValue(NetworkState.INITIALIZING)
         compositeDisposable.add(
-            service.getPhotos(params.key, PER_PAGE)
+            collectionsAPI.getCollections(FIRST_PAGE, params.requestedLoadSize)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    callback.onResult(it, null, page + 1)
+                    _networkstate.postValue(NetworkState.SUCCESS)
+
+                }, {
+                    _networkstate.postValue(NetworkState.ERROR)
+                    Log.i(this::class.java.simpleName, "Error is : ${it.message}")
+                })
+        )
+
+
+    }
+
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Collection>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Collection>) {
+        compositeDisposable.add(
+            collectionsAPI.getCollections(params.key, PER_PAGE)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     callback.onResult(it, params.key + 1)
@@ -38,39 +60,14 @@ class HomePhotoDataSource(
                 }, {
                     _networkstate.postValue(NetworkState.ERROR)
                     Log.i(this::class.java.simpleName, "Error is : ${it.message}")
-                })
-
-        )
-    }
-
-    override fun loadBefore(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, Photo>
-    ) {
-        Log.i(this::class.java.simpleName, "load before")
+                }))
 
 
-    }
+}
 
-    override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Photo>
-    ) {
-        Log.i(this::class.java.simpleName, "load init")
-        _networkstate.postValue(NetworkState.INITIALIZING)
-        compositeDisposable.add(
-            service.getPhotos(FIRST_PAGE, PER_PAGE)
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    callback.onResult(it, null, page + 1)
-                    _networkstate.postValue(NetworkState.SUCCESS)
-                }, {
-                    _networkstate.postValue(NetworkState.ERROR)
-                    Log.i(this::class.java.simpleName, "Error is : ${it.message}")
-                })
 
-        )
-    }
+
+
 
 
 }

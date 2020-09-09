@@ -7,20 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.paging.AsyncPagedListDiffer
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.data.collections.model.Collection
+import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.ui.widgets.AspectRatioImageView
 import java.util.*
 
 
-class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<CollectionsAdapter.ViewHolder>() {
+class CollectionsAdapter2(val context: Context) : RecyclerView.Adapter<CollectionsAdapter2.ViewHolder>() {
     private val data: ArrayList<Collection> = arrayListOf()
     private var onLoadMoreListener: OnLoadMoreListener? = null
     private var onPhotoClickListener: OnPhotoClickListener? = null
+    private val differ=AsyncPagedListDiffer(this,CollectionDiffCallback())
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,34 +38,33 @@ class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<Collection
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return differ.itemCount
+    }
+    fun submitList(collections: PagedList<Collection>) {
+        differ.submitList(collections)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.primaryText.text = data[position].title
-        holder.seconderyText.text = "${data[position].totalPhotos} Photos"
+        val collection=differ.getItem(position)
+        holder.primaryText.text = collection!!.title
+        holder.seconderyText.text = "${collection.totalPhotos} Photos"
 
         holder.image.setAspectRatio(
-            data[position].coverPhotos.width,
-            data[position].coverPhotos.height
+            collection.coverPhotos.width,
+            collection.coverPhotos.height
         )
-        holder.image.setBackgroundColor(Color.parseColor(data[position].coverPhotos.color))
+        holder.image.setBackgroundColor(Color.parseColor(collection.coverPhotos.color))
 
-        Glide.with(context).load(data[position].coverPhotos.urls.regular)
-            .placeholder(ColorDrawable(Color.parseColor(data[position].coverPhotos.color)))
+        Glide.with(context).load(collection.coverPhotos.urls.regular)
+            .placeholder(ColorDrawable(Color.parseColor(collection.coverPhotos.color)))
             .transition(DrawableTransitionOptions.withCrossFade()).into(holder.image)
 
-        Glide.with(context).load(data[position].user.profileImage.medium)
-            .placeholder(ColorDrawable(Color.parseColor(data[position].coverPhotos.color)))
+        Glide.with(context).load(collection.user.profileImage.medium)
+            .placeholder(ColorDrawable(Color.parseColor(collection.coverPhotos.color)))
             .transition(DrawableTransitionOptions.withCrossFade()).into(holder.profile)
 
-
-
-        if (position == data.size - 5) {
-            onLoadMoreListener?.onLoadMoreData()
-        }
         holder.itemView.setOnClickListener {
-            onPhotoClickListener?.onClick(data[position].id, position,it,data[position].coverPhotos)
+            onPhotoClickListener?.onClick(collection.id, position,it,collection.coverPhotos)
         }
     }
 
@@ -104,6 +108,16 @@ class CollectionsAdapter(val context: Context) : RecyclerView.Adapter<Collection
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+    class CollectionDiffCallback:DiffUtil.ItemCallback<Collection>(){
+        override fun areItemsTheSame(oldItem: Collection, newItem: Collection): Boolean {
+            return oldItem.id==newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Collection, newItem: Collection): Boolean {
+            return oldItem==newItem
+        }
+
     }
 
 

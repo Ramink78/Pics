@@ -1,5 +1,7 @@
 package com.unsplash.retrofit
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.unsplash.retrofit.data.API_KEY
 import com.unsplash.retrofit.data.photo.PhotoAPI
 import com.unsplash.retrofit.data.photo.model.Photo
 import okhttp3.Interceptor
@@ -20,7 +22,7 @@ object ServiceBuilder {
         .build()
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://api.unsplash.com/")
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -35,7 +37,7 @@ object ServiceBuilder {
         return Interceptor {
             val request = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "Client-ID Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0")
+                .addHeader("Authorization", "Client-ID $API_KEY")
                 .build()
             it.proceed(request)
 

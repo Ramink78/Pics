@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailPhotoViewModel2(private val photoRepo: PhotoDetailsRepo, photoId:String) : ViewModel() {
+class DetailPhotoViewModel(private val photoRepo: PhotoDetailsRepo, photoId:String) : ViewModel() {
     private val compositeDisposable=CompositeDisposable()
     val photoDetails:LiveData<Photo> by lazy {
         photoRepo.fetchDetails(compositeDisposable,photoId)

@@ -15,5 +15,5 @@ data class Photo(
     val color: String, @SerializedName("id")
     val id: String, @SerializedName("created_at")
     val createdAt: String, @SerializedName("urls")
-    val urls: Urls, var collapsed: Boolean = false
+    val urls: Urls,
 ) : Serializable

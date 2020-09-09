@@ -1,8 +1,7 @@
 package com.unsplash.retrofit
 
 
-import com.unsplash.retrofit.data.collections.CollectionPhotos
-import com.unsplash.retrofit.data.collections.Collections
+import com.unsplash.retrofit.data.collections.model.CollectionPhotos
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
@@ -11,6 +10,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.*
 
 interface API {
     @GET("search/photos/")

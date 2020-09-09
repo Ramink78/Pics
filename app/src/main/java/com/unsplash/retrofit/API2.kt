@@ -1,8 +1,7 @@
 package com.unsplash.retrofit
 
 
-import com.unsplash.retrofit.data.collections.CollectionPhotos
-import com.unsplash.retrofit.data.collections.Collections
+import com.unsplash.retrofit.data.collections.model.CollectionPhotos
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.random.ExploreData
 import com.unsplash.retrofit.data.searchdata.Search
@@ -22,12 +21,7 @@ interface API2 {
         @Query("per_page") count: Int
     ): Single<Data>
 
-    @GET("collections/")
-    fun getCollections(
-        @Query("client_id") key: String,
-        @Query("page") page: Int,
-        @Query("per_page") count: Int
-    ): Single<Collections>
+
 
     @GET("photos/random")
     fun getRandom(

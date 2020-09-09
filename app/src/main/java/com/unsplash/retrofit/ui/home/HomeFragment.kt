@@ -15,12 +15,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.transition.Explode
+import androidx.transition.TransitionInflater
 import com.unsplash.retrofit.R
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.adapters.HomeAdapters
 import com.unsplash.retrofit.adapters.OnPhotoClickListener
 import com.unsplash.retrofit.data.details.model.Photo
 import com.unsplash.retrofit.data.photo.PhotoAPI
+import com.unsplash.retrofit.network.NetworkState
 import com.unsplash.retrofit.repo.home.HomePhotosRepo
 import com.unsplash.retrofit.ui.recyclerview.ItemSpacing
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -34,7 +37,6 @@ class HomeFragment : Fragment() {
     lateinit var homePhotosRepo: HomePhotosRepo
     private lateinit var homeViewModel: HomeViewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +45,9 @@ class HomeFragment : Fragment() {
     ): View? {
         homePhotosRepo = HomePhotosRepo(ServiceBuilder.buildService(PhotoAPI::class.java))
         homeViewModel = getViewModel()
+        enterTransition=TransitionInflater.from(context).inflateTransition(android.R.transition.explode)
+        exitTransition=TransitionInflater.from(context).inflateTransition(android.R.transition.explode)
+        reenterTransition =  TransitionInflater.from(context).inflateTransition(R.transition.shared_element_transition2)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -50,7 +55,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        Toast.makeText(requireContext(), "view created", Toast.LENGTH_SHORT).show()
         homeadapter = HomeAdapters(requireContext())
         navController = Navigation.findNavController(view)
         home_recyceler.apply {
@@ -64,7 +68,12 @@ class HomeFragment : Fragment() {
 
         })
         homeViewModel.networkstate.observe(viewLifecycleOwner, Observer {
-           // Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+            homeadapter.networkState=it
+            when(it){
+                NetworkState.INITIALIZING->progressBar.visibility=View.VISIBLE
+                else->progressBar.visibility=View.GONE
+            }
+
         })
         homeadapter.setOnPhotoClickListener(object : OnPhotoClickListener {
             override fun onClick(
@@ -75,6 +84,7 @@ class HomeFragment : Fragment() {
             ) {
                 val action =
                     photo.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it!!) }
+
                 val extras = FragmentNavigatorExtras(view to (id ?: "no id"))
                 navController.navigate(action, extras)
 

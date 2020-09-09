@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.unsplash.retrofit.API
 import com.unsplash.retrofit.ServiceBuilder
 import com.unsplash.retrofit.data.API_KEY
-import com.unsplash.retrofit.data.collections.CollectionPhotos
+import com.unsplash.retrofit.data.collections.model.CollectionPhotos
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
