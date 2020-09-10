@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.unsplash.retrofit.ui.home.HomeFragment"
+        android:name="pics.app.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.unsplash.retrofit.ui.explore.ExploreFragment"
+        android:name="pics.app.ui.explore.ExploreFragment"
         android:label="Explore"
         tools:layout="@layout/fragment_explore"
         app:startDestination="@id/action_navigation_explore_to_detailOfImage">
@@ -38,39 +38,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_collections"
-        android:name="com.unsplash.retrofit.ui.collections.CollectionsFragment"
-        android:label="Collections"
-        tools:layout="@layout/fragment_collections" >
-        <action
-            android:id="@+id/action_navigation_collections_to_collectionPhotosFragment"
-            app:destination="@id/collectionPhotosFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/detailOfImage"
-        android:name="com.unsplash.retrofit.ui.explore.DetailPhoto"
+        android:name="pics.app.ui.explore.DetailPhoto"
         android:label="fragment_detail_of_image"
         tools:layout="@layout/fragment_detail_of_image">
         <argument
             android:name="photo"
-            app:argType="com.unsplash.retrofit.data.details.model.Photo"
+            app:argType="pics.app.data.details.model.Photo"
 
             />
-    </fragment>
-    <fragment
-        android:id="@+id/collectionPhotosFragment"
-        android:name="com.unsplash.retrofit.ui.collections.CollectionPhotosFragment"
-        android:label="CollectionPhotosFragment" >
-        <argument
-            android:name="id"
-            app:argType="string"
-            android:defaultValue="noID" />
-        <action
-            android:id="@+id/action_collectionPhotosFragment_to_detailOfImage"
-            app:destination="@id/detailOfImage"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
 </navigation>

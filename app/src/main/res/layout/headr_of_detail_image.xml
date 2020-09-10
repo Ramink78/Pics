@@ -7,7 +7,7 @@
     android:layout_marginEnd="8dp"
     android:layout_height="wrap_content">
 
-    <com.unsplash.retrofit.ui.widgets.AspectRatioImageView
+    <pics.app.ui.widgets.AspectRatioImageView
         android:id="@+id/header"
         android:transitionName="image"
         android:layout_width="match_parent"

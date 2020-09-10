@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="@+id/cPrimaryText"
         app:layout_constraintTop_toBottomOf="@+id/cPrimaryText" />
 
-    <com.unsplash.retrofit.ui.widgets.AspectRatioImageView
+    <pics.app.ui.widgets.AspectRatioImageView
         android:id="@+id/cPic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

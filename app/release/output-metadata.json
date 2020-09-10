@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.unsplash.retrofit",
+  "applicationId": "pics.app",
   "variantName": "release",
   "elements": [
     {

@@ -4,8 +4,9 @@
     android:duration="300"
     android:interpolator="@android:interpolator/fast_out_linear_in"
     android:transitionOrdering="together">
-    <arcMotion  />
+    <arcMotion />
     <changeClipBounds />
     <changeTransform/>
+    <changeImageTransform/>
     <changeBounds />
 </transitionSet>
