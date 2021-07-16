@@ -9,6 +9,7 @@
 
 
     <application
+        android:name=".PicsApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app"
         android:label="@string/app_name"

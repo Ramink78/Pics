@@ -5,10 +5,10 @@ import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import pics.app.PER_PAGE
-import pics.app.data.details.model.Photo
 import pics.app.data.photo.PhotoAPI
 import pics.app.network.NetworkState
 import io.reactivex.disposables.CompositeDisposable
+import pics.app.data.photo.model.Photo
 
 class ExploreRepo(private val service: PhotoAPI) {
     lateinit var collectionPagedList:LiveData<PagedList<Photo>>

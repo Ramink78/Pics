@@ -1,10 +1,12 @@
 package pics.app.data.photo.model
 
 import android.os.Parcelable
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import pics.app.data.user.model.User
 import kotlinx.android.parcel.Parcelize
-@Parcelize
+import java.io.Serializable
+
 @JsonClass(generateAdapter = true)
 data class Photo(
     val id: String,
@@ -24,22 +26,34 @@ data class Photo(
     val urls: Urls,
     val user: User?
 
-):Parcelable
+):Serializable
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Exif(
-    val make:String?,
+    @Json(name="make")
+    val make: String?,
+    @Json(name = "model")
     val model: String?,
-    val exposure_time: String?,
-    val aperture:String?,
-    val focal_length:String,
-    val iso :Int?
+    @Json(name = "exposure_time")
+    val exposureTime: String?,
+    @Json(name = "aperture")
+    val aperture: String?,
+    @Json(name = "focal_length")
+    val focalLength: String?,
+    @Json(name = "iso")
+    val iso: String
 ):Parcelable
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class  Location(
-    val city:String?,
-    val country:String?,
+    @Json(name = "title")
+    val title: String?,
+    @Json(name = "name")
+    val name: String?="none",
+    @Json(name="city")
+    val city: String?,
+    @Json(name="country")
+    val country: String?
 ):Parcelable
 
 @Parcelize

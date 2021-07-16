@@ -1,34 +1,40 @@
 package pics.app.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.paging.LoadState
 import androidx.transition.TransitionInflater
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.launch
+import pics.app.PicsApp
 import pics.app.R
-import pics.app.ServiceBuilder
 import pics.app.adapters.HomeAdapters
 import pics.app.adapters.OnPhotoClickListener
-import pics.app.data.details.model.Photo
+import pics.app.data.dp
 import pics.app.data.photo.PhotoAPI
-import pics.app.network.NetworkState
-import pics.app.repo.home.HomePhotosRepo
+import pics.app.data.photo.model.Photo
 import pics.app.ui.recyclerview.ItemSpacing
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
     private lateinit var homeadapter: HomeAdapters
     private lateinit var navController: NavController
-    lateinit var homePhotosRepo: HomePhotosRepo
-    private lateinit var homeViewModel: HomeViewModel
+    @Inject lateinit var service: PhotoAPI
+    @Inject
+    lateinit var retrofit: Retrofit
+    @Inject
+    lateinit var homeViewModel: HomeViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +42,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        homePhotosRepo = HomePhotosRepo(ServiceBuilder.buildService(PhotoAPI::class.java))
-        homeViewModel = getViewModel()
         reenterTransition = TransitionInflater.from(context)
             .inflateTransition(R.transition.shared_element_transition2)
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -45,28 +49,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         homeadapter = HomeAdapters(requireContext())
         navController = Navigation.findNavController(view)
         home_recyceler.apply {
-            addItemDecoration(ItemSpacing(resources.getDimensionPixelSize(R.dimen.item_space), 2))
+            addItemDecoration(ItemSpacing(24.dp(), 2))
             adapter = homeadapter
 
         }
-
-        homeViewModel.homephotos.observe(viewLifecycleOwner, Observer {
-            homeadapter.submitList(it)
-
-        })
-        homeViewModel.networkstate.observe(viewLifecycleOwner, Observer {
-            homeadapter.networkState = it
-            when (it) {
-                NetworkState.INITIALIZING -> progressBar.visibility = View.VISIBLE
-                else -> progressBar.visibility = View.GONE
+        homeViewModel.homePhotos.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                homeadapter.submitData(it)
             }
+        }
 
-        })
+        homeadapter.addLoadStateListener {
+            swiperefresh.isRefreshing = it.refresh is LoadState.Loading
+
+        }
         homeadapter.setOnPhotoClickListener(object : OnPhotoClickListener {
             override fun onClick(
                 id: String?, position: Int,
@@ -86,15 +85,9 @@ class HomeFragment : Fragment() {
         })
 
     }
-
-
-    private fun getViewModel(): HomeViewModel {
-        return ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                @Suppress("cast eception")
-                return HomeViewModel(homePhotosRepo) as T
-            }
-        })[HomeViewModel::class.java]
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity?.application as PicsApp).appComponent.inject(this)
     }
 
 

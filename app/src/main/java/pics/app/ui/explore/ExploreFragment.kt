@@ -1,5 +1,6 @@
 package pics.app.ui.explore
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +19,14 @@ import pics.app.R
 import pics.app.ServiceBuilder
 import pics.app.adapters.ExploreAdapter
 import pics.app.adapters.OnPhotoClickListener
-import pics.app.data.details.model.Photo
 import pics.app.data.photo.PhotoAPI
 import pics.app.network.NetworkState
 import pics.app.repo.explore.ExploreRepo
 import kotlinx.android.synthetic.main.fragment_explore.*
+import pics.app.PicsApp
+import pics.app.data.photo.model.Photo
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 
 class ExploreFragment : Fragment() {
@@ -34,13 +38,17 @@ class ExploreFragment : Fragment() {
     private lateinit var exploreAdapter: ExploreAdapter
     private lateinit var exploreRepo: ExploreRepo
 
+    @Inject
+    lateinit var retrofit: Retrofit
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         reenterTransition =  TransitionInflater.from(context).inflateTransition(R.transition.shared_element_transition2)
-        exploreRepo = ExploreRepo(ServiceBuilder.buildService(PhotoAPI::class.java))
+        exploreRepo = ExploreRepo(ServiceBuilder(retrofit).buildService(PhotoAPI::class.java))
         exploreViewModel = getViewModel()
 
 
@@ -97,5 +105,10 @@ class ExploreFragment : Fragment() {
             }
         })[ExploreViewModel::class.java]
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity?.application as PicsApp).appComponent.inject(this)
+    }
+
 
 }

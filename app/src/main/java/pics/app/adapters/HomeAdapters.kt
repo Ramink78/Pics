@@ -7,109 +7,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
-import androidx.paging.AsyncPagedListDiffer
-import androidx.paging.PagedList
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import pics.app.R
-import pics.app.data.details.model.Photo
+import pics.app.data.photo.model.Photo
 import pics.app.data.setAspectRatio
-import pics.app.network.NetworkState
 import pics.app.ui.widgets.AspectRatioImageView
 
 
 class HomeAdapters(val context: Context) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    PagingDataAdapter<Photo, HomeAdapters.PhotoVH>(comparator) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
-    val PROGRESS_TYPE = 0
-    val PHOTO_TYPE = 1
-    var networkState: NetworkState? = null
 
-    private val differ = AsyncPagedListDiffer(this, PhotoDiffCallBack())
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            PROGRESS_TYPE -> LoadingVH(
-                LayoutInflater.from(context).inflate(R.layout.loading, parent, false)
-            )
-            PHOTO_TYPE -> PhotoVH(
-                LayoutInflater.from(context).inflate(R.layout.home_item, parent, false)
-            )
 
-            else -> PhotoVH(
-                LayoutInflater.from(context).inflate(R.layout.home_item, parent, false)
-            )
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapters.PhotoVH {
+        return PhotoVH(
+            LayoutInflater.from(context).inflate(R.layout.home_item, parent, false)
+        )
+
 
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val photo = differ.getItem(position)
-        when (getItemViewType(position)) {
-            PHOTO_TYPE -> (holder as PhotoVH).bind(photo!!)
-            PROGRESS_TYPE -> (holder as LoadingVH).bind(networkState, position)
-
+    override fun onBindViewHolder(holder: HomeAdapters.PhotoVH, position: Int) {
+        val photo = getItem(position)
+        if (photo != null) {
+            holder.bind(photo)
         }
+
 
     }
 
 
     fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
-
         onPhotoClickListener = listener
-
-    }
-
-
-    class PhotoDiffCallBack : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem == newItem
-        }
-
-    }
-
-    fun submitList(photos: PagedList<Photo>) {
-        differ.submitList(photos)
-    }
-
-    fun removeItem(position: Int) {
-        differ.currentList?.removeAt(position)
-    }
-
-    override fun getItemCount(): Int {
-        return differ.itemCount
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            differ.currentList?.size?.minus(1) -> {
-                println("end of page")
-                PROGRESS_TYPE
-            }
-            else -> {
-                PHOTO_TYPE
-
-            }
-        }
-    }
-
-    inner class LoadingVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(networkState: NetworkState?, position: Int) {
-            val lparams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
-            lparams.isFullSpan = true
-            when (networkState) {
-                NetworkState.SUCCESS -> removeItem(position)
-            }
-
-        }
-
 
     }
 
@@ -132,6 +66,17 @@ class HomeAdapters(val context: Context) :
 
                 }
             }
+        }
+
+    }
+
+    companion object {
+        private val comparator = object : DiffUtil.ItemCallback<Photo>() {
+            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
+                oldItem == newItem
         }
 
     }

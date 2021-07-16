@@ -25,10 +25,7 @@
         <action
             android:id="@+id/action_navigation_explore_to_detailOfImage"
             app:destination="@id/detailOfImage"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" >
+         >
             <argument
                 android:name="id"
                 android:defaultValue="noID"
@@ -44,7 +41,7 @@
         tools:layout="@layout/fragment_detail_of_image">
         <argument
             android:name="photo"
-            app:argType="pics.app.data.details.model.Photo"
+            app:argType="pics.app.data.photo.model.Photo"
 
             />
     </fragment>

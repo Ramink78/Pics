@@ -2,8 +2,8 @@ package pics.app.data.user.model
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
-import pics.app.data.photo.model.Photo
 import kotlinx.android.parcel.Parcelize
+import pics.app.data.photo.model.Photo
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -29,6 +29,7 @@ data class User(
     val profile_image: ProfileImage?,
     val photos: List<Photo>?
 ) : Parcelable
+
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class ProfileImage(

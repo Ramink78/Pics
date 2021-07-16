@@ -1,16 +1,13 @@
 package pics.app.repo.explore
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import pics.app.FIRST_PAGE
-import pics.app.PER_PAGE
-import pics.app.data.details.model.Photo
 import pics.app.data.photo.PhotoAPI
 import pics.app.network.NetworkState
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import pics.app.data.photo.model.Photo
 
 class ExploreDataSource(
     private val ExploreAPI: PhotoAPI,
@@ -30,7 +27,7 @@ class ExploreDataSource(
         callback: LoadInitialCallback<Int, Photo>
     ) {
         _networkstate.postValue(NetworkState.INITIALIZING)
-        compositeDisposable.add(
+        /*compositeDisposable.add(
             ExploreAPI.getRandom(PER_PAGE)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -41,7 +38,7 @@ class ExploreDataSource(
                     _networkstate.postValue(NetworkState.ERROR)
                     Log.i(this::class.java.simpleName, "Error is : ${it.message}")
                 })
-        )
+        )*/
 
 
     }
@@ -51,7 +48,7 @@ class ExploreDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
-        compositeDisposable.add(
+       /* compositeDisposable.add(
             ExploreAPI.getRandom(PER_PAGE)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -60,7 +57,7 @@ class ExploreDataSource(
                 }, {
                     _networkstate.postValue(NetworkState.ERROR)
                     Log.i(this::class.java.simpleName, "Error is : ${it.message}")
-                }))
+                }))*/
 
 
 }

@@ -1,28 +1,28 @@
 package pics.app.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
-import pics.app.data.details.model.Photo
+import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.liveData
+import pics.app.data.photo.PhotoAPI
 import pics.app.network.NetworkState
-import pics.app.repo.home.HomePhotosRepo
-import io.reactivex.disposables.CompositeDisposable
+import pics.app.repo.home.HomePagingSource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class HomeViewModel(private val homePhotosRepo: HomePhotosRepo) : ViewModel() {
-    private val compositeDisposable=CompositeDisposable()
-    val homephotos:LiveData<PagedList<Photo>> by lazy {
-        homePhotosRepo.fetchHomePhotos(compositeDisposable)
-    }
-    val networkstate:LiveData<NetworkState> by lazy {
-        homePhotosRepo.getNetworkState()
-    }
+@Singleton
+class HomeViewModel @Inject constructor(private val service: PhotoAPI) : ViewModel() {
+    val homePhotos = Pager(
+        PagingConfig(
+            pageSize = 30,
+            enablePlaceholders = false
+        )
+    ) {
+        HomePagingSource(service)
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
-
-
+    }.liveData
+        .cachedIn(viewModelScope)
 
 
 }
