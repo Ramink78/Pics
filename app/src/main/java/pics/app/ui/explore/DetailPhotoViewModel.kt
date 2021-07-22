@@ -31,10 +31,13 @@ class DetailPhotoViewModel @Inject constructor(
                 _networkState.value = NetworkState.SUCCESS
 
             } catch (e: Exception) {
+                _networkState.value = NetworkState.ERROR
                 Timber.d(e)
+
 
             }
         }
+
     }
 
 

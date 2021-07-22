@@ -1,26 +1,21 @@
 package pics.app.ui.explore
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.TransitionInflater
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_detail_of_image.*
 import pics.app.PicsApp
 import pics.app.R
 import pics.app.adapters.DetailsAdapter
-import pics.app.data.setAspectRatio
+import pics.app.databinding.FragmentDetailOfImageBinding
 import pics.app.network.NetworkState
 import retrofit2.Retrofit
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -28,43 +23,36 @@ class DetailPhoto : Fragment() {
     var lmanager: GridLayoutManager? = null
 
     @Inject
-    lateinit var photoViewModel: DetailPhotoViewModel
-    lateinit var detailadapter: DetailsAdapter
-    private val args: DetailPhotoArgs by navArgs()
+    lateinit var retrofit: Retrofit
 
     @Inject
-    lateinit var retrofit: Retrofit
+    lateinit var photoViewModel: DetailPhotoViewModel
+
+    @Inject
+    lateinit var detailadapter: DetailsAdapter
+    private lateinit var binding: FragmentDetailOfImageBinding
+    private val args: DetailPhotoArgs by navArgs()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        sharedElementEnterTransition = TransitionInflater.from(context)
-            .inflateTransition(R.transition.shared_element_transition2)
-        // exitTransition=TransitionInflater.from(context).inflateTransition(android.R.transition.explode)
-        return inflater.inflate(R.layout.fragment_detail_of_image, container, false)
+    ): View {
+        binding = FragmentDetailOfImageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailadapter = DetailsAdapter(arrayListOf(), requireContext())
-
-        header.apply {
-            ViewCompat.setTransitionName(this, args.photo.id)
-            setAspectRatio(args.photo.width, args.photo.height)
-            Glide.with(context)
-                .load(args.photo.urls.regular)
-                .placeholder(ColorDrawable(Color.parseColor(args.photo.color)))
-                .thumbnail(Glide.with(context).load(args.photo.urls.small))
-                .dontAnimate()
-                .dontTransform()
-                .into(this)
+        binding.photo = args.photo
+        lmanager = GridLayoutManager(requireContext(), 2)
+        binding.rvDetails.apply {
+            layoutManager = lmanager
+            adapter = detailadapter
 
 
         }
-
-
-        lmanager = GridLayoutManager(requireContext(), 2)
         lmanager!!.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (detailadapter.getItemViewType(position)) {
@@ -75,12 +63,8 @@ class DetailPhoto : Fragment() {
             }
 
         }
-        rv_details.apply {
-            layoutManager = lmanager
-            adapter = detailadapter
+        photoViewModel.retrieveDetails(args.photo.id)
 
-
-        }
         photoViewModel.detailPhoto.observe(viewLifecycleOwner) {
             detailadapter.addItem(Row.Section(getString(R.string.specfication_title)))
             detailadapter.addItem(
@@ -171,7 +155,6 @@ class DetailPhoto : Fragment() {
 
 
         })
-        photoViewModel.retrieveDetails(args.photo.id)
 
 
     }
@@ -179,8 +162,6 @@ class DetailPhoto : Fragment() {
 
     sealed class Row {
         data class Item(val primary: String?, val secondary: String, val drawableRes: Int) : Row()
-
-        //  data class Header(val url: String, val color:String,val width:Int,val height:Int,val id:String):Row()
         data class Section(val title: String) : Row()
         data class Loading(val networkState: NetworkState) : Row()
     }

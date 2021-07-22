@@ -14,7 +14,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/item_avatar"
+        android:id="@+id/collection_user_profile"
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:scaleType="centerCrop"
@@ -47,7 +47,7 @@
         android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/item_seconderyText"
-        app:layout_constraintStart_toEndOf="@+id/item_avatar"
+        app:layout_constraintStart_toEndOf="@+id/collection_user_profile"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

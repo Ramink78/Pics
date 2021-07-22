@@ -1,34 +1,33 @@
 package pics.app.repo.home
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import pics.app.FIRST_PAGE
-import pics.app.PER_PAGE
-import pics.app.data.photo.model.Photo
+import pics.app.PHOTO_PER_PAGE
 import pics.app.data.photo.PhotoAPI
+import pics.app.data.photo.model.Photo
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class HomePagingSource(
+class HomePagingSource @Inject constructor(
     private val service: PhotoAPI,
 ) : PagingSource<Int, Photo>() {
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val position = params.key ?: FIRST_PAGE
-        Log.d("HomePagingSource", "page number is: $position")
         return try {
-            val photos = service.getPhotos(position, PER_PAGE)
+            val photos = service.getPhotos(position, PHOTO_PER_PAGE)
             val nextKey = if (photos.isNullOrEmpty()) {
                 null
             } else {
-                position + (params.loadSize / PER_PAGE)
+                position + (params.loadSize / PHOTO_PER_PAGE)
             }
             LoadResult.Page(
                 nextKey = nextKey,
                 data = photos,
-                prevKey = if (position == 1) null else position - 1
+                prevKey = if (position == FIRST_PAGE) null else position - 1
             )
 
         } catch (exception: IOException) {

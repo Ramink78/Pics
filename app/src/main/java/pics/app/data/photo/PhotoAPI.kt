@@ -24,9 +24,5 @@ interface PhotoAPI {
         @Query("id") id: String?
     ): Photo
 
-    @GET("photos/random")
-    fun getRandom(
-        @Query("count") count: Int
-    ): ArrayList<Photo>
 
 }

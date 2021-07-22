@@ -16,10 +16,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_explore"
-        android:name="pics.app.ui.explore.ExploreFragment"
+        android:id="@+id/navigation_collections"
+        android:name="pics.app.ui.collections.CollectionsFragment"
         android:label="Explore"
-        tools:layout="@layout/fragment_explore"
+        tools:layout="@layout/fragment_collections"
         app:startDestination="@id/action_navigation_explore_to_detailOfImage">
 
         <action

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="collection"
+            type="pics.app.data.collections.model.Collection" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <pics.app.ui.widgets.AspectRatioImageView
+            android:id="@+id/collection_cover"
+            height="@{collection.coverPhoto.height}"
+            photo="@{collection.coverPhoto}"
+            width="@{collection.coverPhoto.width}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="true"
+            android:foreground="@drawable/image_ovelay_gradiant"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/collection_user_profile"
+            app:layout_constraintTop_toBottomOf="@+id/collection_user_profile"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed"
+            tools:srcCompat="@color/chipEanbledColor" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/collection_user_profile"
+            profilePhoto="@{collection.user.profile_image.medium}"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            tools:srcCompat="@color/white" />
+
+        <TextView
+            android:id="@+id/collection_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@{collection.title}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/collection_photo_count"
+            app:layout_constraintStart_toStartOf="@+id/collection_cover"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/collection_photo_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@{Integer.toString(collection.totalPhotos)}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/collection_title"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/collection_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{collection.user.first_name}"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/collection_cover"
+            app:layout_constraintStart_toEndOf="@+id/collection_user_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Firstname" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

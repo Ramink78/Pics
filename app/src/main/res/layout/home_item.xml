@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout>
 
-    <pics.app.ui.widgets.AspectRatioImageView
-        android:id="@+id/cePic"
+    <data>
+
+        <variable
+            name="photo"
+            type="pics.app.data.photo.model.Photo" />
+
+        <variable
+            name="viewModel"
+            type="pics.app.ui.home.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
 
+        <pics.app.ui.widgets.AspectRatioImageView
+            android:id="@+id/home_photo"
+            height="@{photo.height}"
+            width="@{photo.width}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:onClick="@{()->viewModel.photoClicked(photo)}"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            photo="@{photo}"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
 

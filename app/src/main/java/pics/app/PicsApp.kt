@@ -12,7 +12,7 @@ import timber.log.Timber.DebugTree
 
 class PicsApp:Application() {
     val appComponent: AppComponent by lazy {
-        DaggerAppComponent.create()
+        DaggerAppComponent.factory().create(this)
     }
 
     override fun onCreate() {

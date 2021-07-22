@@ -5,7 +5,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 const val FIRST_PAGE = 1
-const val PER_PAGE = 30
+const val PHOTO_PER_PAGE = 30
+const val COLLECTION_PER_PAGE = 100
 
 @Singleton
 class ServiceBuilder @Inject constructor(private val retrofit: Retrofit) {

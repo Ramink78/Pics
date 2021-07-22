@@ -9,11 +9,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pics.app.ServiceBuilder
 import pics.app.data.API_KEY
+import pics.app.data.collections.CollectionsApi
 import pics.app.data.details.DetailsAPI
 import pics.app.data.photo.PhotoAPI
+import pics.app.ui.explore.DetailPhoto
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -51,6 +52,12 @@ class NetworkModule {
     @Provides
     fun providesDetailsPhotoApi(retrofit: Retrofit): DetailsAPI {
         return ServiceBuilder(retrofit).buildService(DetailsAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesCollectionsPhotoApi(retrofit: Retrofit): CollectionsApi {
+        return ServiceBuilder(retrofit).buildService(CollectionsApi::class.java)
     }
 
 

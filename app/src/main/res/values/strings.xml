@@ -17,4 +17,6 @@
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
     <string name="image_transition_name">transition image %d</string>
+    <string name="bottom_nav_collections">COLLECTIONS</string>
+    <string name="bottom_nav_home">HOME</string>
 </resources>

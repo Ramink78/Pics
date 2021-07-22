@@ -1,6 +1,5 @@
 package pics.app.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import pics.app.R
 import pics.app.network.NetworkState
 import pics.app.ui.explore.DetailPhoto
+import javax.inject.Inject
 
-class DetailsAdapter(private val rows: ArrayList<DetailPhoto.Row>, val context: Context) :
+class DetailsAdapter @Inject constructor(private val rows: ArrayList<DetailPhoto.Row>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val title_type: Int = 1
     val item_type: Int = 2
@@ -21,7 +21,7 @@ class DetailsAdapter(private val rows: ArrayList<DetailPhoto.Row>, val context: 
     class ItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val primaryText: TextView = itemView.findViewById(R.id.item_primaryText)
         val secondaryText: TextView = itemView.findViewById(R.id.item_seconderyText)
-        val avatar: ShapeableImageView = itemView.findViewById(R.id.item_avatar)
+        val avatar: ShapeableImageView = itemView.findViewById(R.id.collection_user_profile)
     }
 
     class TitleVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -90,6 +90,7 @@ class DetailsAdapter(private val rows: ArrayList<DetailPhoto.Row>, val context: 
                 val title = (rows[position] as DetailPhoto.Row.Section).title
                 holder as TitleVH
                 holder.title.text = title
+
             }
 
 

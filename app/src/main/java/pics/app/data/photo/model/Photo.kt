@@ -12,8 +12,8 @@ data class Photo(
     val id: String,
     val created_at: String?,
     val updated_at: String?,
-    val width: Int?,
-    val height: Int?,
+    val width: Int,
+    val height: Int,
     val color: String? = "#E0E0E0",
     val views: Int?,
     val downloads: Int?,
@@ -41,7 +41,7 @@ data class Exif(
     @Json(name = "focal_length")
     val focalLength: String?,
     @Json(name = "iso")
-    val iso: String
+    val iso: String?
 ):Parcelable
 @Parcelize
 @JsonClass(generateAdapter = true)
