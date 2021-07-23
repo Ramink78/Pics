@@ -1,40 +1,42 @@
 package pics.app.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pics.app.data.photo.model.Photo
 import pics.app.databinding.HomeItemBinding
+import pics.app.ui.base.BasePhotoListAdapter
 import pics.app.ui.home.HomeViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeAdapter @Inject constructor(
     private val homeViewModel: HomeViewModel
 ) :
-    PagingDataAdapter<Photo, HomeAdapter.PhotoViewHolder>(comparator) {
+    BasePhotoListAdapter<Photo, RecyclerView.ViewHolder>(comparator) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
+        Timber.d("adapter oncreate view holder")
+
         return PhotoViewHolder(
-            HomeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false), homeViewModel
+            HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            homeViewModel
         )
 
 
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val photo = getItem(position)
         if (photo != null) {
-            holder.bind(photo)
+            (holder as PhotoViewHolder).bind(photo)
         }
 
 
     }
-
 
 
     fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
@@ -43,7 +45,10 @@ class HomeAdapter @Inject constructor(
     }
 
 
-    class PhotoViewHolder(private val homeItemBinding: HomeItemBinding, private val homeViewModel: HomeViewModel) :
+    class PhotoViewHolder(
+        private val homeItemBinding: HomeItemBinding,
+        private val homeViewModel: HomeViewModel
+    ) :
         RecyclerView.ViewHolder(homeItemBinding.root) {
         fun bind(photo: Photo) {
             homeItemBinding.homePhoto
@@ -53,7 +58,6 @@ class HomeAdapter @Inject constructor(
 
         }
     }
-
 
 
     companion object {

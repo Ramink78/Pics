@@ -2,59 +2,46 @@ package pics.app.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.paging.LoadState
-import kotlinx.android.synthetic.main.fragment_home.*
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
-import pics.app.R
 import pics.app.adapters.HomeAdapter
 import pics.app.data.dp
-import pics.app.utils.ItemSpacing
+import pics.app.data.photo.model.Photo
+import pics.app.ui.base.BasePhotoListFragment
 import javax.inject.Inject
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
 
-    @Inject
-    lateinit var homeAdapter: HomeAdapter
+
     private lateinit var navController: NavController
 
     @Inject
     lateinit var homeViewModel: HomeViewModel
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
 
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+    @Inject
+    lateinit var homeAdapter: HomeAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         navController = Navigation.findNavController(view)
-        home_recycler_view.apply {
-
-            addItemDecoration(ItemSpacing(24.dp(), 2))
-            adapter = homeAdapter
-
-        }
         homeViewModel.apply {
             homePhotos.observe(viewLifecycleOwner) {
                 lifecycleScope.launch {
-                    homeAdapter.submitData(it)
+                    listAdapter.submitData(it)
                 }
             }
             photoClicked.observe(viewLifecycleOwner) {
-                if (it!=null) {
+                if (it != null) {
                     val action =
                         it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
                     navController.navigate(action)
@@ -62,10 +49,12 @@ class HomeFragment : Fragment() {
 
             }
         }
-        homeAdapter.apply {
+        listAdapter.apply {
             addLoadStateListener {
-                swiperefresh.isRefreshing = it.refresh is LoadState.Loading
-                home_recycler_view.isVisible=it.refresh is LoadState.NotLoading
+                when (it.refresh) {
+                    LoadState.Loading -> showLoading()
+                    else -> showSuccess()
+                }
 
             }
         }
@@ -75,7 +64,12 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
         (activity?.application as PicsApp).appComponent.inject(this)
 
+
     }
 
+    override val lManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
+    override val listAdapter
+        get() = homeAdapter
+    override val itemSpace = 24.dp()
 }
