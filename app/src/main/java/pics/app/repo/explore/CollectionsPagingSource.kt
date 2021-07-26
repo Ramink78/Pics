@@ -25,7 +25,7 @@ class CollectionsPagingSource @Inject constructor(
         val position = params.key ?: FIRST_PAGE
 
         return try {
-            val response = collectionsApi.getCollections(COLLECTION_PER_PAGE, position)
+            val response = collectionsApi.getCollections(position, COLLECTION_PER_PAGE)
             val nextKey = if (response.isNullOrEmpty())
                 null
             else

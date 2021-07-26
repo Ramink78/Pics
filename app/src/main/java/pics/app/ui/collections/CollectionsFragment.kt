@@ -7,15 +7,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
 import pics.app.adapters.CollectionsAdapter
+import pics.app.adapters.OnCollectionClickListener
 import pics.app.data.collections.model.Collection
 import pics.app.databinding.FragmentCollectionsBinding
 import pics.app.ui.base.BasePhotoListFragment
 import retrofit2.Retrofit
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -37,6 +38,7 @@ class CollectionsFragment : BasePhotoListFragment<Collection, RecyclerView.ViewH
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+
         /*   collectionsAdapter.setOnPhotoClickListener(object : OnCollectionClickListener {
                override fun onClick(id: Int?, position: Int, view: View, photo: Collection?) {
                    /*  val action =
@@ -54,20 +56,35 @@ class CollectionsFragment : BasePhotoListFragment<Collection, RecyclerView.ViewH
 
            })*/
         collectionsViewModel.apply {
-            collections.observe(viewLifecycleOwner) {
+           collections.observe(viewLifecycleOwner) {
+                Timber.d("first")
                 lifecycleScope.launch {
                     listAdapter.submitData(it)
                 }
 
             }
+            collectionClick.observe(viewLifecycleOwner){
+                Timber.d("observed")
+
+            }
+
+
         }
-        collectionsAdapter.apply {
+        listAdapter.apply {
             addLoadStateListener {
                 when (it.refresh) {
                     LoadState.Loading -> showLoading()
                     else -> showSuccess()
                 }
             }
+            setOnPhotoClickListener(object : OnCollectionClickListener{
+                override fun onClick(id: String, collection: Collection) {
+                     val action =
+                    CollectionsFragmentDirections.actionNavigationCollectionsToPhotosCollection(collection)
+                navController.navigate(action)
+                }
+
+            })
         }
 
 
@@ -80,9 +97,9 @@ class CollectionsFragment : BasePhotoListFragment<Collection, RecyclerView.ViewH
 
     override val listAdapter
         get() = collectionsAdapter
-    override val lManager
-    get() = LinearLayoutManager(requireContext())
     override val itemSpace = 0
+    override val spanCount: Int
+        get() = 1
 
 
 }

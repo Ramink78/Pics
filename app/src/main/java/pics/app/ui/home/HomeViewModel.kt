@@ -10,6 +10,7 @@ import androidx.paging.liveData
 import pics.app.data.photo.PhotoAPI
 import pics.app.data.photo.model.Photo
 import pics.app.network.NetworkState
+import pics.app.repo.explore.CollectionPhotosPagingSource
 import pics.app.repo.home.HomePagingSource
 import pics.app.utils.SingleLiveEvent
 import javax.inject.Inject
@@ -17,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeViewModel @Inject constructor(private val homePagingSource: HomePagingSource) : ViewModel() {
-
+    var isHome=true
     private val _photoClicked=SingleLiveEvent<Photo>()
     val photoClicked:LiveData<Photo>
     get() = _photoClicked
@@ -31,6 +32,7 @@ class HomeViewModel @Inject constructor(private val homePagingSource: HomePaging
 
     }.liveData
         .cachedIn(viewModelScope)
+
 fun photoClicked(photo: Photo)   {
     _photoClicked.value=photo
 }

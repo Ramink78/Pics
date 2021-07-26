@@ -24,12 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <pics.app.ui.widgets.AspectRatioImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/header"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                height="@{photo.height}"
-                width="@{photo.width}"
                 photo="@{photo}"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"

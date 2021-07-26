@@ -7,24 +7,27 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import pics.app.data.dp
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pics.app.databinding.BasePhotoListFragmentBinding
+import pics.app.uiPhoto.base.BasePhotoListAdapter
 import pics.app.utils.ItemSpacing
 
-abstract class BasePhotoListFragment<T: Any,V:RecyclerView.ViewHolder> : Fragment() {
+abstract class BasePhotoListFragment<T : Any, V : RecyclerView.ViewHolder> : Fragment() {
 
-    private  var _binding:BasePhotoListFragmentBinding?= null
+    private var _binding: BasePhotoListFragmentBinding? = null
     private val binding get() = _binding!!
-    abstract val listAdapter:BasePhotoListAdapter<T,V>
-    abstract val lManager:RecyclerView.LayoutManager
-    abstract val itemSpace:Int
+    abstract val listAdapter: BasePhotoListAdapter<T, V>
+    abstract val itemSpace: Int
+    abstract val spanCount: Int
+
+    protected lateinit var layoutManager: StaggeredGridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding=BasePhotoListFragmentBinding.inflate(
+        _binding = BasePhotoListFragmentBinding.inflate(
             inflater,
             container,
             false
@@ -34,30 +37,30 @@ abstract class BasePhotoListFragment<T: Any,V:RecyclerView.ViewHolder> : Fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
+    //    layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.baseRecyclerView.apply {
-            adapter=listAdapter
-            layoutManager=lManager
-            addItemDecoration(ItemSpacing(itemSpace,2))
+            adapter = listAdapter
+            layoutManager = this@BasePhotoListFragment.layoutManager
+            addItemDecoration(ItemSpacing(itemSpace, spanCount))
         }
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
-    }
-    fun showLoading(){
-        binding.baseRecyclerView.isVisible=false
-        binding.swipeRefresh.isRefreshing=true
-    }
-    fun showSuccess(){
-        binding.baseRecyclerView.isVisible=true
-        binding.swipeRefresh.isRefreshing=false
+        _binding = null
     }
 
+    fun showLoading() {
+        binding.baseRecyclerView.isVisible = false
+        binding.swipeRefresh.isRefreshing = true
+    }
 
-
-
+    fun showSuccess() {
+        binding.baseRecyclerView.isVisible = true
+        binding.swipeRefresh.isRefreshing = false
+    }
 
 
 }

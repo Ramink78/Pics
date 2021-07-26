@@ -33,6 +33,7 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         navController = Navigation.findNavController(view)
         homeViewModel.apply {
             homePhotos.observe(viewLifecycleOwner) {
@@ -41,11 +42,10 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
                 }
             }
             photoClicked.observe(viewLifecycleOwner) {
-                if (it != null) {
                     val action =
                         it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
                     navController.navigate(action)
-                }
+
 
             }
         }
@@ -67,9 +67,10 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
 
     }
 
-    override val lManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
     override val listAdapter
         get() = homeAdapter
     override val itemSpace = 24.dp()
+    override val spanCount: Int
+        get() = 2
 }

@@ -20,9 +20,9 @@ class ItemSpacing(  private val spacing: Int,
         val spanIndex = params?.spanIndex
         val position = params?.absoluteAdapterPosition ?: 0
 
-        outRect.left = if (spanIndex == 0) spacing else 0
-        outRect.top = if (position < spanCount) spacing else 0
-        outRect.right = spacing
+        outRect.left = if (spanIndex == 0 &&position!=0) spacing else spacing/2
+        outRect.top = if (position ==0) spacing else 0
+        outRect.right = if (spanIndex==1) spacing else spacing/2
         outRect.bottom = spacing
     }
 }

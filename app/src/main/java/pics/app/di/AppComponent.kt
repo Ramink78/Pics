@@ -7,6 +7,7 @@ import pics.app.MainActivity
 import pics.app.PicsApp
 import pics.app.ui.explore.DetailPhoto
 import pics.app.ui.collections.CollectionsFragment
+import pics.app.ui.collections.PhotosCollection
 import pics.app.ui.home.HomeFragment
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
+    fun getPhotosCollectionComponent():PhotoCollectionComponent.Factory
     fun inject(mainActivity: MainActivity)
     fun inject(picsApp: PicsApp)
     fun inject(detailPhoto: DetailPhoto)

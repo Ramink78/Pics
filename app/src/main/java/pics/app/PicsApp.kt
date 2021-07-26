@@ -8,9 +8,7 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 
-
-
-class PicsApp:Application() {
+class PicsApp : Application() {
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(this)
     }

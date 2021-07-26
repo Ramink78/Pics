@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pics.app.data.collections.model.Collection
+import pics.app.data.setAspectRatio
 import pics.app.databinding.CollectionItemBinding
-import pics.app.ui.base.BasePhotoListAdapter
+import pics.app.databinding.RecyclerViewHeaderBinding
+import pics.app.ui.base.TitleViewHolder
+import pics.app.uiPhoto.base.BasePhotoListAdapter
 import javax.inject.Inject
 
 
@@ -15,29 +18,64 @@ class CollectionsAdapter @Inject constructor(val context: Context) :
     BasePhotoListAdapter<Collection, RecyclerView.ViewHolder>(
         comparator
     ) {
-    private var onCollectionClickListener: OnCollectionClickListener? = null
+    override val title: String
+        get() = "Collections"
+    val TITLE_TYPE = 1;
+    private lateinit var onCollectionClickListener: OnCollectionClickListener
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return CollectionViewHolder(
-            CollectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
-
-    }
-
-    override fun onBindViewHolder(holderCollection: RecyclerView.ViewHolder, position: Int) {
-        val collection = getItem(position)
-        if (collection != null) {
-            (holderCollection as CollectionViewHolder).bind(collection)
+        return when (viewType) {
+            TITLE_TYPE -> TitleViewHolder(
+                RecyclerViewHeaderBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
+            else -> CollectionViewHolder(
+                CollectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onCollectionClickListener
+            )
         }
 
 
     }
 
-    class CollectionViewHolder(private val binding: CollectionItemBinding) :
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val collection = getItem(position)
+        when (getItemViewType(position)) {
+            TITLE_TYPE -> {
+                (holder as TitleViewHolder).bind(title)
+
+            }
+            else -> {
+                if (collection != null) {
+                    (holder as CollectionViewHolder).apply {
+                        binding.collectionCover.setAspectRatio(
+                            collection.coverPhoto.width,
+                            collection.coverPhoto.height
+                        )
+                        bind(collection)
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    class CollectionViewHolder(
+        val binding: CollectionItemBinding,
+        private val onCollectionClickListener: OnCollectionClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(collection: Collection) {
+
             binding.collection = collection
+            binding.collectionCover.setOnClickListener {
+                onCollectionClickListener.onClick(collection.id, collection)
+            }
             binding.executePendingBindings()
         }
     }
@@ -58,6 +96,15 @@ class CollectionsAdapter @Inject constructor(val context: Context) :
         }
 
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> TITLE_TYPE
+            else -> super.getItemViewType(position)
+        }
+    }
+
+
 
 
 }

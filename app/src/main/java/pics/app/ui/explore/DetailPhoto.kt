@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import pics.app.PicsApp
 import pics.app.R
 import pics.app.adapters.DetailsAdapter
+import pics.app.data.getScreenWidth
 import pics.app.databinding.FragmentDetailOfImageBinding
 import pics.app.network.NetworkState
 import retrofit2.Retrofit
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -45,7 +45,13 @@ class DetailPhoto : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.photo = args.photo
+        val photo = args.photo
+        binding.header.apply {
+            val ratio = photo.height.toDouble() / photo.width.toDouble()
+            layoutParams.height = (ratio * getScreenWidth()).toInt()
+            requestLayout()
+        }
+        binding.photo = photo
         lmanager = GridLayoutManager(requireContext(), 2)
         binding.rvDetails.apply {
             layoutManager = lmanager

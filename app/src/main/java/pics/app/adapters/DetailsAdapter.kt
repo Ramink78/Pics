@@ -21,7 +21,7 @@ class DetailsAdapter @Inject constructor(private val rows: ArrayList<DetailPhoto
     class ItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val primaryText: TextView = itemView.findViewById(R.id.item_primaryText)
         val secondaryText: TextView = itemView.findViewById(R.id.item_seconderyText)
-        val avatar: ShapeableImageView = itemView.findViewById(R.id.collection_user_profile)
+        val avatar: ShapeableImageView = itemView.findViewById(R.id.user_profile)
     }
 
     class TitleVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -81,7 +81,8 @@ class DetailsAdapter @Inject constructor(private val rows: ArrayList<DetailPhoto
         when (holder.itemViewType) {
             item_type -> {
                 val item = rows[position] as DetailPhoto.Row.Item
-                (holder as ItemVH).primaryText.text = if (item.primary.isNullOrEmpty()) "Unknown" else item.primary
+                (holder as ItemVH).primaryText.text =
+                    if (item.primary.isNullOrEmpty()) "Unknown" else item.primary
 
                 holder.secondaryText.text = item.secondary
                 holder.avatar.setImageResource(item.drawableRes)
@@ -101,7 +102,8 @@ class DetailsAdapter @Inject constructor(private val rows: ArrayList<DetailPhoto
         rows.add(row)
         notifyDataSetChanged()
     }
-    fun removeItem(position: Int){
+
+    fun removeItem(position: Int) {
         rows.removeAt(position)
         notifyItemRemoved(position)
     }

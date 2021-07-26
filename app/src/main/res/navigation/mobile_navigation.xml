@@ -18,20 +18,13 @@
     <fragment
         android:id="@+id/navigation_collections"
         android:name="pics.app.ui.collections.CollectionsFragment"
-        android:label="Explore"
+        android:label="Collections"
         tools:layout="@layout/fragment_collections"
-        app:startDestination="@id/action_navigation_explore_to_detailOfImage">
+      >
 
         <action
-            android:id="@+id/action_navigation_explore_to_detailOfImage"
-            app:destination="@id/detailOfImage"
-         >
-            <argument
-                android:name="id"
-                android:defaultValue="noID"
-                app:argType="string" />
-
-        </action>
+            android:id="@+id/action_navigation_collections_to_photosCollection"
+            app:destination="@id/photosCollection" />
     </fragment>
 
     <fragment
@@ -44,5 +37,16 @@
             app:argType="pics.app.data.photo.model.Photo"
 
             />
+    </fragment>
+    <fragment
+        android:id="@+id/photosCollection"
+        android:name="pics.app.ui.collections.PhotosCollection"
+        android:label="PhotosCollection" >
+        <argument
+            android:name="collection"
+            app:argType="pics.app.data.collections.model.Collection" />
+        <action
+            android:id="@+id/action_photosCollection_to_detailOfImage"
+            app:destination="@id/detailOfImage" />
     </fragment>
 </navigation>

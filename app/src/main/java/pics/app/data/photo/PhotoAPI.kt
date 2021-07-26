@@ -12,12 +12,7 @@ interface PhotoAPI {
         @Query("per_page") per_page: Int?
     ): List<Photo>
 
-    @GET("collections/{id}/photos")
-    fun getPhotosFromCollection(
-        @Query("id") id: Int?,
-        @Query("page") page: Int?,
-        @Query("per_page") per_page: Int?
-    ): List<Photo>
+
 
     @GET("photos/{id}")
     fun getPhoto(

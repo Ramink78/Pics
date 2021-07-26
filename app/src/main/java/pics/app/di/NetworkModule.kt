@@ -17,8 +17,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-@Module
+@Module(subcomponents = [PhotoCollectionComponent::class])
 class NetworkModule {
+
 
     @Singleton
     @Provides

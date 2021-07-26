@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="pics.app.ui.home.HomeViewModel" />
+            type="pics.app.ui.collections.PhotoCollectionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,15 +24,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:onClick="@{()->viewModel.photoClicked(photo)}"
             android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed" />
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed"
+            tools:srcCompat="@color/chipEanbledColor" />
 
-
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/user_profile"
+            profilePhoto="@{photo.user.profile_image.medium}"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="2dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/home_photo"
+            app:layout_constraintEnd_toEndOf="@+id/home_photo"
+            app:layout_constraintStart_toStartOf="@+id/home_photo"
+            app:layout_constraintTop_toTopOf="@+id/home_photo"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            app:strokeColor="@color/black"
+            app:strokeWidth="4dp"
+            tools:srcCompat="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

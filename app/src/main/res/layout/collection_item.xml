@@ -6,6 +6,9 @@
         <variable
             name="collection"
             type="pics.app.data.collections.model.Collection" />
+        <variable
+            name="viewModel"
+            type="pics.app.ui.collections.CollectionsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,25 +17,22 @@
 
         <pics.app.ui.widgets.AspectRatioImageView
             android:id="@+id/collection_cover"
-            height="@{collection.coverPhoto.height}"
             photo="@{collection.coverPhoto}"
-            width="@{collection.coverPhoto.width}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:adjustViewBounds="true"
             android:foreground="@drawable/image_ovelay_gradiant"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/collection_user_profile"
-            app:layout_constraintTop_toBottomOf="@+id/collection_user_profile"
+            app:layout_constraintStart_toEndOf="@+id/user_profile"
+            app:layout_constraintTop_toBottomOf="@+id/user_profile"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Feed"
             tools:srcCompat="@color/chipEanbledColor" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/collection_user_profile"
+            android:id="@+id/user_profile"
             profilePhoto="@{collection.user.profile_image.medium}"
             android:layout_width="46dp"
             android:layout_height="46dp"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            app:shapeAppearanceOverlay="@style/CircleImage"
             tools:srcCompat="@color/white" />
 
         <TextView
@@ -53,6 +53,7 @@
             android:layout_marginBottom="8dp"
             android:text="@{collection.title}"
             android:textColor="@color/white"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/collection_photo_count"
             app:layout_constraintStart_toStartOf="@+id/collection_cover"
             tools:text="TextView" />
@@ -64,7 +65,8 @@
             android:layout_marginBottom="16dp"
             android:text="@{Integer.toString(collection.totalPhotos)}"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/collection_cover"
             app:layout_constraintStart_toStartOf="@+id/collection_title"
             tools:text="TextView" />
 
@@ -77,7 +79,7 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/collection_cover"
-            app:layout_constraintStart_toEndOf="@+id/collection_user_profile"
+            app:layout_constraintStart_toEndOf="@+id/user_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Firstname" />
     </androidx.constraintlayout.widget.ConstraintLayout>
