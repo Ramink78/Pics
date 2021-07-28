@@ -21,6 +21,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/home_photo"
             photo="@{photo}"
+            android:onClick="@{()->viewModel.onPhotoClick(photo)}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

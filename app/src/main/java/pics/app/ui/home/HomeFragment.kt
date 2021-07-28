@@ -15,13 +15,13 @@ import pics.app.adapters.HomeAdapter
 import pics.app.data.dp
 import pics.app.data.photo.model.Photo
 import pics.app.ui.base.BasePhotoListFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 
 class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
 
 
-    private lateinit var navController: NavController
 
     @Inject
     lateinit var homeViewModel: HomeViewModel
@@ -32,9 +32,6 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        navController = Navigation.findNavController(view)
         homeViewModel.apply {
             homePhotos.observe(viewLifecycleOwner) {
                 lifecycleScope.launch {

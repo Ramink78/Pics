@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pics.app.databinding.BasePhotoListFragmentBinding
@@ -13,7 +15,7 @@ import pics.app.uiPhoto.base.BasePhotoListAdapter
 import pics.app.utils.ItemSpacing
 
 abstract class BasePhotoListFragment<T : Any, V : RecyclerView.ViewHolder> : Fragment() {
-
+    lateinit var navController: NavController
     private var _binding: BasePhotoListFragmentBinding? = null
     private val binding get() = _binding!!
     abstract val listAdapter: BasePhotoListAdapter<T, V>
@@ -37,6 +39,7 @@ abstract class BasePhotoListFragment<T : Any, V : RecyclerView.ViewHolder> : Fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController=Navigation.findNavController(view)
         layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
     //    layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.baseRecyclerView.apply {

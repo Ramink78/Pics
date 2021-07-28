@@ -5,17 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import pics.app.data.dp
+import pics.app.R
 import pics.app.data.getScreenWidth
 import pics.app.data.photo.model.Photo
-import pics.app.data.setAspectRatio
-import pics.app.databinding.DetailTitleBinding
 import pics.app.databinding.HomeItemBinding
 import pics.app.databinding.RecyclerViewHeaderBinding
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.home.HomeViewModel
 import pics.app.uiPhoto.base.BasePhotoListAdapter
-import timber.log.Timber
 import javax.inject.Inject
 
 class HomeAdapter @Inject constructor(
@@ -24,8 +21,8 @@ class HomeAdapter @Inject constructor(
     BasePhotoListAdapter<Photo, RecyclerView.ViewHolder>(PhotoDiffUtilCallBack) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
     private val TITLE_TYPE = 1
-    override val title: String
-        get() = "Home"
+    override val title: Int
+        get() = R.string.home_label
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -63,12 +60,14 @@ class HomeAdapter @Inject constructor(
                     bind(title)
                 }
             }
-            else -> item?.let { (holder as PhotoViewHolder).apply {
-                val ratio=item.height.toDouble()/item.width.toDouble()
-                holder.itemView.layoutParams.height=(ratio* (getScreenWidth()/2)).toInt()
-                holder.itemView.requestLayout()
-                bind(it)
-            }}
+            else -> item?.let {
+                (holder as PhotoViewHolder).apply {
+                    val ratio = item.height.toDouble() / item.width.toDouble()
+                    holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
+                    holder.itemView.requestLayout()
+                    bind(it)
+                }
+            }
         }
 
 
@@ -115,8 +114,6 @@ class HomeAdapter @Inject constructor(
             else -> super.getItemViewType(position)
         }
     }
-
-
 
 
 }

@@ -18,7 +18,6 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeViewModel @Inject constructor(private val homePagingSource: HomePagingSource) : ViewModel() {
-    var isHome=true
     private val _photoClicked=SingleLiveEvent<Photo>()
     val photoClicked:LiveData<Photo>
     get() = _photoClicked

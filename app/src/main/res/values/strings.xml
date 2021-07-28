@@ -17,6 +17,13 @@
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
     <string name="image_transition_name">transition image %d</string>
-    <string name="bottom_nav_collections">COLLECTIONS</string>
-    <string name="bottom_nav_home">HOME</string>
+    <string name="bottom_nav_collections">Collections</string>
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_saved">Saved</string>
+    <string name="bottom_nav_setting">Setting</string>
+    <string name="home_label">HOME</string>
+    <string name="collections_label">COLLECTIONS</string>
+    <string name="photos_collection_label">PHOTOS COLLECTION</string>
+
+
 </resources>

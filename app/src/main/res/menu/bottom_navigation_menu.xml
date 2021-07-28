@@ -2,12 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_seting"
+        android:icon="@drawable/bottom_nav_setting"
+        android:title="@string/bottom_nav_setting"/>
+    <item
+        android:id="@+id/navigation_saved"
+        android:icon="@drawable/bottom_nav_saved"
+        android:title="@string/bottom_nav_saved"/>
+    <item
         android:id="@+id/navigation_collections"
-        android:icon="@drawable/collections"
+        android:icon="@drawable/bottom_nav_collections"
         android:title="@string/bottom_nav_collections"/>
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/bottom_nav_home"
         android:title="@string/bottom_nav_home"/>
+
   
 </menu>

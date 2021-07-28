@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import pics.app.R
 import pics.app.data.getScreenWidth
 import pics.app.data.photo.model.Photo
 import pics.app.databinding.PhotoCollectionItemBinding
@@ -21,8 +22,8 @@ class PhotoCollectionAdapter @Inject constructor(
     BasePhotoListAdapter<Photo, RecyclerView.ViewHolder>(comparator) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
 
-    override val title: String
-        get() = "Photos Collection"
+    override val title: Int
+        get() = R.string.photos_collection_label
 
     val TITLE_TYPE = 1;
 

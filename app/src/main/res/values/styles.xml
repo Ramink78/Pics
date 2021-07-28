@@ -78,20 +78,15 @@
 
     <style name="MyBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="materialThemeOverlay">@style/BottomNavTheme</item>
-        <item name="shapeAppearanceOverlay">@style/BottomNavShape</item>
 
     </style>
 
     <style name="BottomNavTheme" parent="">
-        <item name="colorPrimary">@color/CardFooterColor</item>
+        <item name="colorPrimary">@color/black</item>
 
     </style>
 
-    <style name="BottomNavShape" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">15dp</item>
 
-    </style>
     <style name="ChipsStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:backgroundTint">@color/chips_color</item>
         <item name="android:textColor">@color/chips_text_color</item>

@@ -5,21 +5,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import pics.app.R
 import pics.app.data.collections.model.Collection
 import pics.app.data.setAspectRatio
 import pics.app.databinding.CollectionItemBinding
 import pics.app.databinding.RecyclerViewHeaderBinding
 import pics.app.ui.base.TitleViewHolder
+import pics.app.ui.collections.CollectionsViewModel
 import pics.app.uiPhoto.base.BasePhotoListAdapter
 import javax.inject.Inject
 
 
-class CollectionsAdapter @Inject constructor(val context: Context) :
+class CollectionsAdapter @Inject constructor(
+    val context: Context,
+    private val viewModel: CollectionsViewModel
+) :
     BasePhotoListAdapter<Collection, RecyclerView.ViewHolder>(
         comparator
     ) {
-    override val title: String
-        get() = "Collections"
+    override val title: Int
+        get() = R.string.collections_label
     val TITLE_TYPE = 1;
     private lateinit var onCollectionClickListener: OnCollectionClickListener
 
@@ -35,7 +40,7 @@ class CollectionsAdapter @Inject constructor(val context: Context) :
             )
             else -> CollectionViewHolder(
                 CollectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onCollectionClickListener
+                viewModel
             )
         }
 
@@ -67,15 +72,12 @@ class CollectionsAdapter @Inject constructor(val context: Context) :
 
     class CollectionViewHolder(
         val binding: CollectionItemBinding,
-        private val onCollectionClickListener: OnCollectionClickListener
+        private val viewModel: CollectionsViewModel
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(collection: Collection) {
-
             binding.collection = collection
-            binding.collectionCover.setOnClickListener {
-                onCollectionClickListener.onClick(collection.id, collection)
-            }
+            binding.viewModel = viewModel
             binding.executePendingBindings()
         }
     }
@@ -103,8 +105,6 @@ class CollectionsAdapter @Inject constructor(val context: Context) :
             else -> super.getItemViewType(position)
         }
     }
-
-
 
 
 }

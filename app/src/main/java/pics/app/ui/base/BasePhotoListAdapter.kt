@@ -1,5 +1,6 @@
 package pics.app.uiPhoto.base
 
+import androidx.annotation.StringRes
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,8 +9,7 @@ abstract class BasePhotoListAdapter<T : Any, V : RecyclerView.ViewHolder>(diffCa
 
     PagingDataAdapter<T, V>(
         diffCallback
-    )
-{
-        abstract val title:String
+    ) {
+    abstract val title: Int
 
-    }
+}

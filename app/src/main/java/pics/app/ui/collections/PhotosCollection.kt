@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
@@ -34,12 +36,21 @@ class PhotosCollection : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.d("viewmodel is ${viewModel.hashCode()}")
+
         viewModel.apply {
+            photoClick.observe(viewLifecycleOwner){
+                Timber.d("on observe")
+                val action=
+                    PhotosCollectionDirections.actionPhotosCollectionToDetailOfImage(it)
+                navController.navigate(action)
+            }
             collectionPhotos.observe(viewLifecycleOwner) {
                 lifecycleScope.launch {
                     listAdapter.submitData(it)
                 }
             }
+
         }
         listAdapter.apply {
             addLoadStateListener {
