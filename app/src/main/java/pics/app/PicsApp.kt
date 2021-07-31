@@ -1,6 +1,8 @@
 package pics.app
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import pics.app.di.AppComponent
 import pics.app.di.DaggerAppComponent
 import timber.log.Timber

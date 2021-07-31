@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="detailItemColor">#0C0C0C</color>
+    <color name="detailItemSecondaryColor">#B3FFFFFF</color>
+    <color name="detailItemPrimaryColor">#FFFFFF</color>
+    <color name="profileStrokeColor">#000000</color>
+</resources>

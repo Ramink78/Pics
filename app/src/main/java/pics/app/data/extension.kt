@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
+import pics.app.R
 import pics.app.data.photo.model.Photo
 import pics.app.ui.widgets.AspectRatioImageView
 import timber.log.Timber
@@ -37,10 +38,11 @@ fun loadPhoto(imageView: ShapeableImageView, photo: Photo) {
 @BindingAdapter("profilePhoto")
 fun loadProfile(imageView: ShapeableImageView, url: String) {
     imageView.apply {
-        background = ColorDrawable(Color.WHITE)
+
     }
     Glide.with(imageView)
         .load(url)
+        .placeholder(R.drawable.ic_avatar)
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(imageView)

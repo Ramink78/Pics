@@ -16,7 +16,12 @@
     <color name="chipDisabledColor">#14FFFFFF</color>
     <color name="chipEanbledTextColor">#FFFFFF</color>
     <color name="chipDisabledTextColor">#4DFFFFFF</color>
-    <color name="detailItemColor">#0C0C0C</color>
+    <color name="detailItemColor">#F5F5F5</color>
+    <color name="detailItemSecondaryColor">#B3000000</color>
+    <color name="detailItemPrimaryColor">#000000</color>
+    <color name="profileStrokeColor">#FFFFFF</color>
+    <color name="avatarPlaceholderColor">#c4c4c4</color>
+
     <color name="black_overlay">#66000000</color>
 
 

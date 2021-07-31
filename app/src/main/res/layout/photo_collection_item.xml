@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="@+id/home_photo"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
             app:shapeAppearanceOverlay="@style/CircleImage"
-            app:strokeColor="@color/black"
+            app:strokeColor="@color/profileStrokeColor"
             app:strokeWidth="4dp"
             tools:srcCompat="@color/white" />
 

@@ -1,9 +1,8 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="PicsTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/black</item>
         <item name="colorOnPrimarySurface">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -44,16 +43,13 @@
     </style>
     <style name="CollectionPhotos" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
+        <item name="cornerSize">12dp</item>fraction
         <item name="cornerSizeTopLeft">21dp</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.Card.Feed" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">12dp</item>
-        <item name="cornerSizeTopRight">12dp</item>
-        <item name="cornerSizeBottomLeft">12dp</item>
-        <item name="cornerSizeBottomRight">12dp</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.Header.Image" parent="">
@@ -90,6 +86,13 @@
     <style name="ChipsStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:backgroundTint">@color/chips_color</item>
         <item name="android:textColor">@color/chips_text_color</item>
+    </style>
+    
+    
+    <!-- 
+   /// change styles
+    !-->
+    <style name="PicsBottomNav" parent="Widget.MaterialComponents.BottomNavigationView.PrimarySurface">
     </style>
 
 

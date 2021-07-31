@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppPicsTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#870058</item>
+        <item name="colorSurface">#fafafa</item>
+        <item name="colorOnSurface">#832161</item>
+        <item name="colorOnBackground">#530037</item>
+    </style>
+</resources>

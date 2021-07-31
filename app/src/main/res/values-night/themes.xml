@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppPicsTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">#EE5F9D</item>
+        <item name="colorSecondary">#832161</item>
+        <item name="colorSecondaryVariant">#530037</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">#212121</item>
+        <item name="colorOnBackground">@color/white</item>
+
+    </style>
+</resources>
