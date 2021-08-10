@@ -2,12 +2,11 @@ package pics.app.data
 
 import android.os.Build
 import android.os.Environment
-import pics.app.BuildConfig
 import java.io.File
 
 //Api
-//const val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
-const val API_KEY="wCW8gJb79HCOtv5KS2Wn6XOMNOmOJthuONlU3_GctPQ"
+const val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
+//const val API_KEY="wCW8gJb79HCOtv5KS2Wn6XOMNOmOJthuONlU3_GctPQ"
 val isAboveSdk29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 //UI
 const val THEME_LIGHT = "Light"

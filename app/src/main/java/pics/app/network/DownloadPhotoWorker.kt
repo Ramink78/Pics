@@ -1,8 +1,12 @@
 package pics.app.network
 
+import android.content.ContentValues
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import okhttp3.ResponseBody
@@ -12,6 +16,7 @@ import pics.app.database.AppDatabase
 import pics.app.database.SavedPhoto
 import pics.app.utils.PICS_DIR
 import pics.app.utils.createPhotoUri
+import pics.app.utils.generateImageFileName
 import pics.app.utils.showDownloadingNotification
 import timber.log.Timber
 import java.io.File
@@ -33,17 +38,19 @@ class DownloadPhotoWorker(
         val photoUpdatedAT = inputData.getString("ImageUpdatedAt")
         val photoWidth = inputData.getInt("ImageWidth", 0)
         val photoHeight = inputData.getInt("ImageHeight", 0)
-        var imageUri:Uri?=null
+        var imageUri: Uri? = null
+        val fileName =
+            generateImageFileName(photoId ?: "${UUID.randomUUID()}", photoWidth, photoHeight)
         return try {
             photoUrl?.let {
                 val response = downloadService.downloadFile(photoUrl)
-              imageUri=  response.savePhoto(
-                    "${UUID.randomUUID()}.${response.contentType()?.subtype}"
+                imageUri = response.savePhoto(
+                    "$fileName.jpg"
                 )
             }
             appDatabase.getPhotosDao().addPhoto(
                 SavedPhoto(
-                    photoId!!,
+                    photoId ?: "${UUID.randomUUID()}",
                     photoCreatedAt,
                     photoUpdatedAT,
                     photoWidth,
@@ -51,7 +58,6 @@ class DownloadPhotoWorker(
                     imageUri.toString()
                 )
             )
-            Timber.d("image uri is: $imageUri")
 
             Result.success()
 
@@ -61,24 +67,25 @@ class DownloadPhotoWorker(
         }
     }
 
-    private suspend fun ResponseBody.savePhoto(fileName: String):Uri? {
-        val imageExtension = contentType()?.subtype
+    private suspend fun ResponseBody.savePhoto(fileName: String): Uri? {
         val imageCollection =
-            imageExtension?.let {
-                createPhotoUri(
-                    applicationContext,
-                    fileName,
-                    it,
-                    contentLength()
-                )
-            }
+            createPhotoUri(
+                applicationContext,
+                fileName,
+                contentLength()
+            )
+
         if (isAboveSdk29) {
-            imageCollection?.let {
-                applicationContext.contentResolver.openOutputStream(it, "w")?.use {os->
+            imageCollection?.let { uri ->
+                applicationContext.contentResolver.openOutputStream(uri, "w")?.use { os ->
                     val byteCopied = byteStream().copyTo(os)
                     Timber.d("size is ${contentLength()} | copiedBytes is :$byteCopied")
 
                 }
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.IS_PENDING, 0)
+                }
+                applicationContext.contentResolver.update(uri, values, null, null)
             }
         } else {
             val picsDir = File(PICS_DIR)
@@ -92,7 +99,7 @@ class DownloadPhotoWorker(
             if (byteCopied == contentLength()) {
                 MediaScannerConnection.scanFile(
                     applicationContext, arrayOf(photoFile.absolutePath),
-                    arrayOf("image/$imageExtension"), null
+                    arrayOf("image/jpeg"), null
                 )
                 showDownloadingNotification("Download Finish", applicationContext)
             } else {

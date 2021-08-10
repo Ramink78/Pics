@@ -29,8 +29,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeViewModel @Inject constructor(
-    private val homePagingSource: HomePagingSource, private val context: Context,
-    private val appDatabase: AppDatabase
+    private val homePagingSource: HomePagingSource, private val context: Context
     ) :
 
     ViewModel() {
@@ -81,7 +80,7 @@ class HomeViewModel @Inject constructor(
             .putInt("ImageHeight",photo.height)
             .putString("ImageCreatedAt",photo.created_at)
             .putString("ImageUpdatedAt",photo.updated_at)
-            .putString("ImageUrl", photo.urls.full)
+            .putString("ImageUrl", photo.urls.thumb)
             .build()
     }
 
