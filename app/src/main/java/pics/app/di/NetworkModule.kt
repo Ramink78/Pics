@@ -1,5 +1,6 @@
 package pics.app.di
 
+import androidx.work.Configuration
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -11,7 +12,9 @@ import pics.app.ServiceBuilder
 import pics.app.data.API_KEY
 import pics.app.data.collections.CollectionsApi
 import pics.app.data.details.DetailsAPI
+import pics.app.data.download.DownloadService
 import pics.app.data.photo.PhotoAPI
+import pics.app.network.DownloadFactoryDelegation
 import pics.app.ui.explore.DetailPhoto
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -60,6 +63,12 @@ class NetworkModule {
     fun providesCollectionsPhotoApi(retrofit: Retrofit): CollectionsApi {
         return ServiceBuilder(retrofit).buildService(CollectionsApi::class.java)
     }
+    @Singleton
+    @Provides
+    fun providesDownloadService(retrofit: Retrofit): DownloadService {
+        return ServiceBuilder(retrofit).buildService(DownloadService::class.java)
+    }
+
 
 
     @Singleton
@@ -81,6 +90,16 @@ class NetworkModule {
             .add(KotlinJsonAdapterFactory())
             .build()
 
+    }
+    @Singleton
+    @Provides
+    fun provideWorkManagerConfiguration(
+        downloadWorkerDelegation: DownloadFactoryDelegation
+    ): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setWorkerFactory(downloadWorkerDelegation)
+            .build()
     }
 
 }

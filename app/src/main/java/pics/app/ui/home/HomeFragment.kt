@@ -1,26 +1,23 @@
 package pics.app.ui.home
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
 import pics.app.adapters.HomeAdapter
 import pics.app.data.dp
 import pics.app.data.photo.model.Photo
 import pics.app.ui.base.BasePhotoListFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 
 class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
-
 
 
     @Inject
@@ -32,16 +29,26 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         homeViewModel.apply {
+            permissionLauncher = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions ->
+                isReadPermissionGranted = permissions[Manifest.permission.READ_EXTERNAL_STORAGE]
+                    ?: isWritePermissionGranted
+                isWritePermissionGranted = permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE]
+                    ?: isWritePermissionGranted
+            }
+            checkReadWritePermission()
             homePhotos.observe(viewLifecycleOwner) {
                 lifecycleScope.launch {
                     listAdapter.submitData(it)
                 }
             }
             photoClicked.observe(viewLifecycleOwner) {
-                    val action =
-                        it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
-                    navController.navigate(action)
+                val action =
+                    it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
+                navController.navigate(action)
 
 
             }

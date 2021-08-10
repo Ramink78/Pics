@@ -8,12 +8,11 @@ import pics.app.PicsApp
 import pics.app.ui.SettingsFragment
 import pics.app.ui.explore.DetailPhoto
 import pics.app.ui.collections.CollectionsFragment
-import pics.app.ui.collections.PhotosCollection
 import pics.app.ui.home.HomeFragment
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, ListModule::class])
+@Component(modules = [DatabaseModule::class,NetworkModule::class, ListModule::class,WorkerModule::class])
 interface AppComponent {
 
     @Component.Factory

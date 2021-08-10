@@ -29,7 +29,7 @@ fun loadPhoto(imageView: ShapeableImageView, photo: Photo) {
         background = ColorDrawable(Color.parseColor(photo.color))
     }
     Glide.with(imageView)
-        .load(photo.urls.small)
+        .load(photo.urls.regular)
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(imageView)

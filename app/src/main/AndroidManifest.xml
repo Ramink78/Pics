@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pics.app" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="pics.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
 
     <application
         android:name=".PicsApp"
@@ -14,15 +15,22 @@
         android:icon="@mipmap/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppPicsTheme" >
-
-        <activity android:name=".MainActivity" >
+        android:theme="@style/AppPicsTheme">
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="pics.app.workmanager-init"
+            android:enabled="false"
+            android:exported="false"
+            tools:replace="android:authorities" />
+        <activity android:name=".MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

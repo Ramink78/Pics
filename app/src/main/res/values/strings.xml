@@ -35,6 +35,7 @@
 
     <!-- Messages Preferences -->
     <string name="theme_title">Theme</string>
+    <string name="title_activity_main">MainActivity</string>
 
     <!-- Sync Preferences -->
 

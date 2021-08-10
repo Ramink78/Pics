@@ -1,10 +1,12 @@
 package pics.app.data.photo.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import pics.app.data.user.model.User
 import kotlinx.android.parcel.Parcelize
+import pics.app.data.user.model.User
 import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
@@ -26,11 +28,12 @@ data class Photo(
     val urls: Urls,
     val user: User?
 
-):Serializable
+) : Serializable
+
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Exif(
-    @Json(name="make")
+    @Json(name = "make")
     val make: String?,
     @Json(name = "model")
     val model: String?,
@@ -42,26 +45,27 @@ data class Exif(
     val focalLength: String?,
     @Json(name = "iso")
     val iso: String?
-):Parcelable
+) : Parcelable
+
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class  Location(
+data class Location(
     @Json(name = "title")
     val title: String?,
     @Json(name = "name")
-    val name: String?="none",
-    @Json(name="city")
+    val name: String? = "none",
+    @Json(name = "city")
     val city: String?,
-    @Json(name="country")
+    @Json(name = "country")
     val country: String?
-):Parcelable
+) : Parcelable
 
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Urls(
-    val raw:String?,
-    val full:String?,
-    val regular:String?,
-    val thumb:String,
-    val small:String?
-):Parcelable
+    val raw: String?,
+    val full: String?,
+    val regular: String?,
+    val thumb: String,
+    val small: String?
+) : Parcelable

@@ -16,17 +16,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/home_root"
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/home_photo"
             photo="@{photo}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:adjustViewBounds="true"
             android:onClick="@{()->viewModel.photoClicked(photo)}"
-            android:scaleType="fitXY"
+            android:onLongClick="@{()->viewModel.photoLongClick(photo)}"
             app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"

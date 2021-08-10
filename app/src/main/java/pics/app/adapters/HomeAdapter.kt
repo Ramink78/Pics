@@ -1,7 +1,9 @@
 package pics.app.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -13,6 +15,7 @@ import pics.app.databinding.RecyclerViewHeaderBinding
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.home.HomeViewModel
 import pics.app.uiPhoto.base.BasePhotoListAdapter
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeAdapter @Inject constructor(
@@ -63,8 +66,13 @@ class HomeAdapter @Inject constructor(
             else -> item?.let {
                 (holder as PhotoViewHolder).apply {
                     val ratio = item.height.toDouble() / item.width.toDouble()
-                    holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
-                    holder.itemView.requestLayout()
+                  //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
+                  //  holder.itemView.requestLayout()
+                    ConstraintSet().apply {
+                        clone(homeItemBinding.homeRoot)
+                        setDimensionRatio(homeItemBinding.homePhoto.id,ratio.toString())
+                        applyTo(homeItemBinding.homeRoot)
+                    }
                     bind(it)
                 }
             }
@@ -81,7 +89,7 @@ class HomeAdapter @Inject constructor(
 
 
     class PhotoViewHolder(
-        private val homeItemBinding: HomeItemBinding,
+         val homeItemBinding: HomeItemBinding,
         private val homeViewModel: HomeViewModel,
     ) :
         RecyclerView.ViewHolder(homeItemBinding.root) {
