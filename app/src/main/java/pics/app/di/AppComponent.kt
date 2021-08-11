@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import pics.app.MainActivity
 import pics.app.PicsApp
+import pics.app.ui.SavedFragment
 import pics.app.ui.SettingsFragment
 import pics.app.ui.explore.DetailPhoto
 import pics.app.ui.collections.CollectionsFragment
@@ -27,6 +28,7 @@ interface AppComponent {
     fun inject(homeFragment: HomeFragment)
     fun inject(collectionsFragment: CollectionsFragment)
     fun inject(settingsFragment: SettingsFragment)
+    fun inject(savedFragment: SavedFragment)
 
 
 }

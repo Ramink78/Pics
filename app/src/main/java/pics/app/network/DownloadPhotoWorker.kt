@@ -8,10 +8,11 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.WorkerParameters
 import okhttp3.ResponseBody
+import pics.app.data.*
 import pics.app.data.download.DownloadService
-import pics.app.data.isAboveSdk29
 import pics.app.database.AppDatabase
 import pics.app.database.SavedPhoto
 import pics.app.utils.PICS_DIR
@@ -32,12 +33,14 @@ class DownloadPhotoWorker(
     override suspend fun doWork(): Result {
         Timber.d("download start")
         showDownloadingNotification("Downloading photo...", applicationContext)
-        val photoUrl = inputData.getString("ImageUrl")
-        val photoId = inputData.getString("ImageId")
-        val photoCreatedAt = inputData.getString("ImageCreatedAt")
-        val photoUpdatedAT = inputData.getString("ImageUpdatedAt")
-        val photoWidth = inputData.getInt("ImageWidth", 0)
-        val photoHeight = inputData.getInt("ImageHeight", 0)
+        val photoUrl = inputData.getString(KEY_IMAGE_URL)
+        val thumbnailUrl = inputData.getString(KEY_IMAGE_THUMBNAIL_URL)
+        val photoId = inputData.getString(KEY_IMAGE_ID)
+        val photoColor = inputData.getString(KEY_IMAGE_COLOR)
+        val photoCreatedAt = inputData.getString(KEY_IMAGE_CREATED_AT)
+        val photoWidth = inputData.getInt(KEY_IMAGE_WIDTH, 0)
+        val photoHeight = inputData.getInt(KEY_IMAGE_HEIGHT, 0)
+
         var imageUri: Uri? = null
         val fileName =
             generateImageFileName(photoId ?: "${UUID.randomUUID()}", photoWidth, photoHeight)
@@ -48,18 +51,19 @@ class DownloadPhotoWorker(
                     "$fileName.jpg"
                 )
             }
-            appDatabase.getPhotosDao().addPhoto(
-                SavedPhoto(
-                    photoId ?: "${UUID.randomUUID()}",
-                    photoCreatedAt,
-                    photoUpdatedAT,
-                    photoWidth,
-                    photoHeight,
-                    imageUri.toString()
+            Result.success(
+                createOutputData(
+                    SavedPhoto(
+                        photoId ?: "${UUID.randomUUID()}",
+                        photoCreatedAt,
+                        photoWidth,
+                        photoHeight,
+                        photoColor,
+                        thumbnailUrl,
+                        imageUri.toString()
+                    )
                 )
             )
-
-            Result.success()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -113,5 +117,14 @@ class DownloadPhotoWorker(
 
     }
 
+    private fun createOutputData(savedPhoto: SavedPhoto): Data =
+        Data.Builder()
+            .putInt(KEY_IMAGE_WIDTH, savedPhoto.width)
+            .putInt(KEY_IMAGE_HEIGHT, savedPhoto.height)
+            .putString(KEY_IMAGE_URI, savedPhoto.photoUri)
+            .putString(KEY_IMAGE_COLOR, savedPhoto.color)
+            .putString(KEY_IMAGE_THUMBNAIL_URL, savedPhoto.thumbnailUrl)
+            .putString(KEY_IMAGE_ID, savedPhoto.id)
+            .build()
 
 }

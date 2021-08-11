@@ -3,6 +3,7 @@ package pics.app.data
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -10,8 +11,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import pics.app.R
 import pics.app.data.photo.model.Photo
+import pics.app.database.SavedPhoto
 import pics.app.ui.widgets.AspectRatioImageView
 import timber.log.Timber
+import java.io.File
 import kotlin.math.ceil
 
 
@@ -30,6 +33,18 @@ fun loadPhoto(imageView: ShapeableImageView, photo: Photo) {
     }
     Glide.with(imageView)
         .load(photo.urls.regular)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(imageView)
+}
+
+@BindingAdapter("savedPhoto")
+fun loadLocalPhoto(imageView: ShapeableImageView, photo: SavedPhoto) {
+    imageView.apply {
+        background = ColorDrawable(Color.parseColor(photo.color))
+    }
+    Glide.with(imageView)
+        .load(photo.thumbnailUrl)
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(imageView)

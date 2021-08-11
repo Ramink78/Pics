@@ -5,7 +5,7 @@ import androidx.work.Configuration
 import androidx.work.WorkManager
 import pics.app.di.AppComponent
 import pics.app.di.DaggerAppComponent
-import pics.app.network.DownloadWorkerFactory
+import pics.app.network.WorkerFactory
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import javax.inject.Inject
@@ -20,7 +20,8 @@ class PicsApp : Application() {
     }
 
     @Inject
-    lateinit var workerFactory: DownloadWorkerFactory
+    lateinit var workerFactory: WorkerFactory
+
 
     override fun onCreate() {
         super.onCreate()

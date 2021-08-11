@@ -72,6 +72,7 @@ class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
     }
 
 
+
     override val listAdapter
         get() = homeAdapter
     override val itemSpace = 24.dp()

@@ -13,13 +13,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.liveData
 import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import kotlinx.coroutines.launch
-import pics.app.data.isAboveSdk29
+import pics.app.data.*
 import pics.app.data.photo.model.Photo
-import pics.app.database.AppDatabase
-import pics.app.database.SavedPhoto
+import pics.app.database.SavePhotoWorker
 import pics.app.network.DownloadPhotoWorker
 import pics.app.repo.home.HomePagingSource
 import pics.app.utils.SingleLiveEvent
@@ -30,12 +29,12 @@ import javax.inject.Singleton
 @Singleton
 class HomeViewModel @Inject constructor(
     private val homePagingSource: HomePagingSource, private val context: Context
-    ) :
+) :
 
     ViewModel() {
     var isReadPermissionGranted = false
     var isWritePermissionGranted = false
-     lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     val workManager = WorkManager.getInstance(context)
     private val _photoClicked = SingleLiveEvent<Photo>()
     val photoClicked: LiveData<Photo>
@@ -57,14 +56,17 @@ class HomeViewModel @Inject constructor(
     }
 
     fun photoLongClick(photo: Photo): Boolean {
-        //start download
-        Timber.d("Download Start")
-        val downloadRequest = OneTimeWorkRequestBuilder<DownloadPhotoWorker>()
-            .setInputData(getImageUrlData(photo))
-            .build()
-        workManager.enqueue(
-            downloadRequest
-        )
+        var continuation =
+            workManager.beginWith(
+                OneTimeWorkRequestBuilder<DownloadPhotoWorker>()
+                    .setInputData(getImageData(photo))
+                    .build()
+            )
+        val saveToDatabaseRequest = OneTimeWorkRequest.from(SavePhotoWorker::class.java)
+
+        continuation = continuation.then(saveToDatabaseRequest)
+        continuation.enqueue()
+
         return true
     }
 
@@ -73,14 +75,15 @@ class HomeViewModel @Inject constructor(
         workManager.cancelAllWork()
     }
 
-    private fun getImageUrlData(photo: Photo): Data {
+    private fun getImageData(photo: Photo): Data {
         return Data.Builder()
-            .putString("ImageId",photo.id)
-            .putInt("ImageWidth",photo.width)
-            .putInt("ImageHeight",photo.height)
-            .putString("ImageCreatedAt",photo.created_at)
-            .putString("ImageUpdatedAt",photo.updated_at)
-            .putString("ImageUrl", photo.urls.thumb)
+            .putString(KEY_IMAGE_ID, photo.id)
+            .putInt(KEY_IMAGE_WIDTH, photo.width)
+            .putInt(KEY_IMAGE_HEIGHT, photo.height)
+            .putString(KEY_IMAGE_CREATED_AT, photo.created_at)
+            .putString(KEY_IMAGE_COLOR, photo.color)
+            .putString(KEY_IMAGE_URL, photo.urls.regular)
+            .putString(KEY_IMAGE_THUMBNAIL_URL, photo.urls.small)
             .build()
     }
 

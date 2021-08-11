@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pics.app.R
+import pics.app.data.TITLE_TYPE
 import pics.app.data.collections.model.Collection
 import pics.app.data.setAspectRatio
 import pics.app.databinding.CollectionItemBinding
@@ -25,7 +26,6 @@ class CollectionsAdapter @Inject constructor(
     ) {
     override val title: Int
         get() = R.string.collections_label
-    val TITLE_TYPE = 1;
     private lateinit var onCollectionClickListener: OnCollectionClickListener
 
 

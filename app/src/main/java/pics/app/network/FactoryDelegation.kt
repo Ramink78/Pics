@@ -7,11 +7,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DownloadFactoryDelegation @Inject constructor(
+class FactoryDelegation @Inject constructor(
     private val downloadService: DownloadService,
     private val appDatabase: AppDatabase
 ):DelegatingWorkerFactory() {
     init {
-        addFactory(DownloadWorkerFactory(downloadService,appDatabase))
+        addFactory(WorkerFactory(downloadService,appDatabase))
     }
 }

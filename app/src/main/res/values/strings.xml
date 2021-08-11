@@ -24,6 +24,7 @@
     <string name="home_label">HOME</string>
     <string name="collections_label">COLLECTIONS</string>
     <string name="photos_collection_label">PHOTOS COLLECTION</string>
+    <string name="saved_label">SAVED PHOTOS</string>
     <array name="themes">
         <item>Dark</item>
         <item>Light</item>

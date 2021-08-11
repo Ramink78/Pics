@@ -14,8 +14,7 @@ import pics.app.data.collections.CollectionsApi
 import pics.app.data.details.DetailsAPI
 import pics.app.data.download.DownloadService
 import pics.app.data.photo.PhotoAPI
-import pics.app.network.DownloadFactoryDelegation
-import pics.app.ui.explore.DetailPhoto
+import pics.app.network.FactoryDelegation
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -94,11 +93,11 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideWorkManagerConfiguration(
-        downloadWorkerDelegation: DownloadFactoryDelegation
+        workerDelegation: FactoryDelegation
     ): Configuration {
         return Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.DEBUG)
-            .setWorkerFactory(downloadWorkerDelegation)
+            .setWorkerFactory(workerDelegation)
             .build()
     }
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pics.app.R
+import pics.app.data.TITLE_TYPE
 import pics.app.data.getScreenWidth
 import pics.app.data.photo.model.Photo
 import pics.app.databinding.HomeItemBinding
@@ -23,7 +24,6 @@ class HomeAdapter @Inject constructor(
 ) :
     BasePhotoListAdapter<Photo, RecyclerView.ViewHolder>(PhotoDiffUtilCallBack) {
     private var onPhotoClickListener: OnPhotoClickListener? = null
-    private val TITLE_TYPE = 1
     override val title: Int
         get() = R.string.home_label
 
