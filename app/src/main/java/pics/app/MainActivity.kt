@@ -20,11 +20,14 @@ import pics.app.utils.PICS_DIR
 import pics.app.utils.Ui
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+
     @Inject
     lateinit var ui: Ui
     lateinit var theme: String
@@ -43,17 +46,12 @@ class MainActivity : AppCompatActivity() {
         // val dir="${Environment.getStorageDirectory().absolutePath}${File.separator}${Environment.DIRECTORY_PICTURES}${File.separator}Pics"
         navController = Navigation.findNavController(this, R.id.host)
         NavigationUI.setupWithNavController(nav, navController)
-        val picsFile = File(PICS_DIR)
-        if (!picsFile.exists()) {
-            picsFile.mkdir()
-        }
-        Uri.Builder().encodedPath(PICS_DIR).build()
 
-        val uri= Uri.fromFile(picsFile)
-        Timber.d("pics dir:$PICS_DIR")
+
 
 
     }
+
 
 
 

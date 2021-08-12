@@ -18,15 +18,12 @@ class SavePhotoWorker(
             val id = inputData.getString(KEY_IMAGE_ID)
             val width = inputData.getInt(KEY_IMAGE_WIDTH, 0)
             val height = inputData.getInt(KEY_IMAGE_HEIGHT, 0)
-            val createdAt = inputData.getString(KEY_IMAGE_CREATED_AT)
             val uri = inputData.getString(KEY_IMAGE_URI)
             val thumbUrl = inputData.getString(KEY_IMAGE_THUMBNAIL_URL)
             val color = inputData.getString(KEY_IMAGE_COLOR)
 
             appDatabase.getPhotosDao().addPhoto(
                 SavedPhoto(
-                    id = id ?: "${UUID.randomUUID()}",
-                    created_at = createdAt,
                     width = width,
                     height = height,
                     photoUri = uri,

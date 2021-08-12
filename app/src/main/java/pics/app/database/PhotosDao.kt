@@ -11,7 +11,7 @@ interface PhotosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPhoto(photo: SavedPhoto)
 
-    @Query("SELECT * FROM photos")
+    @Query("SELECT * FROM photos ORDER BY id DESC")
     fun getAllPhotos(): Flow<List<SavedPhoto>>
 
 

@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
     var isReadPermissionGranted = false
     var isWritePermissionGranted = false
     lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-    val workManager = WorkManager.getInstance(context)
+    private val workManager = WorkManager.getInstance(context)
     private val _photoClicked = SingleLiveEvent<Photo>()
     val photoClicked: LiveData<Photo>
         get() = _photoClicked
@@ -80,9 +80,8 @@ class HomeViewModel @Inject constructor(
             .putString(KEY_IMAGE_ID, photo.id)
             .putInt(KEY_IMAGE_WIDTH, photo.width)
             .putInt(KEY_IMAGE_HEIGHT, photo.height)
-            .putString(KEY_IMAGE_CREATED_AT, photo.created_at)
             .putString(KEY_IMAGE_COLOR, photo.color)
-            .putString(KEY_IMAGE_URL, photo.urls.regular)
+            .putString(KEY_IMAGE_URL, photo.urls.full)
             .putString(KEY_IMAGE_THUMBNAIL_URL, photo.urls.small)
             .build()
     }

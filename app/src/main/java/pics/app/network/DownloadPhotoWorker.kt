@@ -4,9 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
-import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
@@ -21,6 +19,7 @@ import pics.app.utils.generateImageFileName
 import pics.app.utils.showDownloadingNotification
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -37,7 +36,6 @@ class DownloadPhotoWorker(
         val thumbnailUrl = inputData.getString(KEY_IMAGE_THUMBNAIL_URL)
         val photoId = inputData.getString(KEY_IMAGE_ID)
         val photoColor = inputData.getString(KEY_IMAGE_COLOR)
-        val photoCreatedAt = inputData.getString(KEY_IMAGE_CREATED_AT)
         val photoWidth = inputData.getInt(KEY_IMAGE_WIDTH, 0)
         val photoHeight = inputData.getInt(KEY_IMAGE_HEIGHT, 0)
 
@@ -54,13 +52,11 @@ class DownloadPhotoWorker(
             Result.success(
                 createOutputData(
                     SavedPhoto(
-                        photoId ?: "${UUID.randomUUID()}",
-                        photoCreatedAt,
-                        photoWidth,
-                        photoHeight,
-                        photoColor,
-                        thumbnailUrl,
-                        imageUri.toString()
+                        width = photoWidth,
+                        height = photoHeight,
+                        color = photoColor,
+                        thumbnailUrl = thumbnailUrl,
+                        photoUri = imageUri.toString()
                     )
                 )
             )
@@ -124,7 +120,8 @@ class DownloadPhotoWorker(
             .putString(KEY_IMAGE_URI, savedPhoto.photoUri)
             .putString(KEY_IMAGE_COLOR, savedPhoto.color)
             .putString(KEY_IMAGE_THUMBNAIL_URL, savedPhoto.thumbnailUrl)
-            .putString(KEY_IMAGE_ID, savedPhoto.id)
+            .putInt(KEY_IMAGE_ID, savedPhoto.id)
             .build()
+
 
 }

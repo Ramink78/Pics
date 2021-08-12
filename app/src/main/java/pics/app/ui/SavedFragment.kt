@@ -53,7 +53,7 @@ class SavedFragment : Fragment() {
         }
         viewModel.apply {
             localPhotos.observe(viewLifecycleOwner) {
-                 savedPhotoAdapter.addHeaderAndSubmitList(it)
+                savedPhotoAdapter.addHeaderAndSubmitList(it)
 
             }
         }
@@ -65,15 +65,15 @@ class SavedFragment : Fragment() {
     }
 
     sealed class SavedDataItem {
-        abstract val id: String
+        abstract val id: Int
 
         object Header : SavedDataItem() {
-            override val id: String
-                get() = TITLE_TYPE.toString()
+            override val id: Int
+                get() = TITLE_TYPE
         }
 
         data class PhotoItem(val photo: SavedPhoto) : SavedDataItem() {
-            override val id: String
+            override val id: Int
                 get() = photo.id
         }
     }

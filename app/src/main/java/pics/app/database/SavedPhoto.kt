@@ -6,8 +6,7 @@ import pics.app.data.user.model.User
 
 @Entity(tableName = "photos")
 data class SavedPhoto(
-    @PrimaryKey val id: String,
-    val created_at: String?,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val width: Int,
     val height: Int,
     val color: String?,
