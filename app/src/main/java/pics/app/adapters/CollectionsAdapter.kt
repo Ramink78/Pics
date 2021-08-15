@@ -6,14 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pics.app.R
+import pics.app.data.PHOTO_TYPE
 import pics.app.data.TITLE_TYPE
 import pics.app.data.collections.model.Collection
 import pics.app.data.setAspectRatio
 import pics.app.databinding.CollectionItemBinding
+import pics.app.databinding.PhotoCollectionItemBinding
 import pics.app.databinding.RecyclerViewHeaderBinding
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.collections.CollectionsViewModel
-import pics.app.uiPhoto.base.BasePhotoListAdapter
+import pics.app.ui.base.BasePhotoListAdapter
+import pics.app.ui.collections.PhotoCollectionViewModel
+import java.lang.ClassCastException
 import javax.inject.Inject
 
 
@@ -21,48 +25,32 @@ class CollectionsAdapter @Inject constructor(
     val context: Context,
     private val viewModel: CollectionsViewModel
 ) :
-    BasePhotoListAdapter<Collection, RecyclerView.ViewHolder>(
-        comparator
-    ) {
+    BasePhotoListAdapter() {
     override val title: Int
         get() = R.string.collections_label
-    private lateinit var onCollectionClickListener: OnCollectionClickListener
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            TITLE_TYPE -> TitleViewHolder(
-                RecyclerViewHeaderBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
-            else -> CollectionViewHolder(
-                CollectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                viewModel
-            )
+            TITLE_TYPE -> TitleViewHolder.from(parent)
+            PHOTO_TYPE -> CollectionViewHolder.from(parent, viewModel)
+            else -> throw ClassCastException("Unknown viewType: $viewType")
         }
 
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val collection = getItem(position)
-        when (getItemViewType(position)) {
-            TITLE_TYPE -> {
-                (holder as TitleViewHolder).bind(title)
-
-            }
-            else -> {
-                if (collection != null) {
-                    (holder as CollectionViewHolder).apply {
-                        binding.collectionCover.setAspectRatio(
-                            collection.coverPhoto.width,
-                            collection.coverPhoto.height
-                        )
-                        bind(collection)
-                    }
+        when (holder) {
+            is TitleViewHolder -> holder.bind(title)
+            is CollectionViewHolder -> {
+                holder.apply {
+                    val collection = getItem(position) as Collection
+                    binding.collectionCover.setAspectRatio(
+                        collection.coverPhoto.width,
+                        collection.coverPhoto.height
+                    )
+                    bind(collection)
                 }
             }
         }
@@ -80,29 +68,18 @@ class CollectionsAdapter @Inject constructor(
             binding.viewModel = viewModel
             binding.executePendingBindings()
         }
-    }
 
+        companion object {
+            fun from(parent: ViewGroup, viewModel: CollectionsViewModel): CollectionViewHolder {
+                return CollectionViewHolder(
+                    CollectionItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
 
-    fun setOnPhotoClickListener(listener: OnCollectionClickListener) {
-        onCollectionClickListener = listener
-    }
-
-
-    companion object {
-        private val comparator = object : DiffUtil.ItemCallback<Collection>() {
-            override fun areItemsTheSame(oldItem: Collection, newItem: Collection): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Collection, newItem: Collection): Boolean =
-                oldItem == newItem
-        }
-
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> TITLE_TYPE
-            else -> super.getItemViewType(position)
+            }
         }
     }
 

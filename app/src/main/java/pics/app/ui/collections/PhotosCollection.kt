@@ -19,7 +19,7 @@ import pics.app.ui.base.BasePhotoListFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-class PhotosCollection : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
+class PhotosCollection : BasePhotoListFragment() {
 
     @Inject
     lateinit var viewModel: PhotoCollectionViewModel

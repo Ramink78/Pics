@@ -6,16 +6,17 @@ import pics.app.FIRST_PAGE
 import pics.app.PHOTO_PER_PAGE
 import pics.app.data.photo.PhotoAPI
 import pics.app.data.photo.model.Photo
+import pics.app.ui.base.Row
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 class HomePagingSource @Inject constructor(
     private val service: PhotoAPI,
-) : PagingSource<Int, Photo>() {
+) : PagingSource<Int, Row>() {
 
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
         val position = params.key ?: FIRST_PAGE
         return try {
             val photos = service.getPhotos(position, PHOTO_PER_PAGE)
@@ -38,7 +39,7 @@ class HomePagingSource @Inject constructor(
 
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Photo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Row>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

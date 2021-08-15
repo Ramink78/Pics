@@ -7,11 +7,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import pics.app.data.user.model.User
+import pics.app.ui.base.Row
 import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Photo(
-    val id: String,
+    override val id: String,
     val created_at: String?,
     val updated_at: String?,
     val width: Int,
@@ -28,7 +29,7 @@ data class Photo(
     val urls: Urls,
     val user: User?
 
-) : Serializable
+) : Row.Content(id), Serializable
 
 @Parcelize
 @JsonClass(generateAdapter = true)

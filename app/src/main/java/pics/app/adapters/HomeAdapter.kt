@@ -1,125 +1,93 @@
 package pics.app.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pics.app.R
+import pics.app.data.PHOTO_TYPE
 import pics.app.data.TITLE_TYPE
-import pics.app.data.getScreenWidth
 import pics.app.data.photo.model.Photo
 import pics.app.databinding.HomeItemBinding
-import pics.app.databinding.RecyclerViewHeaderBinding
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.home.HomeViewModel
-import pics.app.uiPhoto.base.BasePhotoListAdapter
-import timber.log.Timber
+import pics.app.ui.base.BasePhotoListAdapter
 import javax.inject.Inject
 
 class HomeAdapter @Inject constructor(
-    private val homeViewModel: HomeViewModel
+    private val viewModel: HomeViewModel
 ) :
-    BasePhotoListAdapter<Photo, RecyclerView.ViewHolder>(PhotoDiffUtilCallBack) {
-    private var onPhotoClickListener: OnPhotoClickListener? = null
+    BasePhotoListAdapter() {
     override val title: Int
         get() = R.string.home_label
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            TITLE_TYPE -> {
-                return TitleViewHolder(
-                    RecyclerViewHeaderBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
-            }
-            else -> {
-                return PhotoViewHolder(
-                    HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    homeViewModel
-                )
-            }
-
-
+        return when (viewType) {
+            TITLE_TYPE -> TitleViewHolder.from(parent)
+            PHOTO_TYPE -> PhotoViewHolder.from(parent, viewModel)
+            else -> throw ClassCastException("Unknown viewType: $viewType")
         }
 
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-        when (getItemViewType(position)) {
-            TITLE_TYPE -> {
-                (holder as TitleViewHolder).apply {
+        when (holder) {
+            is TitleViewHolder -> {
+                holder.apply {
                     val layoutParams =
                         holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
                     layoutParams.isFullSpan = true
                     bind(title)
                 }
             }
-            else -> item?.let {
-                (holder as PhotoViewHolder).apply {
-                    val ratio = item.height.toDouble() / item.width.toDouble()
-                  //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
-                  //  holder.itemView.requestLayout()
+            is PhotoViewHolder ->
+                holder.apply {
+                    val photo = getItem(position) as Photo
+                    val ratio = photo.height.toDouble() / photo.width.toDouble()
+                    //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
+                    //  holder.itemView.requestLayout()
                     ConstraintSet().apply {
-                        clone(homeItemBinding.homeRoot)
-                        setDimensionRatio(homeItemBinding.homePhoto.id,ratio.toString())
-                        applyTo(homeItemBinding.homeRoot)
+                        clone(binding.homeRoot)
+                        setDimensionRatio(binding.homePhoto.id, ratio.toString())
+                        applyTo(binding.homeRoot)
                     }
-                    bind(it)
+                    bind(photo)
                 }
-            }
+
         }
 
-
-    }
-
-
-    fun setOnPhotoClickListener(listener: OnPhotoClickListener) {
-        onPhotoClickListener = listener
 
     }
 
 
     class PhotoViewHolder(
-         val homeItemBinding: HomeItemBinding,
-        private val homeViewModel: HomeViewModel,
+        val binding: HomeItemBinding,
+        private val viewModel: HomeViewModel,
     ) :
-        RecyclerView.ViewHolder(homeItemBinding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
 
         fun bind(photo: Photo) {
-            homeItemBinding.photo = photo
-            homeItemBinding.viewModel = homeViewModel
-            homeItemBinding.executePendingBindings()
+            binding.photo = photo
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
 
         }
-    }
 
+        companion object {
+            fun from(parent: ViewGroup, viewModel: HomeViewModel): PhotoViewHolder {
+                return PhotoViewHolder(
+                    HomeItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
 
-    object PhotoDiffUtilCallBack : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return newItem == oldItem
-
-        }
-    }
-
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> TITLE_TYPE
-            else -> super.getItemViewType(position)
+            }
         }
     }
 

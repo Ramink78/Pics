@@ -7,11 +7,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import androidx.paging.liveData
+import androidx.paging.*
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
@@ -21,6 +19,7 @@ import pics.app.data.photo.model.Photo
 import pics.app.database.SavePhotoWorker
 import pics.app.network.DownloadPhotoWorker
 import pics.app.repo.home.HomePagingSource
+import pics.app.ui.base.Row
 import pics.app.utils.SingleLiveEvent
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,6 +48,7 @@ class HomeViewModel @Inject constructor(
         homePagingSource
 
     }.liveData
+        .map { pagingData -> pagingData.insertHeaderItem(item = Row.Header) }
         .cachedIn(viewModelScope)
 
     fun photoClicked(photo: Photo) {

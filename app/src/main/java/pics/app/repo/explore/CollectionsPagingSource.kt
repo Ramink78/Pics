@@ -6,14 +6,15 @@ import pics.app.COLLECTION_PER_PAGE
 import pics.app.FIRST_PAGE
 import pics.app.data.collections.CollectionsApi
 import pics.app.data.collections.model.Collection
+import pics.app.ui.base.Row
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 class CollectionsPagingSource @Inject constructor(
     private val collectionsApi: CollectionsApi,
-) : PagingSource<Int, Collection>() {
-    override fun getRefreshKey(state: PagingState<Int, Collection>): Int? {
+) : PagingSource<Int, Row>() {
+    override fun getRefreshKey(state: PagingState<Int, Row>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
@@ -21,7 +22,7 @@ class CollectionsPagingSource @Inject constructor(
 
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Collection> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
         val position = params.key ?: FIRST_PAGE
 
         return try {

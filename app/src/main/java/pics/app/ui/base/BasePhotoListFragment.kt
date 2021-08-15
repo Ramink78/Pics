@@ -11,18 +11,17 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pics.app.databinding.BasePhotoListFragmentBinding
-import pics.app.uiPhoto.base.BasePhotoListAdapter
 import pics.app.utils.ItemSpacing
 
-abstract class BasePhotoListFragment<T : Any, V : RecyclerView.ViewHolder> : Fragment() {
+abstract class BasePhotoListFragment : Fragment() {
     lateinit var navController: NavController
     private var _binding: BasePhotoListFragmentBinding? = null
     private val binding get() = _binding!!
-    abstract val listAdapter: BasePhotoListAdapter<T, V>
+    abstract val listAdapter: BasePhotoListAdapter
     abstract val itemSpace: Int
     abstract val spanCount: Int
 
-    protected lateinit var layoutManager: StaggeredGridLayoutManager
+    private lateinit var layoutManager: StaggeredGridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,

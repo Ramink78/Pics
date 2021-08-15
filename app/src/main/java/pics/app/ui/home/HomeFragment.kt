@@ -17,7 +17,7 @@ import pics.app.ui.base.BasePhotoListFragment
 import javax.inject.Inject
 
 
-class HomeFragment : BasePhotoListFragment<Photo, RecyclerView.ViewHolder>() {
+class HomeFragment : BasePhotoListFragment() {
 
 
     @Inject

@@ -1,17 +1,12 @@
 package pics.app.ui.collections
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
-import androidx.paging.liveData
+import androidx.lifecycle.*
+import androidx.paging.*
 import pics.app.repo.explore.CollectionsPagingSource
 import pics.app.COLLECTION_PER_PAGE
 import pics.app.data.collections.model.Collection
 import pics.app.di.CollectionScope
+import pics.app.ui.base.Row
 import pics.app.utils.SingleLiveEvent
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,6 +28,7 @@ class CollectionsViewModel @Inject constructor(private val collectionsPagingSour
 
     ) { collectionsPagingSource }
         .liveData
+        .map { pagingData -> pagingData.insertHeaderItem(item = Row.Header) }
         .cachedIn(viewModelScope)
     fun collectionClick(collection: Collection){
         _collectionClick.value=collection
