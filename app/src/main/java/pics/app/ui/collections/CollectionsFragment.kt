@@ -24,7 +24,7 @@ class CollectionsFragment : BasePhotoListFragment() {
 
     @Inject
     lateinit var collectionsAdapter: CollectionsAdapter
-    lateinit var binding: FragmentCollectionsBinding
+    lateinit var fragmentCollectionsBinding: FragmentCollectionsBinding
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -41,6 +41,7 @@ class CollectionsFragment : BasePhotoListFragment() {
                 }
 
             }
+
             collectionClick.observe(viewLifecycleOwner) {
                 Timber.d("in observe")
 
@@ -54,7 +55,7 @@ class CollectionsFragment : BasePhotoListFragment() {
 
 
         }
-        listAdapter.apply {
+        collectionsAdapter.apply {
             addLoadStateListener {
                 when (it.refresh) {
                     LoadState.Loading -> showLoading()

@@ -14,7 +14,9 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import pics.app.PHOTO_PER_PAGE
 import pics.app.data.*
+import pics.app.data.photo.PhotoAPI
 import pics.app.data.photo.model.Photo
 import pics.app.database.SavePhotoWorker
 import pics.app.network.DownloadPhotoWorker
@@ -25,9 +27,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class HomeViewModel @Inject constructor(
-    private val homePagingSource: HomePagingSource, private val context: Context
+    private val service: PhotoAPI, private val context: Context
 ) :
 
     ViewModel() {
@@ -45,7 +46,7 @@ class HomeViewModel @Inject constructor(
         )
     )
     {
-        homePagingSource
+        HomePagingSource(service)
 
     }.liveData
         .map { pagingData -> pagingData.insertHeaderItem(item = Row.Header) }
@@ -54,6 +55,7 @@ class HomeViewModel @Inject constructor(
     fun photoClicked(photo: Photo) {
         _photoClicked.value = photo
     }
+
 
     fun photoLongClick(photo: Photo): Boolean {
         var continuation =

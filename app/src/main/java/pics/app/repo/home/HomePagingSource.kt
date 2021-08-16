@@ -5,13 +5,12 @@ import androidx.paging.PagingState
 import pics.app.FIRST_PAGE
 import pics.app.PHOTO_PER_PAGE
 import pics.app.data.photo.PhotoAPI
-import pics.app.data.photo.model.Photo
 import pics.app.ui.base.Row
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
-class HomePagingSource @Inject constructor(
+class HomePagingSource(
     private val service: PhotoAPI,
 ) : PagingSource<Int, Row>() {
 
@@ -20,13 +19,14 @@ class HomePagingSource @Inject constructor(
         val position = params.key ?: FIRST_PAGE
         return try {
             val photos = service.getPhotos(position, PHOTO_PER_PAGE)
-            val nextKey = if (photos.isNullOrEmpty()) {
+
+            val nextPage = if (photos.isEmpty()) {
                 null
             } else {
-                position + (params.loadSize / PHOTO_PER_PAGE)
+                position + 1
             }
             LoadResult.Page(
-                nextKey = nextKey,
+                nextKey = nextPage,
                 data = photos,
                 prevKey = if (position == FIRST_PAGE) null else position - 1
             )
@@ -39,10 +39,10 @@ class HomePagingSource @Inject constructor(
 
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Row>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Row>):Int?{
         return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 

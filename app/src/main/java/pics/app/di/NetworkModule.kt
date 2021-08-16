@@ -44,7 +44,6 @@ class NetworkModule {
             .build()
     }
 
-
     @Singleton
     @Provides
     fun providesPhotoApi(retrofit: Retrofit): PhotoAPI {

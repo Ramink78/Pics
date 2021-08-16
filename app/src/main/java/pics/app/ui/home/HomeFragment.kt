@@ -53,7 +53,8 @@ class HomeFragment : BasePhotoListFragment() {
 
             }
         }
-        listAdapter.apply {
+
+        homeAdapter.apply {
             addLoadStateListener {
                 when (it.refresh) {
                     LoadState.Loading -> showLoading()

@@ -8,15 +8,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import pics.app.adapters.ListStateAdapter
 import pics.app.databinding.BasePhotoListFragmentBinding
 import pics.app.utils.ItemSpacing
+import timber.log.Timber
 
 abstract class BasePhotoListFragment : Fragment() {
     lateinit var navController: NavController
     private var _binding: BasePhotoListFragmentBinding? = null
-    private val binding get() = _binding!!
+     val binding get() = _binding!!
     abstract val listAdapter: BasePhotoListAdapter
     abstract val itemSpace: Int
     abstract val spanCount: Int
@@ -38,13 +41,20 @@ abstract class BasePhotoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController=Navigation.findNavController(view)
+        navController = Navigation.findNavController(view)
         layoutManager = StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL)
-    //    layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-        binding.baseRecyclerView.apply {
-            adapter = listAdapter
-            layoutManager = this@BasePhotoListFragment.layoutManager
-            addItemDecoration(ItemSpacing(itemSpace, spanCount))
+        //    layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+        binding.apply {
+            baseRecyclerView.apply {
+                adapter = listAdapter.withLoadStateFooter(footer = ListStateAdapter {
+                    listAdapter.retry()
+                })
+                layoutManager = this@BasePhotoListFragment.layoutManager
+                addItemDecoration(ItemSpacing(itemSpace, spanCount))
+            }
+            swipeRefresh.setOnRefreshListener {
+                listAdapter.refresh()
+            }
         }
 
     }

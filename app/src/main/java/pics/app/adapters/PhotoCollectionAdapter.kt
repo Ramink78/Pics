@@ -46,6 +46,7 @@ class PhotoCollectionAdapter @Inject constructor(
             }
             is PhotoViewHolder ->
                 holder.apply {
+                    Timber.d("item #$position")
                     val photo = getItem(position) as Photo
                     val ratio = photo.height.toDouble() / photo.width.toDouble()
                     holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
@@ -67,7 +68,6 @@ class PhotoCollectionAdapter @Inject constructor(
 
 
         fun bind(photo: Photo) {
-            Timber.d(" photo is ${photo.urls}")
             binding.photo = photo
             binding.viewModel = viewModel
             binding.executePendingBindings()

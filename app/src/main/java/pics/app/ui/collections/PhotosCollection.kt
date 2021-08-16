@@ -52,7 +52,7 @@ class PhotosCollection : BasePhotoListFragment() {
             }
 
         }
-        listAdapter.apply {
+        photoCollectionAdapter.apply {
             addLoadStateListener {
                 when (it.refresh) {
                     LoadState.Loading -> showLoading()

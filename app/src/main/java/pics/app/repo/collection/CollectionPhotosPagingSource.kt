@@ -1,13 +1,10 @@
-package pics.app.repo.explore
+package pics.app.repo.collection
 
-import android.annotation.SuppressLint
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import pics.app.COLLECTION_PER_PAGE
 import pics.app.FIRST_PAGE
 import pics.app.PHOTO_PER_PAGE
 import pics.app.data.collections.CollectionsApi
-import pics.app.data.photo.model.Photo
 import pics.app.ui.base.Row
 import retrofit2.HttpException
 import timber.log.Timber
@@ -21,17 +18,16 @@ class CollectionPhotosPagingSource @Inject constructor(
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
-
         val position = params.key ?: FIRST_PAGE
+
+        Timber.d("page  : $position")
         return try {
-
             val photos = service.getCollectionPhotos(id, position, PHOTO_PER_PAGE)
-
-            val nextKey = if (photos.isNullOrEmpty()) {
+            val nextKey = if (photos.isEmpty())
                 null
-            } else {
-                position + (params.loadSize / PHOTO_PER_PAGE)
-            }
+            else
+                position + 1
+
             LoadResult.Page(
                 nextKey = nextKey,
                 data = photos,
@@ -48,13 +44,11 @@ class CollectionPhotosPagingSource @Inject constructor(
         }
 
     }
-
-    override fun getRefreshKey(state: PagingState<Int, Row>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Row>):Int?{
         return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
-
 
 }

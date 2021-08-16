@@ -37,6 +37,7 @@
     <!-- Messages Preferences -->
     <string name="theme_title">Theme</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="retry">Retry</string>
 
     <!-- Sync Preferences -->
 

@@ -6,10 +6,9 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import pics.app.PHOTO_PER_PAGE
-import pics.app.data.photo.PhotoAPI
 import pics.app.data.photo.model.Photo
 import pics.app.di.CollectionScope
-import pics.app.repo.explore.CollectionPhotosPagingSource
+import pics.app.repo.collection.CollectionPhotosPagingSource
 import pics.app.ui.base.Row
 import pics.app.utils.SingleLiveEvent
 import timber.log.Timber

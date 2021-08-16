@@ -13,6 +13,7 @@ import pics.app.databinding.HomeItemBinding
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.home.HomeViewModel
 import pics.app.ui.base.BasePhotoListAdapter
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeAdapter @Inject constructor(
@@ -45,6 +46,7 @@ class HomeAdapter @Inject constructor(
             }
             is PhotoViewHolder ->
                 holder.apply {
+                    Timber.d("position is $position")
                     val photo = getItem(position) as Photo
                     val ratio = photo.height.toDouble() / photo.width.toDouble()
                     //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
