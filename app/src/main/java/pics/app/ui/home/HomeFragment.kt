@@ -14,6 +14,7 @@ import pics.app.adapters.HomeAdapter
 import pics.app.data.dp
 import pics.app.data.photo.model.Photo
 import pics.app.ui.base.BasePhotoListFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -46,6 +47,7 @@ class HomeFragment : BasePhotoListFragment() {
                 }
             }
             photoClicked.observe(viewLifecycleOwner) {
+                Timber.d(" photo clicked observed")
                 val action =
                     it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
                 navController.navigate(action)
@@ -60,6 +62,7 @@ class HomeFragment : BasePhotoListFragment() {
                     LoadState.Loading -> showLoading()
                     else -> showSuccess()
                 }
+
 
             }
         }

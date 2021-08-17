@@ -26,11 +26,10 @@ import pics.app.utils.SingleLiveEvent
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
-
+@Singleton
 class HomeViewModel @Inject constructor(
     private val service: PhotoAPI, private val context: Context
 ) :
-
     ViewModel() {
     var isReadPermissionGranted = false
     var isWritePermissionGranted = false
@@ -53,6 +52,7 @@ class HomeViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     fun photoClicked(photo: Photo) {
+        Timber.d("photo clicked is ${photo.id}")
         _photoClicked.value = photo
     }
 

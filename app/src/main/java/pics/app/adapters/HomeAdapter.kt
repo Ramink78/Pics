@@ -2,9 +2,11 @@ package pics.app.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlinx.android.synthetic.main.home_item.view.*
 import pics.app.R
 import pics.app.data.PHOTO_TYPE
 import pics.app.data.TITLE_TYPE
@@ -48,13 +50,14 @@ class HomeAdapter @Inject constructor(
                 holder.apply {
                     Timber.d("position is $position")
                     val photo = getItem(position) as Photo
-                    val ratio = photo.height.toDouble() / photo.width.toDouble()
+                    val ratio = photo.width.toDouble() / photo.height.toDouble()
                     //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
                     //  holder.itemView.requestLayout()
                     ConstraintSet().apply {
-                        clone(binding.homeRoot)
-                        setDimensionRatio(binding.homePhoto.id, ratio.toString())
-                        applyTo(binding.homeRoot)
+                        val root = itemView.rootView as ConstraintLayout
+                        clone(root)
+                        setDimensionRatio(itemView.home_photo.id, ratio.toString())
+                        applyTo(root)
                     }
                     bind(photo)
                 }
@@ -66,7 +69,7 @@ class HomeAdapter @Inject constructor(
 
 
     class PhotoViewHolder(
-        val binding: HomeItemBinding,
+        private val binding: HomeItemBinding,
         private val viewModel: HomeViewModel,
     ) :
         RecyclerView.ViewHolder(binding.root) {
@@ -76,7 +79,6 @@ class HomeAdapter @Inject constructor(
             binding.photo = photo
             binding.viewModel = viewModel
             binding.executePendingBindings()
-
         }
 
         companion object {

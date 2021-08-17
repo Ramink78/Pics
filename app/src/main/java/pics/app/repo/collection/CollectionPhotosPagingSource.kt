@@ -22,12 +22,11 @@ class CollectionPhotosPagingSource @Inject constructor(
 
         Timber.d("page  : $position")
         return try {
-            val photos = service.getCollectionPhotos(id, position, PHOTO_PER_PAGE)
+            val photos = service.getCollectionPhotos(id, position, params.loadSize)
             val nextKey = if (photos.isEmpty())
                 null
             else
                 position + 1
-
             LoadResult.Page(
                 nextKey = nextKey,
                 data = photos,

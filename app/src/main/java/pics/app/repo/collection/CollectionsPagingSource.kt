@@ -28,7 +28,7 @@ class CollectionsPagingSource @Inject constructor(
         Timber.d("load size is :${params.loadSize}")
 
         return try {
-            val response = collectionsApi.getCollections(position, COLLECTION_PER_PAGE)
+            val response = collectionsApi.getCollections(position, params.loadSize)
             val nextKey = if (response.isEmpty())
                 null
             else

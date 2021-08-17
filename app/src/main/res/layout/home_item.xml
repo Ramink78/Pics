@@ -12,6 +12,7 @@
         <variable
             name="viewModel"
             type="pics.app.ui.home.HomeViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

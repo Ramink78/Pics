@@ -18,7 +18,7 @@ class HomePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
         val position = params.key ?: FIRST_PAGE
         return try {
-            val photos = service.getPhotos(position, PHOTO_PER_PAGE)
+            val photos = service.getPhotos(position, params.loadSize)
 
             val nextPage = if (photos.isEmpty()) {
                 null

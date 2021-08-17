@@ -24,7 +24,6 @@ class CollectionsFragment : BasePhotoListFragment() {
 
     @Inject
     lateinit var collectionsAdapter: CollectionsAdapter
-    lateinit var fragmentCollectionsBinding: FragmentCollectionsBinding
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -43,7 +42,6 @@ class CollectionsFragment : BasePhotoListFragment() {
             }
 
             collectionClick.observe(viewLifecycleOwner) {
-                Timber.d("in observe")
 
                 val action =
                     CollectionsFragmentDirections.actionNavigationCollectionsToPhotosCollection(
