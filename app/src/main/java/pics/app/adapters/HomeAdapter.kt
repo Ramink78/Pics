@@ -51,8 +51,6 @@ class HomeAdapter @Inject constructor(
                     Timber.d("position is $position")
                     val photo = getItem(position) as Photo
                     val ratio = photo.width.toDouble() / photo.height.toDouble()
-                    //  holder.itemView.layoutParams.height = (ratio * (getScreenWidth() / 2)).toInt()
-                    //  holder.itemView.requestLayout()
                     ConstraintSet().apply {
                         val root = itemView.rootView as ConstraintLayout
                         clone(root)

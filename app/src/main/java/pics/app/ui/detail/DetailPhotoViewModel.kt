@@ -1,4 +1,4 @@
-package pics.app.ui.explore
+package pics.app.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import pics.app.data.photo.model.Photo
 import pics.app.network.NetworkState
 import timber.log.Timber
 import javax.inject.Inject
-
+import javax.inject.Singleton
 
 class DetailPhotoViewModel @Inject constructor(
     private val detailsAPI: DetailsAPI
@@ -24,7 +24,7 @@ class DetailPhotoViewModel @Inject constructor(
         get() = _detailPhoto
 
     fun retrieveDetails(photoId: String) {
-        _networkState.value = NetworkState.PROCESSING
+        _networkState.value = NetworkState.LOADING
         viewModelScope.launch {
             try {
                 _detailPhoto.value = detailsAPI.getDetails(photoId)

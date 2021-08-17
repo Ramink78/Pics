@@ -1,115 +1,83 @@
 package pics.app.adapters
 
-import android.view.LayoutInflater
-import android.view.View
+import android.content.Context
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.android.synthetic.main.detail_header.view.*
 import pics.app.R
-import pics.app.network.NetworkState
-import pics.app.ui.explore.DetailPhoto
+import pics.app.ui.base.DetailRow
+import pics.app.ui.viewholder.DetailHeaderViewHolder
+import pics.app.ui.viewholder.DetailItemViewHolder
+import pics.app.ui.viewholder.DetailSeparatorViewHolder
+import timber.log.Timber
 import javax.inject.Inject
 
-class DetailsAdapter @Inject constructor(private val rows: ArrayList<DetailPhoto.Row>) :
+class DetailsAdapter @Inject constructor(
+    private val context: Context
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val title_type: Int = 1
-    val item_type: Int = 2
-    val loading_type: Int = 3
-    lateinit var networkState: NetworkState
-
-    class ItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val primaryText: TextView = itemView.findViewById(R.id.item_primaryText)
-        val secondaryText: TextView = itemView.findViewById(R.id.item_seconderyText)
-        val avatar: ShapeableImageView = itemView.findViewById(R.id.user_profile)
-    }
-
-    class TitleVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.details_title)
-    }
-
-    class LoadingVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
-
+    private val detailList = arrayListOf<DetailRow>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-
-            item_type -> {
-                ItemVH(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.detail_item, parent, false)
-                )
-            }
-            title_type -> {
-                TitleVH(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.detail_title, parent, false)
-                )
-            }
-            loading_type -> {
-                LoadingVH(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.loading, parent, false)
-                )
-            }
-            else -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.detail_title, parent, false)
-                return TitleVH(view)
-            }
-
+            R.layout.detail_separator -> DetailSeparatorViewHolder.from(parent)
+            R.layout.detail_item -> DetailItemViewHolder.from(parent)
+            R.layout.detail_header -> DetailHeaderViewHolder.from(parent)
+            else -> throw  ClassCastException("Unknown viewType $viewType")
         }
-
-
     }
 
     override fun getItemCount(): Int {
-        return rows.size
+        return detailList.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (rows[position]) {
-            is DetailPhoto.Row.Item -> item_type
-            is DetailPhoto.Row.Section -> title_type
-            is DetailPhoto.Row.Loading -> loading_type
+        return when (detailList[position]) {
+            is DetailRow.HeaderPhoto -> R.layout.detail_header
+            is DetailRow.Separator -> R.layout.detail_separator
+            is DetailRow.Detail -> R.layout.detail_item
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder.itemViewType) {
-            item_type -> {
-                val item = rows[position] as DetailPhoto.Row.Item
-                (holder as ItemVH).primaryText.text =
-                    if (item.primary.isNullOrEmpty()) "Unknown" else item.primary
+        when (holder) {
+            is DetailHeaderViewHolder ->
+                holder.apply {
+                    val photo = (detailList[position] as DetailRow.HeaderPhoto).photo
+                    val ratio = photo.width.toFloat() / photo.height
+                    ConstraintSet().apply {
+                        val root = itemView.rootView as ConstraintLayout
+                        clone(root)
+                        setDimensionRatio(itemView.detail_header_image_view.id, ratio.toString())
+                        applyTo(root)
 
-                holder.secondaryText.text = item.secondary
-                holder.avatar.setImageResource(item.drawableRes)
+                    }
+                    bind(photo)
+                }
+
+            is DetailSeparatorViewHolder -> {
+                val separatorTitle = (detailList[position] as DetailRow.Separator).title
+                holder.bind(context.resources.getString(separatorTitle))
             }
-            title_type -> {
-                val title = (rows[position] as DetailPhoto.Row.Section).title
-                holder as TitleVH
-                holder.title.text = title
-
+            is DetailItemViewHolder -> {
+                val detailItem = (detailList[position] as DetailRow.Detail)
+                holder.bind(
+                    primaryText = detailItem.primaryText,
+                    secondaryText = context.resources.getString(detailItem.secondaryText)
+                )
             }
 
 
         }
     }
 
-    fun addItem(row: DetailPhoto.Row) {
-        rows.add(row)
+    fun submitList(list: List<DetailRow>) {
+        Timber.d("list size is ${list.size}")
+
+        detailList.addAll(list)
         notifyDataSetChanged()
-    }
-
-    fun removeItem(position: Int) {
-        rows.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    fun setNetworkStatus(networkState: NetworkState) {
-        this.networkState = networkState
     }
 
 }

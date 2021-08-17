@@ -5,6 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="specfication_title">Specifications</string>
     <string name="cameramodel_title">Camera Model</string>
+    <string name="unknown">Unknown</string>
     <string name="focallength_title">Focal Length</string>
     <string name="aperture_title">Aperture</string>
     <string name="shutterspeed_title">Shutter Speed</string>

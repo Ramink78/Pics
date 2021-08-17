@@ -1,53 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="primaryText"
+            type="String" />
+        <variable
+            name="secondaryText"
+            type="String" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cameraMake"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:background="@drawable/detail_items_bg"
-    app:layout_constraintEnd_toStartOf="@+id/focalLength"
-    app:layout_constraintStart_toStartOf="@+id/aperture"
     app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/user_profile"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-        app:shapeAppearanceOverlay="@style/CircleImage"
-        app:srcCompat="@drawable/details_camera_make" />
 
     <TextView
-        android:id="@+id/item_seconderyText"
+        android:id="@+id/secondary_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        tools:text="Camera Make"
         android:textColor="@color/detailItemSecondaryColor"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/item_primaryText" />
+        android:text="@{secondaryText}"
+        app:layout_constraintStart_toStartOf="@+id/primary_txt"
+        app:layout_constraintTop_toBottomOf="@+id/primary_txt"
+        tools:text="Camera Make" />
 
     <TextView
-        android:id="@+id/item_primaryText"
+        android:id="@+id/primary_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:maxLines="1"
-        tools:text="None"
+        android:text="@{primaryText}"
         android:textColor="@color/detailItemPrimaryColor"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/item_seconderyText"
-        app:layout_constraintStart_toEndOf="@+id/user_profile"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/secondary_txt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Primary" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+</layout>
