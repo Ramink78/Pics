@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_setting"
             app:destination="@id/navigation_setting" />
+        <action
+            android:id="@+id/action_navigation_home_to_qualityBottomSheet"
+            app:destination="@id/qualityBottomSheet" />
     </fragment>
 
     <fragment
@@ -64,4 +67,12 @@
         android:name="pics.app.ui.SavedFragment"
         android:label="saved_fragment"
         tools:layout="@layout/saved_fragment" />
+    <dialog
+        android:id="@+id/qualityBottomSheet"
+        android:name="pics.app.ui.home.QualityBottomSheet"
+        android:label="QualityBottomSheet" >
+        <argument
+            android:name="photo"
+            app:argType="pics.app.data.photo.model.Photo" />
+    </dialog>
 </navigation>

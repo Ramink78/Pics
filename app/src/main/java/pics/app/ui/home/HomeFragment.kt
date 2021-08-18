@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
 import pics.app.adapters.HomeAdapter
@@ -32,6 +32,7 @@ class HomeFragment : BasePhotoListFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeViewModel.apply {
+
             permissionLauncher = registerForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions()
             ) { permissions ->
@@ -47,12 +48,14 @@ class HomeFragment : BasePhotoListFragment() {
                 }
             }
             photoClicked.observe(viewLifecycleOwner) {
-                Timber.d(" photo clicked observed")
+                 val action =
+                     it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
+                 navController.navigate(action)
+            }
+            downloadAction.observe(viewLifecycleOwner){
                 val action =
-                    it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
+                    it.let { HomeFragmentDirections.actionNavigationHomeToQualityBottomSheet(it) }
                 navController.navigate(action)
-
-
             }
         }
 

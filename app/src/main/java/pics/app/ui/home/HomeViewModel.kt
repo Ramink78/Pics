@@ -11,21 +11,17 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import pics.app.PHOTO_PER_PAGE
 import pics.app.data.*
 import pics.app.data.photo.PhotoAPI
 import pics.app.data.photo.model.Photo
-import pics.app.database.SavePhotoWorker
-import pics.app.network.DownloadPhotoWorker
 import pics.app.repo.home.HomePagingSource
 import pics.app.ui.base.Row
 import pics.app.utils.SingleLiveEvent
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @Singleton
 class HomeViewModel @Inject constructor(
     private val service: PhotoAPI, private val context: Context
@@ -38,6 +34,9 @@ class HomeViewModel @Inject constructor(
     private val _photoClicked = SingleLiveEvent<Photo>()
     val photoClicked: LiveData<Photo>
         get() = _photoClicked
+    private val _downloadAction = SingleLiveEvent<Photo>()
+    val downloadAction: LiveData<Photo>
+        get() = _downloadAction
     val homePhotos = Pager(
         PagingConfig(
             pageSize = 30,
@@ -58,17 +57,7 @@ class HomeViewModel @Inject constructor(
 
 
     fun photoLongClick(photo: Photo): Boolean {
-        var continuation =
-            workManager.beginWith(
-                OneTimeWorkRequestBuilder<DownloadPhotoWorker>()
-                    .setInputData(getImageData(photo))
-                    .build()
-            )
-        val saveToDatabaseRequest = OneTimeWorkRequest.from(SavePhotoWorker::class.java)
-
-        continuation = continuation.then(saveToDatabaseRequest)
-        continuation.enqueue()
-
+        _downloadAction.value = photo
         return true
     }
 
