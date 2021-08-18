@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/detailOfImage"
-        android:name="pics.app.ui.explore.DetailPhoto"
+        android:name="pics.app.ui.detail.DetailPhoto"
         android:label="fragment_detail_of_image"
         tools:layout="@layout/fragment_detail_of_image">
         <argument

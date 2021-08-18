@@ -5,6 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="specfication_title">Specifications</string>
     <string name="cameramodel_title">Camera Model</string>
+    <string name="unknown">Unknown</string>
     <string name="focallength_title">Focal Length</string>
     <string name="aperture_title">Aperture</string>
     <string name="shutterspeed_title">Shutter Speed</string>
@@ -16,6 +17,7 @@
     <string name="username">Username</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
+    <string name="total_collection">Total Collection</string>
     <string name="image_transition_name">transition image %d</string>
     <string name="bottom_nav_collections">Collections</string>
     <string name="bottom_nav_home">Home</string>
@@ -38,6 +40,7 @@
     <string name="theme_title">Theme</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="retry">Retry</string>
+    <string name="choose_quality">Choose Quality</string>
 
     <!-- Sync Preferences -->
 

@@ -9,7 +9,7 @@ import pics.app.databinding.RecyclerViewHeaderBinding
 class TitleViewHolder(val binding: RecyclerViewHeaderBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(@StringRes title: Int) {
-        binding.detailsTitle.text = binding.root.resources.getString(title)
+        binding.categoryTxt.text = binding.root.resources.getString(title)
     }
 
     companion object {
