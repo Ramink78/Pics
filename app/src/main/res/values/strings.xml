@@ -17,6 +17,7 @@
     <string name="username">Username</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
+    <string name="total_collection">Total Collection</string>
     <string name="image_transition_name">transition image %d</string>
     <string name="bottom_nav_collections">Collections</string>
     <string name="bottom_nav_home">Home</string>
@@ -39,6 +40,7 @@
     <string name="theme_title">Theme</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="retry">Retry</string>
+    <string name="choose_quality">Choose Quality</string>
 
     <!-- Sync Preferences -->
 

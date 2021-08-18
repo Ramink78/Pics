@@ -2,23 +2,25 @@ package pics.app.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import pics.app.databinding.DetailItemBinding
-import pics.app.databinding.DetailSeparatorBinding
+import pics.app.databinding.DetailCategoryBinding
+import pics.app.databinding.DetailChildBinding
 
-class DetailSeparatorViewHolder(private val binding: DetailSeparatorBinding) :
+class DetailChildViewHolder(private val binding: DetailChildBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(separatorTitle: String) {
+    fun bind(primaryText: String, secondaryText: String) {
         binding.apply {
-            setSeparatorTitle(separatorTitle)
+            setPrimaryText(primaryText)
+            setSecondaryText(secondaryText)
             executePendingBindings()
         }
     }
 
     companion object {
         fun from(parent: ViewGroup) =
-            DetailSeparatorViewHolder(
-                DetailSeparatorBinding.inflate(
+            DetailChildViewHolder(
+                DetailChildBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

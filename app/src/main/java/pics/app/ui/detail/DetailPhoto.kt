@@ -17,12 +17,10 @@ import pics.app.databinding.FragmentDetailOfImageBinding
 import pics.app.network.NetworkState
 import pics.app.ui.base.DetailRow
 import retrofit2.Retrofit
-import timber.log.Timber
 import javax.inject.Inject
 
 
 class DetailPhoto : Fragment() {
-    var lmanager: GridLayoutManager? = null
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -52,7 +50,7 @@ class DetailPhoto : Fragment() {
             object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (detailadapter.getItemViewType(position)) {
-                        R.layout.detail_item -> 1
+                        R.layout.detail_child -> 1
                         else -> 2
                     }
                 }
@@ -61,15 +59,13 @@ class DetailPhoto : Fragment() {
 
         binding.detailRecyclerView.adapter = detailadapter
         photoViewModel.detailPhoto.observe(viewLifecycleOwner) {
-            Timber.d("photo is $it")
             detailadapter.submitList(initDetails(it))
-
 
 
         }
         photoViewModel.networkState.observe(viewLifecycleOwner) { status ->
             when (status) {
-                NetworkState.SUCCESS ->binding.detailRecyclerView.isVisible = true
+                NetworkState.SUCCESS -> binding.detailRecyclerView.isVisible = true
             }
         }
         photoViewModel.retrieveDetails(args.photo.id)
@@ -87,40 +83,46 @@ class DetailPhoto : Fragment() {
         val detailList = arrayListOf<DetailRow>()
         detailList.apply {
             add(DetailRow.HeaderPhoto(photo))
-            add(DetailRow.Separator(R.string.specfication_title))
+            add(DetailRow.Category(R.string.specfication_title))
+
             add(
-                DetailRow.Detail(
+                DetailRow.Child(
                     photo.exif?.model ?: getString(R.string.unknown),
                     R.string.cameramodel_title
                 )
             )
             add(
-                DetailRow.Detail(
+                DetailRow.Child(
                     photo.exif?.focalLength ?: getString(R.string.unknown),
                     R.string.focallength_title
                 )
             )
             add(
-                DetailRow.Detail(
+                DetailRow.Child(
                     photo.exif?.aperture ?: getString(R.string.unknown),
                     R.string.aperture_title
                 )
             )
             add(
-                DetailRow.Detail(
+                DetailRow.Child(
                     photo.exif?.exposureTime ?: getString(R.string.unknown),
                     R.string.shutterspeed_title
                 )
             )
             add(
-                DetailRow.Detail(
+                DetailRow.Child(
                     photo.exif?.iso ?: getString(R.string.unknown),
                     R.string.iso_title
                 )
             )
-            add(DetailRow.Detail("${photo.width}x${photo.height}", R.string.dimensions))
+            add(DetailRow.Child("${photo.width}x${photo.height}", R.string.dimensions))
+            add(DetailRow.Category(R.string.aboutphotographer_title))
+            add(DetailRow.Child("${photo.user?.name}", R.string.name))
+            add(DetailRow.Child("${photo.user?.location}", R.string.location))
+            add(DetailRow.Child("${photo.user?.instagram_username}", R.string.instagram))
+            add(DetailRow.Child("${photo.user?.twitter_username}", R.string.twitter))
+            add(DetailRow.Child("${photo.user?.total_collections}", R.string.total_collection))
         }
         return detailList
     }
 }
-
