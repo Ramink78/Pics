@@ -10,10 +10,11 @@ import pics.app.ui.SettingsFragment
 import pics.app.ui.detail.DetailPhoto
 import pics.app.ui.collections.CollectionsFragment
 import pics.app.ui.home.HomeFragment
+import pics.app.ui.home.QualityBottomSheet
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DatabaseModule::class,NetworkModule::class, WorkerModule::class])
+@Component(modules = [DatabaseModule::class,NetworkModule::class, WorkerModule::class,BinderModule::class])
 interface AppComponent {
 
     @Component.Factory
@@ -29,6 +30,9 @@ interface AppComponent {
     fun inject(collectionsFragment: CollectionsFragment)
     fun inject(settingsFragment: SettingsFragment)
     fun inject(savedFragment: SavedFragment)
+    fun inject(qualityBottomSheet: QualityBottomSheet) {
+
+    }
 
 
 }

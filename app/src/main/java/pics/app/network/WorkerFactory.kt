@@ -4,13 +4,11 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import pics.app.data.download.DownloadService
+import okhttp3.OkHttpClient
 import pics.app.database.AppDatabase
 import pics.app.database.SavePhotoWorker
-import javax.inject.Inject
 
 class WorkerFactory(
-    private val downloadService: DownloadService,
     private val appDatabase: AppDatabase
 ) : WorkerFactory() {
     override fun createWorker(
@@ -20,7 +18,7 @@ class WorkerFactory(
     ): ListenableWorker? {
         return when (workerClassName) {
             DownloadPhotoWorker::class.java.name -> {
-                DownloadPhotoWorker(appContext, downloadService, appDatabase, workerParameters)
+                DownloadPhotoWorker(appContext, workerParameters)
             }
             SavePhotoWorker::class.java.name -> {
                 SavePhotoWorker(appContext, workerParameters, appDatabase)

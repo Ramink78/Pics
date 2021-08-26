@@ -8,10 +8,9 @@ import javax.inject.Singleton
 
 @Singleton
 class FactoryDelegation @Inject constructor(
-    private val downloadService: DownloadService,
-    private val appDatabase: AppDatabase
+    appDatabase: AppDatabase
 ):DelegatingWorkerFactory() {
     init {
-        addFactory(WorkerFactory(downloadService,appDatabase))
+        addFactory(WorkerFactory(appDatabase))
     }
 }

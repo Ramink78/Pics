@@ -14,7 +14,7 @@
         android:icon="@drawable/bottom_nav_collections"
         android:title="@string/bottom_nav_collections"/>
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/nested_nav"
         android:icon="@drawable/bottom_nav_home"
         android:title="@string/bottom_nav_home"/>
 

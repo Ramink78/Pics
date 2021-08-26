@@ -46,6 +46,11 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    fun provideHttpClientForDownload():OkHttpClient.Builder{
+        return OkHttpClient.Builder()
+    }
+
+    @Provides
     fun providesPhotoApi(retrofit: Retrofit): PhotoAPI {
         return ServiceBuilder(retrofit).buildService(PhotoAPI::class.java)
     }

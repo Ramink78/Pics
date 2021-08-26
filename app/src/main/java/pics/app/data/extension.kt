@@ -3,7 +3,6 @@ package pics.app.data
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -14,7 +13,6 @@ import pics.app.data.photo.model.Photo
 import pics.app.database.SavedPhoto
 import pics.app.ui.widgets.AspectRatioImageView
 import timber.log.Timber
-import java.io.File
 import kotlin.math.ceil
 
 
@@ -32,7 +30,7 @@ fun loadPhoto(imageView: ShapeableImageView, photo: Photo) {
         background = ColorDrawable(Color.parseColor(photo.color))
     }
     Glide.with(imageView)
-        .load(photo.urls.regular)
+        .load(photo.urls.small)
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(imageView)
@@ -92,4 +90,23 @@ fun AspectRatioImageView.setAspectRatio(width: Int?, height: Int?) {
 
 fun getScreenWidth(): Int {
     return Resources.getSystem().displayMetrics.widthPixels
+}
+
+fun Double.humanReadable(): String {
+    var size = this
+    println(size)
+    var unit = UnitSize.Byte
+    var unitIndex = 0
+    while ((size / 1024).toInt() > 0) {
+        unitIndex++
+        size /= 1024
+        unit = UnitSize.values()[unitIndex]
+    }
+    val formattedSize = String.format("%.2f", size)
+    return "$formattedSize $unit"
+}
+
+
+enum class UnitSize {
+    Byte, KB, MB, GB
 }

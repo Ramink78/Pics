@@ -12,18 +12,18 @@ import pics.app.data.PHOTO_TYPE
 import pics.app.data.TITLE_TYPE
 import pics.app.data.photo.model.Photo
 import pics.app.databinding.HomeItemBinding
+import pics.app.ui.base.BasePhotoListAdapter
 import pics.app.ui.base.TitleViewHolder
 import pics.app.ui.home.HomeViewModel
-import pics.app.ui.base.BasePhotoListAdapter
-import timber.log.Timber
 import javax.inject.Inject
 
-class HomeAdapter @Inject constructor(
+class HomeAdapter(
     private val viewModel: HomeViewModel
 ) :
     BasePhotoListAdapter() {
     override val title: Int
         get() = R.string.home_label
+    var progress = 0
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -48,7 +48,6 @@ class HomeAdapter @Inject constructor(
             }
             is PhotoViewHolder ->
                 holder.apply {
-                    Timber.d("position is $position")
                     val photo = getItem(position) as Photo
                     val ratio = photo.width.toDouble() / photo.height.toDouble()
                     ConstraintSet().apply {
@@ -71,12 +70,12 @@ class HomeAdapter @Inject constructor(
         private val viewModel: HomeViewModel,
     ) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(photo: Photo?) {
 
-
-        fun bind(photo: Photo) {
             binding.photo = photo
             binding.viewModel = viewModel
             binding.executePendingBindings()
+
         }
 
         companion object {

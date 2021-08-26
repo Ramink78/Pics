@@ -5,14 +5,18 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.navGraphViewModels
 import androidx.paging.LoadState
+import androidx.work.WorkInfo
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
+import pics.app.R
 import pics.app.adapters.HomeAdapter
+import pics.app.data.PROGRESS_KEY
 import pics.app.data.dp
 import pics.app.data.photo.model.Photo
+import pics.app.di.ViewModelFactory
 import pics.app.ui.base.BasePhotoListFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,10 +26,12 @@ class HomeFragment : BasePhotoListFragment() {
 
 
     @Inject
-    lateinit var homeViewModel: HomeViewModel
-
-    @Inject
-    lateinit var homeAdapter: HomeAdapter
+    lateinit var viewModelFactory: ViewModelFactory
+    private val homeViewModel by navGraphViewModels<HomeViewModel>(R.id.nested_nav) { viewModelFactory }
+    lateinit var photoToDownload: Photo
+    private val homeAdapter: HomeAdapter by lazy {
+        HomeAdapter(homeViewModel)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,20 +48,37 @@ class HomeFragment : BasePhotoListFragment() {
                     ?: isWritePermissionGranted
             }
             checkReadWritePermission()
+
             homePhotos.observe(viewLifecycleOwner) {
                 lifecycleScope.launch {
                     listAdapter.submitData(it)
                 }
+
             }
+          /*  workerInfo.observe(viewLifecycleOwner) { listOfWorkInfo ->
+                listOfWorkInfo.forEach { info ->
+                    if (WorkInfo.State.RUNNING == info.state) {
+
+                        val progress = info.progress.getInt(PROGRESS_KEY, 0)
+
+
+                    }
+                }
+            }*/
             photoClicked.observe(viewLifecycleOwner) {
-                 val action =
-                     it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
-                 navController.navigate(action)
+
+                val action =
+                    it.let { HomeFragmentDirections.actionNavigationHomeToDetailOfImage(it) }
+                navController.navigate(action)
             }
-            downloadAction.observe(viewLifecycleOwner){
+            downloadAction.observe(viewLifecycleOwner) {
+                photoToDownload = it
                 val action =
                     it.let { HomeFragmentDirections.actionNavigationHomeToQualityBottomSheet(it) }
                 navController.navigate(action)
+            }
+            qualityLiveData.observe(viewLifecycleOwner) {
+                beginDownload(photoToDownload,it)
             }
         }
 
@@ -77,7 +100,6 @@ class HomeFragment : BasePhotoListFragment() {
 
 
     }
-
 
 
     override val listAdapter

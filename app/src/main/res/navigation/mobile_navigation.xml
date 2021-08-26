@@ -3,33 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/nested_nav">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="pics.app.ui.home.HomeFragment"
-        android:label="Home"
-        >
-        <action
-            android:id="@+id/action_navigation_home_to_detailOfImage"
-            app:destination="@id/detailOfImage" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_saved"
-            app:destination="@id/navigation_saved" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_setting"
-            app:destination="@id/navigation_setting" />
-        <action
-            android:id="@+id/action_navigation_home_to_qualityBottomSheet"
-            app:destination="@id/qualityBottomSheet" />
-    </fragment>
 
     <fragment
         android:id="@+id/navigation_collections"
         android:name="pics.app.ui.collections.CollectionsFragment"
         android:label="Collections"
-        tools:layout="@layout/fragment_collections"
-      >
+        tools:layout="@layout/fragment_collections">
 
         <action
             android:id="@+id/action_navigation_collections_to_photosCollection"
@@ -50,7 +31,7 @@
     <fragment
         android:id="@+id/photosCollection"
         android:name="pics.app.ui.collections.PhotosCollection"
-        android:label="PhotosCollection" >
+        android:label="PhotosCollection">
         <argument
             android:name="collection"
             app:argType="pics.app.data.collections.model.Collection" />
@@ -67,12 +48,36 @@
         android:name="pics.app.ui.SavedFragment"
         android:label="saved_fragment"
         tools:layout="@layout/saved_fragment" />
-    <dialog
-        android:id="@+id/qualityBottomSheet"
-        android:name="pics.app.ui.home.QualityBottomSheet"
-        android:label="QualityBottomSheet" >
-        <argument
-            android:name="photo"
-            app:argType="pics.app.data.photo.model.Photo" />
-    </dialog>
+
+    <navigation
+        android:id="@+id/nested_nav"
+        app:startDestination="@+id/navigation_home">
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="pics.app.ui.home.HomeFragment"
+            android:label="Home">
+            <action
+                android:id="@+id/action_navigation_home_to_detailOfImage"
+                app:destination="@id/detailOfImage" />
+            <action
+                android:id="@+id/action_navigation_home_to_navigation_saved"
+                app:destination="@id/navigation_saved" />
+            <action
+                android:id="@+id/action_navigation_home_to_navigation_setting"
+                app:destination="@id/navigation_setting" />
+            <action
+                android:id="@+id/action_navigation_home_to_qualityBottomSheet"
+                app:destination="@id/qualityBottomSheet" />
+        </fragment>
+
+        <dialog
+            android:id="@+id/qualityBottomSheet"
+            android:name="pics.app.ui.home.QualityBottomSheet"
+            android:label="QualityBottomSheet">
+            <argument
+                android:name="photo"
+                app:argType="pics.app.data.photo.model.Photo" />
+        </dialog>
+
+    </navigation>
 </navigation>

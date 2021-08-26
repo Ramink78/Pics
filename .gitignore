@@ -71,3 +71,8 @@ lint/tmp/
 lint/reports/
 .idea/codeStyles/Project.xml
 .idea/misc.xml
+app/release/output-metadata.json
+.idea/misc.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/misc.xml

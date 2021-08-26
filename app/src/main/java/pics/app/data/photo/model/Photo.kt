@@ -26,7 +26,6 @@ data class Photo(
     val location: Location?,
     val urls: Urls,
     val user: User?
-
 ) : Row.Content(id), Serializable
 
 @Parcelize

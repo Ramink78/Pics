@@ -94,6 +94,20 @@
     !-->
     <style name="PicsBottomNav" parent="Widget.MaterialComponents.BottomNavigationView.PrimarySurface">
     </style>
+    <style name="ShapeAppearanceOverlay.Demo" parent="">
+        <item name="cornerSizeTopLeft">12dp</item>
+        <item name="cornerSizeTopRight">12dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+    <style
+        name="ThemeOverlay.Demo.BottomSheetDialog"
+        parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Demo.BottomSheet</item>
+    </style>
+
+    <style name="Widget.Demo.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Demo</item>
+    </style>
 
 
 </resources>

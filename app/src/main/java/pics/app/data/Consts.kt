@@ -23,7 +23,8 @@ const val THEME_KEY = "theme"
 //File
 
 // Download
-
+const val PROGRESS_KEY = "Progress"
+const val DOWNLOAD_WORKER_TAG="WorkerTag"
 const val KEY_IMAGE_URL = "ImageUrl"
 const val KEY_IMAGE_WIDTH = "ImageWidth"
 const val KEY_IMAGE_HEIGHT = "ImageHeight"
@@ -35,12 +36,10 @@ const val KEY_IMAGE_URI = "ImageUri"
 
 //Downloading Notification
 @JvmField
-val NOTIFICATION_CHANNEL_NAME: CharSequence =
-    "Pics Notifications Channel name"
+val NOTIFICATION_DOWNLOAD_CHANNEL_NAME: CharSequence =
+    "Download Image"
 const val NOTIFICATION_CHANNEL_DESCRIPTION =
-    "Shows notifications when downloading photo start"
+    "Shows notifications when downloading photo started"
 
-@JvmField
-val NOTIFICATION_TITLE: CharSequence = "Downloading photo"
-const val CHANNEL_ID = "PICS_NOTIFICATION"
+const val NOTIFICATION_CHANNEL_ID = "pics.app"
 const val NOTIFICATION_ID = 1
