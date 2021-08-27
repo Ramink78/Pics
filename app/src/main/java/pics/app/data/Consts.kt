@@ -1,16 +1,13 @@
 package pics.app.data
 
 import android.os.Build
-import android.os.Environment
-import java.io.File
+import pics.app.BuildConfig
 
 const val TITLE_TYPE: Int = 1
 const val PHOTO_TYPE: Int = 2
 
 //Api
-const val API_KEY = "Ov-NmVnr6uWRVKNSOFm4BWIlHIwr_LZH7bW5dzOmdU0"
-
-//const val API_KEY="wCW8gJb79HCOtv5KS2Wn6XOMNOmOJthuONlU3_GctPQ"
+const val API_KEY = BuildConfig.YOUR_UNSPLASH_ACCESS_KEY
 val isAboveSdk29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
 //UI
@@ -24,7 +21,7 @@ const val THEME_KEY = "theme"
 
 // Download
 const val PROGRESS_KEY = "Progress"
-const val DOWNLOAD_WORKER_TAG="WorkerTag"
+const val DOWNLOAD_WORKER_TAG = "WorkerTag"
 const val KEY_IMAGE_URL = "ImageUrl"
 const val KEY_IMAGE_WIDTH = "ImageWidth"
 const val KEY_IMAGE_HEIGHT = "ImageHeight"
