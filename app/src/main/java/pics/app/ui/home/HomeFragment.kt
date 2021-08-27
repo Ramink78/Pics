@@ -8,17 +8,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import androidx.paging.LoadState
-import androidx.work.WorkInfo
 import kotlinx.coroutines.launch
 import pics.app.PicsApp
 import pics.app.R
 import pics.app.adapters.HomeAdapter
-import pics.app.data.PROGRESS_KEY
 import pics.app.data.dp
 import pics.app.data.photo.model.Photo
 import pics.app.di.ViewModelFactory
 import pics.app.ui.base.BasePhotoListFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -55,16 +52,6 @@ class HomeFragment : BasePhotoListFragment() {
                 }
 
             }
-          /*  workerInfo.observe(viewLifecycleOwner) { listOfWorkInfo ->
-                listOfWorkInfo.forEach { info ->
-                    if (WorkInfo.State.RUNNING == info.state) {
-
-                        val progress = info.progress.getInt(PROGRESS_KEY, 0)
-
-
-                    }
-                }
-            }*/
             photoClicked.observe(viewLifecycleOwner) {
 
                 val action =
@@ -78,7 +65,7 @@ class HomeFragment : BasePhotoListFragment() {
                 navController.navigate(action)
             }
             qualityLiveData.observe(viewLifecycleOwner) {
-                beginDownload(photoToDownload,it)
+                beginDownload(photoToDownload, it)
             }
         }
 
