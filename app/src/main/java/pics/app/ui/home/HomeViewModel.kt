@@ -110,6 +110,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun beginDownload(photo: Photo, quality: Quality) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
         val inputData = workDataOf(
             KEY_IMAGE_ID to photo.id,
             KEY_IMAGE_WIDTH to photo.width,

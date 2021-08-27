@@ -40,10 +40,11 @@
     <string name="retry">Retry</string>
     <string name="choose_quality">Choose Quality</string>
 
-
     <string name="notification_channel_id">Pics Channel id</string>
     <string name="notification_title">Downloading Image</string>
-    <string name="notification_progress_text">%d \%</string>
+    <string name="notification_download_failed">Download failed</string>
+    <string name="notification_download_failed_text">An error occurred while downloading</string>
+    <string name="notification_completed_download">Completed download</string>
     <string name="notification_cancel">Cancel</string>
 
 
