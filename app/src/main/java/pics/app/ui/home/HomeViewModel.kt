@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import androidx.work.*
 import pics.app.PHOTO_PER_PAGE
@@ -36,7 +39,7 @@ class HomeViewModel @Inject constructor(
     var isWritePermissionGranted = false
     lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
-    private val _qualityLiveData = MutableLiveData<Quality>()
+    private val _qualityLiveData = SingleLiveEvent<Quality>()
     val qualityLiveData: LiveData<Quality>
         get() = _qualityLiveData
 

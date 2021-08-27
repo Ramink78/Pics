@@ -12,7 +12,6 @@ import pics.app.ServiceBuilder
 import pics.app.data.API_KEY
 import pics.app.data.collections.CollectionsApi
 import pics.app.data.details.DetailsAPI
-import pics.app.data.download.DownloadService
 import pics.app.data.photo.PhotoAPI
 import pics.app.network.FactoryDelegation
 import retrofit2.Retrofit
@@ -44,11 +43,7 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideHttpClientForDownload():OkHttpClient.Builder{
-        return OkHttpClient.Builder()
-    }
+
 
     @Provides
     fun providesPhotoApi(retrofit: Retrofit): PhotoAPI {
@@ -66,12 +61,6 @@ class NetworkModule {
     fun providesCollectionsPhotoApi(retrofit: Retrofit): CollectionsApi {
         return ServiceBuilder(retrofit).buildService(CollectionsApi::class.java)
     }
-    @Singleton
-    @Provides
-    fun providesDownloadService(retrofit: Retrofit): DownloadService {
-        return ServiceBuilder(retrofit).buildService(DownloadService::class.java)
-    }
-
 
 
     @Singleton
@@ -94,6 +83,7 @@ class NetworkModule {
             .build()
 
     }
+
     @Singleton
     @Provides
     fun provideWorkManagerConfiguration(

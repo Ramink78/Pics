@@ -6,32 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pics.app.PicsApp
 import pics.app.R
 import pics.app.adapters.QualityAdapter
-import pics.app.data.*
-import pics.app.data.photo.model.Photo
-import pics.app.database.SavePhotoWorker
 import pics.app.databinding.QualityBottomSheetBinding
 import pics.app.di.ViewModelFactory
-import pics.app.network.DownloadPhotoWorker
 import pics.app.utils.Quality
-import pics.app.utils.getImageUrl
-import timber.log.Timber
 import javax.inject.Inject
 
 class QualityBottomSheet : BottomSheetDialogFragment() {
     lateinit var binding: QualityBottomSheetBinding
-    lateinit var workManager: WorkManager
-    private val args: QualityBottomSheetArgs by navArgs()
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -67,7 +54,6 @@ class QualityBottomSheet : BottomSheetDialogFragment() {
         qualityList.add(Quality.SMALL)
         qualityAdapter.submitList(qualityList)
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

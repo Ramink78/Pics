@@ -5,6 +5,7 @@
         <item name="colorSecondary">#832161</item>
         <item name="colorSecondaryVariant">#530037</item>
         <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
         <item name="colorOnBackground">@color/white</item>
 
     </style>

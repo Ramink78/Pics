@@ -14,12 +14,10 @@ import pics.app.data.THEME_NIGHT
 import pics.app.utils.Ui
 import pics.app.utils.Ui.Theme.LIGHT
 import pics.app.utils.Ui.Theme.NIGHT
-import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-    @Inject
-    lateinit var ui: Ui
+
     private val themesValues = arrayOf(LIGHT.value, NIGHT.value)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -33,9 +31,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val listPreference = ListPreference(context).apply {
             entries = context.resources.getStringArray(R.array.theme_entries)
             entryValues = themesValues
-            setDefaultValue(THEME_LIGHT)
+            setDefaultValue(THEME_NIGHT)
             key = THEME_KEY
-            summary = ui.currentTheme.value
+            summary = Ui.currentTheme.value
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             title = context.resources.getString(R.string.theme_title)
 
@@ -51,9 +49,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == THEME_KEY) {
-            when (sharedPreferences?.getString(key, THEME_LIGHT)) {
-                THEME_LIGHT -> ui.setTheme(LIGHT)
-                THEME_NIGHT -> ui.setTheme(NIGHT)
+            when (sharedPreferences?.getString(key, THEME_NIGHT)) {
+                THEME_LIGHT -> Ui.setTheme(LIGHT)
+                THEME_NIGHT -> Ui.setTheme(NIGHT)
             }
         }
 

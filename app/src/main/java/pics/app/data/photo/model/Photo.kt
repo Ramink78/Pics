@@ -3,7 +3,6 @@ package pics.app.data.photo.model
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
 import pics.app.data.user.model.User
 import pics.app.ui.base.Row
 import java.io.Serializable
@@ -28,7 +27,6 @@ data class Photo(
     val user: User?
 ) : Row.Content(id), Serializable
 
-@Parcelize
 @JsonClass(generateAdapter = true)
 data class Exif(
     @Json(name = "make")
@@ -43,9 +41,8 @@ data class Exif(
     val focalLength: String?,
     @Json(name = "iso")
     val iso: String?
-) : Parcelable
+) : Serializable
 
-@Parcelize
 @JsonClass(generateAdapter = true)
 data class Location(
     @Json(name = "title")
@@ -56,9 +53,8 @@ data class Location(
     val city: String?,
     @Json(name = "country")
     val country: String?
-) : Parcelable
+) : Serializable
 
-@Parcelize
 @JsonClass(generateAdapter = true)
 data class Urls(
     val raw: String?,
@@ -66,4 +62,4 @@ data class Urls(
     val regular: String?,
     val thumb: String,
     val small: String?
-) : Parcelable
+) : Serializable
