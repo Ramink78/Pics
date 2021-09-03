@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_selected="false" android:drawable="@drawable/ic_home_outline"/>
-<item android:state_selected="true" android:drawable="@drawable/ic_home_bold"/>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_checked"
+        android:drawable="@drawable/ic_home_bold"
+        android:state_selected="true" />
+    <item
+        android:state_selected="false"
+        android:id="@+id/home_unchecked"
+        android:drawable="@drawable/ic_home_outline" />
+    <transition
+        android:fromId="@+id/home_unchecked"
+        android:drawable="@drawable/ic_home_bold"
+        android:toId="@+id/home_checked" />
+    <transition
+        android:fromId="@+id/home_checked"
+        android:drawable="@drawable/ic_home_bold"
 
-</selector>
+        android:toId="@+id/home_unchecked" />
+
+
+</animated-selector>
