@@ -17,6 +17,7 @@ import pics.app.databinding.FragmentDetailOfImageBinding
 import pics.app.network.NetworkState
 import pics.app.ui.base.DetailRow
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -39,6 +40,7 @@ class DetailPhoto : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        postponeEnterTransition(280, TimeUnit.MILLISECONDS)
         binding = FragmentDetailOfImageBinding.inflate(inflater, container, false)
         return binding.root
     }

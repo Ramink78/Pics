@@ -13,7 +13,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:stateListAnimator="@animator/list_item_scale_animation"
+        android:onClick="@{()->viewModel.collectionClick(collection)}"
+        android:layout_height="wrap_content"
+       >
 
         <pics.app.ui.widgets.AspectRatioImageView
             android:id="@+id/collection_cover"
@@ -23,7 +26,7 @@
             android:layout_marginEnd="24dp"
             android:adjustViewBounds="true"
             android:foreground="@drawable/image_overlay_gradiant"
-            android:onClick="@{()->viewModel.collectionClick(collection)}"
+
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

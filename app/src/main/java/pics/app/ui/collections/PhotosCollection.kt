@@ -2,7 +2,9 @@ package pics.app.ui.collections
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -17,6 +19,7 @@ import pics.app.data.photo.model.Photo
 import pics.app.di.CollectionsModule
 import pics.app.ui.base.BasePhotoListFragment
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PhotosCollection : BasePhotoListFragment() {
@@ -33,7 +36,14 @@ class PhotosCollection : BasePhotoListFragment() {
         get() = 2
 
     private val args: PhotosCollectionArgs by navArgs()
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        postponeEnterTransition(280,TimeUnit.MILLISECONDS)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("viewmodel is ${viewModel.hashCode()}")
